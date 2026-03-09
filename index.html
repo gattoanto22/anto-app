@@ -1,0 +1,1388 @@
+<!DOCTYPE html>
+<html lang="it" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Anto ✦</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+/* ── TOKENS ─────────────────────────────────────────── */
+:root {
+  /* LIGHT (default) */
+  --bg:       #F5F5FA;
+  --surf:     #FFFFFF;
+  --surf2:    #EEEEF6;
+  --border:   rgba(0,0,0,0.07);
+  --text:     #0F0F1A;
+  --sub:      #555570;
+  --muted:    #9999B5;
+  --corpo:    #16A34A;
+  --cucina:   #D97706;
+  --studio:   #7C3AED;
+  --finanze:  #0F766E;
+  --skincare: #DB2777;
+  --diabete:  #0284C7;
+  --peso-c:   #7C3AED;
+  --sage:     #16A34A;
+  --amber:    #D97706;
+  --lav:      #7C3AED;
+  --rose:     #DB2777;
+  --teal:     #0F766E;
+  --acid:     #65A30D;
+  --f:        'Inter', system-ui, sans-serif;
+  --r:        14px;
+  --r-sm:     10px;
+}
+[data-theme="dark"] {
+  --bg:       #0D0D14;
+  --surf:     #18182A;
+  --surf2:    #20203A;
+  --border:   rgba(255,255,255,0.07);
+  --text:     #F0F0FA;
+  --sub:      #9999BB;
+  --muted:    #55556A;
+  --corpo:    #22C55E;
+  --cucina:   #F59E0B;
+  --studio:   #8B5CF6;
+  --finanze:  #14B8A6;
+  --skincare: #EC4899;
+  --diabete:  #0EA5E9;
+  --peso-c:   #A78BFA;
+  --sage:     #22C55E;
+  --amber:    #F59E0B;
+  --lav:      #8B5CF6;
+  --rose:     #EC4899;
+  --teal:     #14B8A6;
+  --acid:     #A3E635;
+}
+
+/* ── RESET ───────────────────────────────────────────── */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html{font-size:16px;-webkit-text-size-adjust:100%}
+body{font-family:var(--f);background:var(--bg);color:var(--text);min-height:100dvh;overflow-x:hidden;padding-bottom:calc(72px + env(safe-area-inset-bottom))}
+a{color:inherit;text-decoration:none}
+button{font-family:var(--f);cursor:pointer;border:none;background:none}
+input,select,textarea{font-family:var(--f)}
+::-webkit-scrollbar{width:0;height:0}
+
+/* ── VIEWS ───────────────────────────────────────────── */
+.view{display:none;padding-bottom:24px}
+.view.active{display:block}
+
+/* ── PAGE HEADER ─────────────────────────────────────── */
+.page-hdr{
+  display:flex;justify-content:space-between;align-items:flex-start;
+  padding:20px 18px 16px;
+}
+.hdr-over{font-size:.65rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:3px}
+.hdr-title{font-size:1.9rem;font-weight:900;line-height:1.1;color:var(--text)}
+.hdr-title .acc{background:linear-gradient(135deg,#7C3AED,#EC4899);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.hdr-date{font-size:.78rem;font-weight:500;color:var(--sub);margin-top:4px;text-transform:capitalize}
+.hdr-right{display:flex;gap:8px;align-items:center;padding-top:4px;flex-shrink:0}
+.icon-btn{width:38px;height:38px;border-radius:10px;background:var(--surf2);color:var(--text);font-size:1rem;display:flex;align-items:center;justify-content:center;border:1px solid var(--border)}
+.streak-pill{display:flex;align-items:center;gap:4px;background:linear-gradient(135deg,#B45309,#F59E0B);color:#fff;font-size:.78rem;font-weight:800;padding:6px 10px;border-radius:20px;white-space:nowrap}
+
+/* ── ENERGY ──────────────────────────────────────────── */
+.energy-wrap{padding:0 16px 14px}
+.energy-card{background:var(--surf);border:1px solid var(--border);border-radius:var(--r);padding:14px 16px}
+.energy-lbl{font-size:.68rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:12px}
+.energy-row{display:flex;gap:8px}
+.e-btn{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;padding:10px 4px;border-radius:10px;background:var(--surf2);border:2px solid transparent;font-size:1.3rem;transition:all .15s}
+.e-btn span{font-size:.62rem;font-weight:600;color:var(--sub)}
+.e-btn.active{border-color:var(--studio);background:rgba(139,92,246,.15)}
+.e-btn.active span{color:var(--studio)}
+
+/* ── STATS STRIP ─────────────────────────────────────── */
+.stats-strip{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;padding:0 16px 14px}
+.stat-card{background:var(--surf);border:1px solid var(--border);border-radius:var(--r);padding:14px 10px;text-align:center}
+.stat-num{display:block;font-size:1.8rem;font-weight:900;line-height:1;color:var(--studio)}
+.stat-card.done .stat-num{color:var(--corpo)}
+.stat-card.streak .stat-num{color:var(--cucina)}
+.stat-lbl{display:block;font-size:.62rem;font-weight:600;color:var(--sub);margin-top:4px;text-transform:uppercase;letter-spacing:.06em}
+
+/* ── PROGRESS BAR ────────────────────────────────────── */
+.prog-wrap{padding:0 16px 16px;display:none}
+.prog-wrap.visible{display:block}
+.prog-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px}
+.prog-lbl{font-size:.7rem;font-weight:700;color:var(--sub);text-transform:uppercase;letter-spacing:.08em}
+.prog-pct{font-size:.9rem;font-weight:800;color:var(--studio)}
+.prog-track{height:8px;background:var(--surf2);border-radius:99px;overflow:hidden}
+.prog-fill{height:100%;background:linear-gradient(90deg,#7C3AED,#EC4899);border-radius:99px;transition:width .6s cubic-bezier(.4,0,.2,1);width:0%}
+
+/* ── SECTION HEADERS ─────────────────────────────────── */
+.sec-hdr{display:flex;align-items:center;gap:8px;padding:20px 18px 10px}
+.sec-dot{width:10px;height:10px;border-radius:3px;flex-shrink:0}
+.sec-txt{font-size:.7rem;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--sub)}
+.sec-line{flex:1;height:1px;background:var(--border)}
+
+/* Category colors for dots */
+.dot-corpo{background:var(--corpo)}
+.dot-cucina{background:var(--cucina)}
+.dot-studio{background:var(--studio)}
+.dot-finanze{background:var(--finanze)}
+.dot-skincare{background:var(--skincare)}
+.dot-diabete{background:var(--diabete)}
+.dot-peso{background:var(--peso-c)}
+.dot-extra{background:var(--muted)}
+.dot-recap{background:var(--studio)}
+.dot-piano{background:var(--cucina)}
+
+/* ── ACTIVITY CARDS ──────────────────────────────────── */
+.act-list{padding:0 16px;display:flex;flex-direction:column;gap:8px;margin-bottom:4px}
+.empty{font-size:.78rem;color:var(--muted);padding:6px 4px;font-style:italic}
+
+.act{
+  display:flex;align-items:flex-start;gap:10px;
+  background:var(--surf);border:1px solid var(--border);border-radius:var(--r);
+  padding:13px 14px 13px 0;
+  position:relative;overflow:hidden;
+  cursor:pointer;transition:opacity .2s,background .2s;
+  border-left:4px solid transparent;
+}
+.act.done{opacity:.45}
+.act.done .act-title{text-decoration:line-through}
+
+/* left accent by category */
+.act.cc-corpo   {border-left-color:var(--corpo)}
+.act.cc-cucina  {border-left-color:var(--cucina)}
+.act.cc-studio  {border-left-color:var(--studio)}
+.act.cc-finanze {border-left-color:var(--finanze)}
+.act.cc-skincare{border-left-color:var(--skincare)}
+.act.cc-diabete {border-left-color:var(--diabete)}
+.act.cc-peso    {border-left-color:var(--peso-c)}
+.act.cc-sand    {border-left-color:var(--cucina)}
+.act.cc-slate   {border-left-color:var(--muted)}
+.act.cc-sage    {border-left-color:var(--corpo)}
+.act.cc-amber   {border-left-color:var(--cucina)}
+.act.cc-lav     {border-left-color:var(--studio)}
+.act.cc-teal    {border-left-color:var(--finanze)}
+.act.cc-rose    {border-left-color:var(--skincare)}
+
+.act-ico{font-size:1.35rem;padding-left:12px;padding-top:1px;flex-shrink:0;line-height:1}
+.act-body{flex:1;min-width:0}
+.act-cat{font-size:.58rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:2px}
+.act-title{font-size:.88rem;font-weight:700;color:var(--text);line-height:1.3}
+.act-detail{font-size:.72rem;color:var(--sub);margin-top:4px;line-height:1.5}
+.act-time{display:inline-block;font-size:.62rem;font-weight:700;color:var(--muted);background:var(--surf2);border-radius:6px;padding:2px 7px;margin-top:6px}
+.act-links{display:flex;gap:8px;margin-top:6px}
+.act-links a{font-size:.65rem;color:var(--studio);font-weight:600;border:1px solid var(--studio);border-radius:6px;padding:2px 8px}
+.act-r{display:flex;align-items:center;gap:6px;padding-right:12px;flex-shrink:0;padding-top:1px}
+.act-check{width:22px;height:22px;border-radius:7px;border:2px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:.75rem;font-weight:800;color:var(--corpo);background:var(--surf2);transition:all .2s;flex-shrink:0}
+.act.done .act-check{background:var(--corpo);border-color:var(--corpo);color:#fff}
+.act-del{width:22px;height:22px;border-radius:7px;background:var(--surf2);color:var(--rose);font-size:.75rem;display:flex;align-items:center;justify-content:center;border:1px solid var(--border)}
+
+/* ── GLUCOSE WIDGET ──────────────────────────────────── */
+.gluc-outer{padding:0 16px 4px}
+.gluc-card{background:var(--surf);border:1px solid var(--border);border-radius:var(--r);padding:16px;border-top:3px solid var(--diabete)}
+.gluc-hdr{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}
+.gluc-ttl{font-size:.88rem;font-weight:800;color:var(--text)}
+.gluc-badge{font-size:.6rem;font-weight:700;letter-spacing:.1em;background:rgba(14,165,233,.15);color:var(--diabete);border-radius:6px;padding:3px 8px;text-transform:uppercase}
+.gluc-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px}
+.g-slot{background:var(--surf2);border-radius:10px;padding:10px 12px}
+.g-lbl{font-size:.62rem;font-weight:700;color:var(--muted);margin-bottom:6px;text-transform:uppercase;letter-spacing:.06em}
+.g-row{display:flex;align-items:center;gap:4px}
+.g-inp{width:60px;background:transparent;border:none;color:var(--text);font-size:1.1rem;font-weight:800;outline:none;font-family:var(--f)}
+.g-inp::placeholder{color:var(--muted)}
+.g-unit{font-size:.6rem;color:var(--muted);font-weight:600}
+.g-st{font-size:.62rem;font-weight:700;border-radius:5px;padding:1px 6px;margin-top:4px;display:inline-block}
+.g-ok{color:#16A34A;background:rgba(22,163,74,.15)}
+.g-warn{color:var(--cucina);background:rgba(245,158,11,.15)}
+.g-hi{color:var(--rose);background:rgba(236,72,153,.15)}
+.gluc-btn{width:100%;padding:11px;background:linear-gradient(135deg,#0369A1,#0EA5E9);color:#fff;font-size:.8rem;font-weight:800;border-radius:10px;border:none;letter-spacing:.05em;cursor:pointer}
+
+/* ── SKINCARE WIDGET ─────────────────────────────────── */
+.skin-outer{padding:0 16px 4px}
+.skin-card{background:var(--surf);border:1px solid var(--border);border-radius:var(--r);padding:16px;border-top:3px solid var(--skincare)}
+.skin-hdr{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
+.skin-ttl{font-size:.88rem;font-weight:800;color:var(--text)}
+.skin-badge{font-size:.6rem;font-weight:700;background:rgba(236,72,153,.15);color:var(--skincare);border-radius:6px;padding:3px 8px;text-transform:uppercase}
+.skin-grp-lbl{font-size:.65rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.1em;margin:10px 0 8px;padding-left:2px}
+.skin-step{display:flex;align-items:center;gap:10px;padding:10px 12px;background:var(--surf2);border-radius:10px;margin-bottom:6px;cursor:pointer;transition:opacity .2s;border:1px solid transparent}
+.skin-step.done-sk{opacity:.4}
+.skin-step.done-sk .sk-name{text-decoration:line-through}
+.sk-chk{width:22px;height:22px;border-radius:7px;border:2px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:.72rem;font-weight:800;color:#fff;background:var(--surf);flex-shrink:0;transition:all .2s}
+.skin-step.done-sk .sk-chk{background:var(--skincare);border-color:var(--skincare)}
+.sk-info{flex:1;min-width:0}
+.sk-name{font-size:.8rem;font-weight:700;color:var(--text);line-height:1.3}
+.sk-note{font-size:.65rem;color:var(--sub);margin-top:2px;line-height:1.4}
+.sk-tag{font-size:.58rem;font-weight:700;color:var(--skincare);background:rgba(236,72,153,.12);border-radius:6px;padding:2px 7px;flex-shrink:0}
+
+/* ── PESO WIDGET ─────────────────────────────────────── */
+.peso-outer{padding:0 16px 4px}
+.peso-card{background:var(--surf);border:1px solid var(--border);border-radius:var(--r);padding:16px;border-top:3px solid var(--peso-c)}
+.peso-hdr{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}
+.peso-ttl{font-size:.88rem;font-weight:800;color:var(--text)}
+.peso-badge{font-size:.6rem;font-weight:700;background:rgba(167,139,250,.15);color:var(--peso-c);border-radius:6px;padding:3px 8px;text-transform:uppercase}
+.peso-input-row{display:flex;align-items:center;gap:8px;margin-bottom:14px}
+.peso-inp{width:80px;background:var(--surf2);border:1px solid var(--border);color:var(--text);font-size:1.4rem;font-weight:900;border-radius:10px;padding:8px 10px;outline:none;text-align:center;font-family:var(--f)}
+.peso-unit{font-size:.8rem;font-weight:700;color:var(--sub)}
+.peso-save{flex:1;padding:10px;background:linear-gradient(135deg,#6D28D9,#8B5CF6);color:#fff;font-size:.8rem;font-weight:800;border-radius:10px;border:none;cursor:pointer}
+.peso-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:12px}
+.peso-stat{background:var(--surf2);border-radius:10px;padding:10px;text-align:center}
+.peso-stat-n{font-size:1.1rem;font-weight:900;color:var(--peso-c)}
+.peso-stat-l{font-size:.6rem;font-weight:600;color:var(--muted);margin-top:2px;text-transform:uppercase}
+.peso-chart{margin-top:4px}
+.peso-chart-lbl{font-size:.62rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px}
+#peso-svg{width:100%;overflow:visible}
+
+/* ── DOMANI PREVIEW ──────────────────────────────────── */
+.prev-outer{padding:0 16px 8px}
+.prev-card{background:linear-gradient(135deg,#1E1B4B,#2D1B69);border:1px solid rgba(139,92,246,.3);border-radius:var(--r);padding:16px}
+.prev-over{font-size:.6rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:rgba(167,139,250,.7);margin-bottom:4px}
+.prev-date{font-size:1.1rem;font-weight:900;color:#E9D5FF;margin-bottom:12px;text-transform:capitalize}
+.prev-chips{display:flex;flex-wrap:wrap;gap:6px}
+.prev-chip{font-size:.68rem;font-weight:700;background:rgba(139,92,246,.2);color:#C4B5FD;border-radius:8px;padding:4px 10px;border:1px solid rgba(139,92,246,.25)}
+
+/* ── ADD DOMANI ──────────────────────────────────────── */
+.add-outer{padding:0 16px 8px}
+.add-card{background:var(--surf);border:1px solid var(--border);border-radius:var(--r);padding:14px}
+.add-lbl{font-size:.68rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-bottom:10px}
+.add-inp{width:100%;background:var(--surf2);border:1px solid var(--border);color:var(--text);font-size:.88rem;border-radius:10px;padding:10px 12px;outline:none;margin-bottom:8px;font-family:var(--f)}
+.add-inp::placeholder{color:var(--muted)}
+.add-row{display:flex;gap:8px;align-items:center}
+.add-sel{flex:1;background:var(--surf2);border:1px solid var(--border);color:var(--text);font-size:.78rem;border-radius:10px;padding:8px 10px;outline:none;font-family:var(--f);min-width:0}
+.add-time{width:90px;background:var(--surf2);border:1px solid var(--border);color:var(--text);font-size:.78rem;border-radius:10px;padding:8px 10px;outline:none;flex-shrink:0;font-family:var(--f)}
+.add-btn{flex-shrink:0;padding:8px 14px;background:linear-gradient(135deg,#7C3AED,#EC4899);color:#fff;font-size:.78rem;font-weight:800;border-radius:10px;border:none;cursor:pointer;white-space:nowrap}
+
+/* ── RECAP — RINGS ───────────────────────────────────── */
+.rings-outer{padding:0 16px 4px}
+.rings-card{background:var(--surf);border:1px solid var(--border);border-radius:var(--r);padding:16px}
+.rings-lbl{font-size:.68rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.1em;margin-bottom:16px}
+.rings-row{display:flex;justify-content:space-around}
+.ring-wrap{display:flex;flex-direction:column;align-items:center;gap:6px}
+.ring-svg{transform:rotate(-90deg)}
+.r-bg{fill:none;stroke:var(--surf2);stroke-width:4}
+.r-fg{fill:none;stroke-width:4;stroke-linecap:round;transition:stroke-dashoffset .8s cubic-bezier(.4,0,.2,1)}
+.r-pct{font-size:.95rem;font-weight:900;line-height:1}
+.r-lbl{font-size:.6rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.08em}
+
+/* ── RECAP — AREA CARDS ──────────────────────────────── */
+.areas-outer{padding:0 16px;display:flex;flex-direction:column;gap:8px;margin-bottom:4px}
+.area-card{background:var(--surf);border:1px solid var(--border);border-radius:var(--r);padding:14px}
+.area-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+.area-nm{font-size:.82rem;font-weight:700;color:var(--text)}
+.area-pct{font-size:1.1rem;font-weight:900}
+.area-track{height:6px;background:var(--surf2);border-radius:99px;overflow:hidden;margin-bottom:7px}
+.area-fill{height:100%;border-radius:99px;transition:width .6s}
+.area-stats{display:flex;gap:14px}
+.area-s{font-size:.65rem;font-weight:500;color:var(--sub)}
+.area-s strong{font-weight:800;color:var(--text)}
+
+/* ── RECAP — GLUCOSE TABLE ───────────────────────────── */
+.gt-outer{padding:0 16px 4px}
+.gt-card{background:var(--surf);border:1px solid var(--border);border-radius:var(--r);padding:16px}
+.gt-ttl{font-size:.75rem;font-weight:700;color:var(--text);margin-bottom:12px}
+.gt-row{display:grid;grid-template-columns:1.2fr 1fr 1.2fr 1fr;gap:6px;padding:7px 0;border-bottom:1px solid var(--border);font-size:.72rem;color:var(--sub)}
+.gt-row:first-child{font-weight:800;color:var(--muted);font-size:.6rem;text-transform:uppercase}
+.gt-row:last-child{border-bottom:none}
+.gt-h{font-size:.6rem;font-weight:800;text-transform:uppercase;letter-spacing:.06em;color:var(--muted)}
+
+/* ── RECAP — NOTES ───────────────────────────────────── */
+.note-outer{padding:0 16px 4px}
+.note-card{background:var(--surf);border:1px solid var(--border);border-radius:var(--r);padding:16px}
+.note-lbl{font-size:.68rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.1em;margin-bottom:10px}
+.note-ta{width:100%;background:var(--surf2);border:1px solid var(--border);color:var(--text);font-size:.88rem;border-radius:10px;padding:12px;outline:none;resize:none;line-height:1.6;font-family:var(--f)}
+.note-ta::placeholder{color:var(--muted)}
+.note-btn{margin-top:8px;width:100%;padding:11px;background:linear-gradient(135deg,#065F46,#059669);color:#fff;font-size:.8rem;font-weight:800;border-radius:10px;border:none;cursor:pointer}
+.past-note{margin:0 16px 8px;background:var(--surf);border:1px solid var(--border);border-radius:var(--r);padding:12px 14px}
+.pn-d{font-size:.62rem;font-weight:700;color:var(--muted);text-transform:uppercase;margin-bottom:4px}
+.pn-t{font-size:.82rem;color:var(--sub);line-height:1.5}
+
+/* ── PIANO ───────────────────────────────────────────── */
+.piano-list{padding:0 16px;display:flex;flex-direction:column;gap:10px;margin-bottom:4px}
+.piano-card{background:var(--surf);border:1px solid var(--border);border-radius:var(--r);padding:14px;border-left:4px solid var(--cucina)}
+.pc-d{font-size:.62rem;font-weight:700;color:var(--cucina);text-transform:uppercase;letter-spacing:.1em;margin-bottom:2px}
+.pc-m{font-size:.7rem;font-weight:600;color:var(--sub);margin-bottom:5px}
+.pc-ttl{font-size:.88rem;font-weight:800;color:var(--text);line-height:1.3;margin-bottom:4px}
+.pc-nota{font-size:.72rem;color:var(--sub);line-height:1.5;margin-bottom:8px}
+.pc-tags{display:flex;flex-wrap:wrap;gap:5px}
+.pc-tag{font-size:.6rem;font-weight:700;background:rgba(245,158,11,.12);color:var(--cucina);border-radius:6px;padding:2px 8px;border:1px solid rgba(245,158,11,.2)}
+
+.ex-list{padding:0 16px;display:flex;flex-direction:column;gap:10px;margin-bottom:4px}
+.ex-card{background:var(--surf);border:1px solid var(--border);border-radius:var(--r);padding:14px;border-left:4px solid var(--corpo)}
+.ex-hdr{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:12px}
+.ex-nm{font-size:.9rem;font-weight:800;color:var(--text)}
+.ex-sb{font-size:.65rem;font-weight:600;color:var(--corpo);margin-top:2px}
+.ex-dur{font-size:.78rem;font-weight:800;color:var(--corpo);background:rgba(34,197,94,.1);border-radius:8px;padding:4px 10px;flex-shrink:0}
+.ex-step{display:flex;gap:10px;margin-bottom:8px;align-items:flex-start}
+.ex-n{width:22px;height:22px;border-radius:7px;background:rgba(34,197,94,.15);color:var(--corpo);font-size:.72rem;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
+.ex-step div{font-size:.78rem;color:var(--sub);line-height:1.5}
+
+.study-list{padding:0 16px;display:flex;flex-direction:column;gap:10px;margin-bottom:4px}
+.study-card{background:var(--surf);border:1px solid var(--border);border-radius:var(--r);padding:14px;border-left:4px solid var(--studio)}
+.sc-hdr{display:flex;justify-content:space-between;align-items:flex-start;gap:8px;margin-bottom:8px}
+.sc-ttl{font-size:.88rem;font-weight:800;color:var(--text);line-height:1.3;flex:1}
+.sc-badge{font-size:.6rem;font-weight:700;background:rgba(139,92,246,.15);color:var(--studio);border-radius:6px;padding:3px 8px;flex-shrink:0;text-align:center}
+.sc-body{font-size:.75rem;color:var(--sub);line-height:1.6}
+.sc-link{color:var(--studio);font-weight:700;font-size:.72rem;display:block;margin-top:6px}
+
+/* ── BOTTOM NAV ──────────────────────────────────────── */
+.nav{
+  position:fixed;bottom:0;left:0;right:0;z-index:100;
+  background:rgba(245,245,250,.95);
+  backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
+  border-top:1px solid var(--border);
+  display:grid;grid-template-columns:repeat(4,1fr);
+  padding-bottom:env(safe-area-inset-bottom);
+}
+[data-theme="dark"] .nav{background:rgba(13,13,20,.95)}
+.nb{
+  display:flex;flex-direction:column;align-items:center;gap:3px;
+  padding:10px 6px 8px;color:var(--sub);font-size:.62rem;font-weight:700;
+  text-transform:uppercase;letter-spacing:.06em;transition:color .15s;
+  position:relative;
+}
+.nb.active{color:var(--studio)}
+.nb.active::before{
+  content:'';position:absolute;top:0;left:20%;right:20%;height:2px;
+  background:linear-gradient(90deg,#7C3AED,#EC4899);border-radius:0 0 4px 4px;
+}
+.ni{font-size:1.2rem;line-height:1}
+
+/* ── TOAST ───────────────────────────────────────────── */
+.toast{
+  position:fixed;bottom:90px;left:50%;transform:translateX(-50%) translateY(20px);
+  background:#EDE9FE;color:#6D28D9;font-size:.8rem;font-weight:700;
+  padding:10px 20px;border-radius:99px;border:1px solid rgba(139,92,246,.4);
+  white-space:nowrap;pointer-events:none;opacity:0;z-index:200;
+  transition:all .25s cubic-bezier(.4,0,.2,1);
+}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+[data-theme="dark"] .toast{background:#1E1B4B;color:#C4B5FD;border-color:rgba(139,92,246,.4)}
+
+/* ── EXPENSE TRACKER ─────────────────────────────────── */
+.exp-wrap{padding:0 16px 4px}
+.exp-card{background:var(--surf);border:1px solid var(--border);border-radius:var(--r);padding:16px;border-top:3px solid var(--finanze)}
+.exp-hdr{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}
+.exp-ttl{font-size:.88rem;font-weight:800;color:var(--text)}
+.exp-today-total{font-size:1.1rem;font-weight:900;color:var(--finanze)}
+.exp-form{display:flex;flex-direction:column;gap:8px;margin-bottom:14px}
+.exp-row1{display:flex;gap:8px}
+.exp-amt{width:90px;background:var(--surf2);border:1px solid var(--border);color:var(--text);font-size:1.1rem;font-weight:800;border-radius:10px;padding:8px 10px;outline:none;text-align:center;font-family:var(--f);flex-shrink:0}
+.exp-amt::placeholder{color:var(--muted)}
+.exp-cat{flex:1;background:var(--surf2);border:1px solid var(--border);color:var(--text);font-size:.82rem;border-radius:10px;padding:8px 10px;outline:none;font-family:var(--f)}
+.exp-note{width:100%;background:var(--surf2);border:1px solid var(--border);color:var(--text);font-size:.82rem;border-radius:10px;padding:8px 12px;outline:none;font-family:var(--f)}
+.exp-note::placeholder{color:var(--muted)}
+.exp-add-btn{width:100%;padding:11px;background:linear-gradient(135deg,#0F766E,#14B8A6);color:#fff;font-size:.82rem;font-weight:800;border-radius:10px;border:none;cursor:pointer;letter-spacing:.04em}
+.exp-list{display:flex;flex-direction:column;gap:6px;margin-top:4px}
+.exp-item{display:flex;align-items:center;gap:10px;background:var(--surf2);border-radius:10px;padding:10px 12px;border-left:3px solid var(--finanze)}
+.exp-item-ico{font-size:1.1rem;flex-shrink:0}
+.exp-item-body{flex:1;min-width:0}
+.exp-item-cat{font-size:.58rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--muted)}
+.exp-item-note{font-size:.78rem;font-weight:600;color:var(--text);margin-top:1px}
+.exp-item-amt{font-size:1rem;font-weight:900;color:var(--finanze);flex-shrink:0}
+.exp-item-del{background:none;border:none;color:var(--muted);font-size:.8rem;cursor:pointer;padding:2px 6px;flex-shrink:0}
+.exp-empty{font-size:.78rem;color:var(--muted);font-style:italic;padding:4px 2px}
+.exp-divider{height:1px;background:var(--border);margin:10px 0}
+
+/* Recap finance section */
+.fin-recap-wrap{padding:0 16px 4px}
+.fin-recap-card{background:var(--surf);border:1px solid var(--border);border-radius:var(--r);padding:16px;border-top:3px solid var(--finanze)}
+.fin-recap-ttl{font-size:.88rem;font-weight:800;color:var(--text);margin-bottom:14px}
+.fin-totals{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px}
+.fin-tot{background:var(--surf2);border-radius:10px;padding:12px;text-align:center}
+.fin-tot-n{font-size:1.3rem;font-weight:900;color:var(--finanze)}
+.fin-tot-l{font-size:.6rem;font-weight:700;color:var(--muted);text-transform:uppercase;margin-top:2px}
+.fin-cats{display:flex;flex-direction:column;gap:6px;margin-bottom:14px}
+.fin-cat-row{display:flex;align-items:center;gap:10px}
+.fin-cat-ico{font-size:1rem;flex-shrink:0;width:24px;text-align:center}
+.fin-cat-lbl{font-size:.75rem;font-weight:600;color:var(--sub);flex:1}
+.fin-cat-bar-wrap{width:80px;height:6px;background:var(--surf2);border-radius:99px;overflow:hidden;flex-shrink:0}
+.fin-cat-bar{height:100%;background:var(--finanze);border-radius:99px}
+.fin-cat-amt{font-size:.78rem;font-weight:800;color:var(--finanze);min-width:48px;text-align:right;flex-shrink:0}
+.fin-history{display:flex;flex-direction:column;gap:6px}
+.fin-day-row{display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:1px solid var(--border);font-size:.75rem}
+.fin-day-row:last-child{border-bottom:none}
+.fin-day-date{color:var(--sub);font-weight:600;text-transform:capitalize}
+.fin-day-amt{color:var(--text);font-weight:800}
+
+</style>
+</head>
+<body>
+
+<div class="toast" id="toast"></div>
+
+<!-- ══ OGGI ═══════════════════════════════════════════ -->
+<div class="view active" id="view-oggi">
+
+  <header class="page-hdr">
+    <div>
+      <p class="hdr-over">Il tuo giorno</p>
+      <h1 class="hdr-title">Ciao, <span class="acc">Anto</span></h1>
+      <p class="hdr-date" id="today-lbl"></p>
+    </div>
+    <div class="hdr-right">
+      <button class="icon-btn" id="dark-btn" onclick="toggleDark()">🌙</button>
+      <div class="streak-pill" id="streak-badge">🔥 0</div>
+    </div>
+  </header>
+
+  <div class="energy-wrap">
+    <div class="energy-card">
+      <div class="energy-lbl">Come stai oggi?</div>
+      <div class="energy-row">
+        <button class="e-btn" onclick="setEnergy(this,'😴')">😴<span>Stanca</span></button>
+        <button class="e-btn" onclick="setEnergy(this,'😐')">😐<span>Ok</span></button>
+        <button class="e-btn" onclick="setEnergy(this,'🙂')">🙂<span>Bene</span></button>
+        <button class="e-btn" onclick="setEnergy(this,'⚡')">⚡<span>Carica</span></button>
+      </div>
+    </div>
+  </div>
+
+  <div class="stats-strip">
+    <div class="stat-card"><span class="stat-num" id="o-todo">0</span><span class="stat-lbl">Da fare</span></div>
+    <div class="stat-card done"><span class="stat-num" id="o-done">0</span><span class="stat-lbl">Fatte ✓</span></div>
+    <div class="stat-card streak"><span class="stat-num" id="o-streak">0</span><span class="stat-lbl">🔥 Streak</span></div>
+  </div>
+
+  <div class="prog-wrap" id="o-prog">
+    <div class="prog-row">
+      <span class="prog-lbl">Avanzamento oggi</span>
+      <span class="prog-pct" id="o-pct">0%</span>
+    </div>
+    <div class="prog-track"><div class="prog-fill" id="o-fill"></div></div>
+  </div>
+
+  <div class="sec-hdr"><div class="sec-dot dot-diabete"></div><span class="sec-txt">Glicemia</span><div class="sec-line"></div></div>
+  <div id="gluc-widget"></div>
+
+  <div class="sec-hdr"><div class="sec-dot dot-skincare"></div><span class="sec-txt">Skincare</span><div class="sec-line"></div></div>
+  <div id="skin-widget"></div>
+
+  <div class="sec-hdr"><div class="sec-dot dot-peso"></div><span class="sec-txt">Peso</span><div class="sec-line"></div></div>
+  <div id="peso-widget"></div>
+
+  <div class="sec-hdr"><div class="sec-dot dot-corpo"></div><span class="sec-txt">Corpo</span><div class="sec-line"></div></div>
+  <div class="act-list" id="o-corpo"></div>
+
+  <div class="sec-hdr"><div class="sec-dot dot-cucina"></div><span class="sec-txt">Cucina</span><div class="sec-line"></div></div>
+  <div class="act-list" id="o-cucina"></div>
+
+  <div class="sec-hdr"><div class="sec-dot dot-studio"></div><span class="sec-txt">Studio</span><div class="sec-line"></div></div>
+  <div class="act-list" id="o-studio"></div>
+
+  <div class="sec-hdr"><div class="sec-dot dot-finanze"></div><span class="sec-txt">Finanze</span><div class="sec-line"></div></div>
+  <div class="act-list" id="o-finanze"></div>
+
+</div>
+
+<!-- ══ DOMANI ════════════════════════════════════════════ -->
+<div class="view" id="view-domani">
+
+  <header class="page-hdr">
+    <div>
+      <p class="hdr-over">Preview</p>
+      <h1 class="hdr-title"><span class="acc">Domani</span></h1>
+      <p class="hdr-date" id="domani-lbl"></p>
+    </div>
+  </header>
+
+  <div id="preview-banner"></div>
+
+  <div class="sec-hdr"><div class="sec-dot dot-diabete"></div><span class="sec-txt">Glicemia</span><div class="sec-line"></div></div>
+  <div class="act-list" id="d-diabete"></div>
+
+  <div class="sec-hdr"><div class="sec-dot dot-skincare"></div><span class="sec-txt">Skincare</span><div class="sec-line"></div></div>
+  <div class="act-list" id="d-skincare"></div>
+
+  <div class="sec-hdr"><div class="sec-dot dot-corpo"></div><span class="sec-txt">Corpo</span><div class="sec-line"></div></div>
+  <div class="act-list" id="d-corpo"></div>
+
+  <div class="sec-hdr"><div class="sec-dot dot-cucina"></div><span class="sec-txt">Cucina</span><div class="sec-line"></div></div>
+  <div class="act-list" id="d-cucina"></div>
+
+  <div class="sec-hdr"><div class="sec-dot dot-studio"></div><span class="sec-txt">Studio</span><div class="sec-line"></div></div>
+  <div class="act-list" id="d-studio"></div>
+
+  <div class="sec-hdr"><div class="sec-dot dot-finanze"></div><span class="sec-txt">Finanze</span><div class="sec-line"></div></div>
+  <div class="act-list" id="d-finanze"></div>
+
+  <div class="sec-hdr"><div class="sec-dot dot-extra"></div><span class="sec-txt">Task extra</span><div class="sec-line"></div></div>
+  <div class="add-outer">
+    <div class="add-card">
+      <div class="add-lbl">Aggiungi per domani</div>
+      <input class="add-inp" id="dom-input" placeholder="Es. Chiamare pediatra, comprare lenticchie…" maxlength="120" onkeydown="if(event.key==='Enter')addDomani()">
+      <div class="add-row">
+        <select class="add-sel" id="dom-cat">
+          <option value="corpo">💪 Corpo</option>
+          <option value="cucina">🍳 Cucina</option>
+          <option value="studio">📚 Studio</option>
+          <option value="finanze">💶 Finanze</option>
+          <option value="bimbi">👶 Bimbi</option>
+          <option value="io">✨ Io</option>
+          <option value="casa">🏠 Casa</option>
+        </select>
+        <input type="time" class="add-time" id="dom-time">
+        <button class="add-btn" onclick="addDomani()">+ Aggiungi</button>
+      </div>
+    </div>
+  </div>
+  <div class="act-list" id="d-extra"></div>
+
+</div>
+
+<!-- ══ RECAP ══════════════════════════════════════════════ -->
+<div class="view" id="view-recap">
+
+  <header class="page-hdr">
+    <div>
+      <p class="hdr-over">Riepilogo</p>
+      <h1 class="hdr-title">I tuoi <span class="acc">progressi</span></h1>
+    </div>
+  </header>
+
+  <div class="rings-outer">
+    <div class="rings-card">
+      <div class="rings-lbl">Completamento aree</div>
+      <div class="rings-row" id="rings-row"></div>
+    </div>
+  </div>
+
+  <div class="sec-hdr"><div class="sec-dot dot-peso"></div><span class="sec-txt">Trend peso</span><div class="sec-line"></div></div>
+  <div id="peso-recap"></div>
+
+  <div class="sec-hdr"><div class="sec-dot dot-diabete"></div><span class="sec-txt">Storico glicemia</span><div class="sec-line"></div></div>
+  <div class="gt-outer"><div class="gt-card"><div class="gt-ttl">Ultime misurazioni</div><div id="gluc-history"></div></div></div>
+
+  <div class="sec-hdr"><div class="sec-dot dot-recap"></div><span class="sec-txt">Per area</span><div class="sec-line"></div></div>
+  <div class="areas-outer" id="areas-outer"></div>
+
+  <div class="sec-hdr"><div class="sec-dot dot-finanze"></div><span class="sec-txt">Spese</span><div class="sec-line"></div></div>
+  <div id="fin-recap-section"></div>
+
+  <div class="sec-hdr"><div class="sec-dot dot-extra"></div><span class="sec-txt">Nota della sera</span><div class="sec-line"></div></div>
+  <div class="note-outer">
+    <div class="note-card">
+      <div class="note-lbl">Come è andata?</div>
+      <textarea class="note-ta" id="note-text" placeholder="Una vittoria piccola da ricordare…" rows="4"></textarea>
+      <button class="note-btn" onclick="saveNote()">Salva ✓</button>
+    </div>
+  </div>
+
+  <div class="sec-hdr"><div class="sec-dot dot-extra"></div><span class="sec-txt">Note precedenti</span><div class="sec-line"></div></div>
+  <div id="past-notes" style="margin-bottom:8px"></div>
+
+</div>
+
+<!-- ══ PIANO ═══════════════════════════════════════════════ -->
+<div class="view" id="view-piano">
+
+  <header class="page-hdr">
+    <div>
+      <p class="hdr-over">Pianificazione</p>
+      <h1 class="hdr-title">La tua <span class="acc">settimana</span></h1>
+    </div>
+  </header>
+
+  <div class="sec-hdr"><div class="sec-dot dot-cucina"></div><span class="sec-txt">Ricette</span><div class="sec-line"></div></div>
+  <div class="piano-list" id="piano-ricette"></div>
+
+  <div class="sec-hdr"><div class="sec-dot dot-corpo"></div><span class="sec-txt">Esercizi</span><div class="sec-line"></div></div>
+  <div class="ex-list" id="piano-esercizi"></div>
+
+  <div class="sec-hdr"><div class="sec-dot dot-studio"></div><span class="sec-txt">Formazione EPSO</span><div class="sec-line"></div></div>
+  <div class="study-list" id="piano-studio"></div>
+
+</div>
+
+<!-- ══ NAV ════════════════════════════════════════════════ -->
+<nav class="nav">
+  <button class="nb active" id="nav-oggi"   onclick="sv('oggi')">  <span class="ni">☀️</span>Oggi</button>
+  <button class="nb"        id="nav-domani" onclick="sv('domani')"><span class="ni">🌙</span>Domani</button>
+  <button class="nb"        id="nav-recap"  onclick="sv('recap')"> <span class="ni">📊</span>Recap</button>
+  <button class="nb"        id="nav-piano"  onclick="sv('piano')"> <span class="ni">📋</span>Piano</button>
+</nav>
+
+<script>
+'use strict';
+
+// ── DATES ──────────────────────────────────────────────
+const NOW = new Date();
+const jsDay = NOW.getDay();
+const dayIdx = jsDay === 0 ? 6 : jsDay - 1;
+const tomorrowIdx = (dayIdx + 1) % 7;
+
+const todayStr = NOW.toLocaleDateString('it-IT',{weekday:'long',day:'numeric',month:'long'});
+const domaniDate = new Date(NOW); domaniDate.setDate(NOW.getDate()+1);
+const domaniStr = domaniDate.toLocaleDateString('it-IT',{weekday:'long',day:'numeric',month:'long'});
+document.getElementById('today-lbl').textContent = todayStr;
+document.getElementById('domani-lbl').textContent = domaniStr;
+
+// ── SCHEDULES ──────────────────────────────────────────
+const SCHED = {
+  corpo: {
+    default:[
+      {icon:'🧘‍♀️',title:'Routine cervicale e postura',detail:'5 min mobilità cervicale · 5 min stretching pettorali · 5 min rinforzo scapolare · 5 min respirazione diaframmatica',time:'Mattina'},
+      {icon:'🚶‍♀️',title:'Camminata 10-15 min post-pasto',detail:'Abbassa la glicemia. Porta i bimbi se puoi.',time:'Dopo pranzo'},
+    ],
+    5:[{icon:'🏃‍♀️',title:'Camminata veloce 60 min',detail:'Zona metabolica — brucia grassi. Parco delle Valli o Villa Glori con passeggino.',time:'Mattina'}],
+    6:[{icon:'💪',title:'Circuito corpo libero a casa',detail:'3 giri da 12 rip: squat · affondi · push-up · plank 30s · ponte glutei. Riposo 60s tra giri.',time:'Mattina'}],
+  },
+  cucina: {
+    // 0=LUN, 1=MAR, 2=MER, 3=GIO, 4=VEN, 5=SAB, 6=DOM
+    0:[
+      {icon:'🥤',title:'Frullato — Yogurt greco, frutti di bosco, avena, semi di chia',detail:'Frulla 30 sec. Kit già porzionato dal batch cooking domenicale.',time:'7:30'},
+      {icon:'🍎',title:'Spuntino — Mela + mandorle (15g)',detail:'IG basso. Grassi buoni che rallentano l\'assorbimento.',time:'10:30'},
+      {icon:'🥗',title:'Pranzo — Farro freddo + ceci + pomodorini + olive + olio EVO',detail:'Freddo o a t.a. · 3 min assemblaggio · Dal batch cooking. Sequenza: verdura prima.',time:'13:00'},
+      {icon:'🥜',title:'Spuntino — Yogurt greco bianco + noci (10g)',detail:'Proteine per la glicemia pomeridiana.',time:'16:30'},
+      {icon:'🐟',title:'Cena — Orata al forno + zucchine grigliate + olio EVO',detail:'Pesce bianco mediterraneo. Verdure già pronte dal batch.',time:'19:30'},
+    ],
+    1:[
+      {icon:'🥤',title:'Frullato — Kefir, pera, mandorle, cannella',detail:'Kefir = probiotico che migliora la risposta insulinica. Cannella abbassa la glicemia.',time:'7:30'},
+      {icon:'🍳',title:'Spuntino — Uovo sodo',detail:'Preparato in batch domenica. Proteico e saziante.',time:'10:30'},
+      {icon:'🧀',title:'Pranzo — Insalata verde + mozzarella fresca + tonno + pomodorini',detail:'3 min · Mozzarella = calcio + proteine. Tonno = omega-3 · Olio EVO. Verdura prima.',time:'13:00'},
+      {icon:'🫐',title:'Spuntino — Frutti di bosco + ricotta (50g)',detail:'Antiossidanti per la rosacea. IG bassissimo.',time:'16:30'},
+      {icon:'🍳',title:'Cena — Frittata spinaci + ricotta + pomodorini',detail:'10 min. Ricotta = latticino leggero ad alto valore proteico. Spinaci = ferro.',time:'19:30'},
+    ],
+    2:[
+      {icon:'🥤',title:'Frullato — Yogurt greco, cacao amaro, banana piccola, burro mandorle',detail:'Cacao amaro anti-infiammatorio. Banana piccola tollerabile con i grassi delle mandorle.',time:'7:30'},
+      {icon:'🍎',title:'Spuntino — Mela verde + noci (10g)',detail:'IG basso, saziante fino a pranzo.',time:'10:30'},
+      {icon:'🌯',title:'Pranzo — Wrap integrale + stracchino/crescenza + pollo precotto + insalata',detail:'Scalda il wrap 1 min al micro · Spalma il formaggio · Pollo dal batch · Verdure fresche.',time:'13:00'},
+      {icon:'🥜',title:'Spuntino — Mix frutta secca (30g)',detail:'Stabilizza la glicemia nel pomeriggio.',time:'16:30'},
+      {icon:'🍝',title:'Cena — Pasta integrale + zucchine + gamberi + olio EVO',detail:'Pasta solo a cena. Porzione piccola (60g crudo). Gamberi = proteine magre.',time:'19:30'},
+    ],
+    3:[
+      {icon:'🥤',title:'Frullato — Kefir, fragole, proteine whey o yogurt greco',detail:'Fragole = vitamina C per la rosacea e IG basso. Whey opzionale.',time:'7:30'},
+      {icon:'🍵',title:'Spuntino — Tè verde + noci del Brasile (3)',detail:'Selenio antinfiammatorio. Tè verde migliora la sensibilità insulinica.',time:'10:30'},
+      {icon:'🥗',title:'Pranzo — Orzo freddo + tonno + fagiolini + olive + limone',detail:'Dal batch · 3 min · Freddo · Il limone abbassa l\'IG del cereale.',time:'13:00'},
+      {icon:'🫐',title:'Spuntino — Frutti di bosco freschi (pugno)',detail:'Zero IG, antiossidanti per pelle e glicemia.',time:'16:30'},
+      {icon:'🐟',title:'Cena — Merluzzo al forno + finocchi + olio EVO',detail:'Finocchi = antinfiammatori, digestivi. Merluzzo = proteine magre.',time:'19:30'},
+    ],
+    4:[
+      {icon:'🥤',title:'Frullato — Yogurt greco, mela, noci, avena, cannella',detail:'Cannella abbassa la risposta glicemica. Chiudi la settimana con stabilità.',time:'7:30'},
+      {icon:'🍳',title:'Spuntino — Uovo sodo + cetriolo',detail:'Semplice, veloce, proteico.',time:'10:30'},
+      {icon:'🧀',title:'Pranzo — Scamorza + verdure grigliate + pane integrale piccolo',detail:'Scamorza a fette · Scalda 2 min al micro sulle verdure già pronte dal batch.',time:'13:00'},
+      {icon:'🍫',title:'Spuntino — 2 quadretti fondente 85% + caffè',detail:'Fondente >70% ha IG basso. Il venerdì te lo meriti.',time:'16:00'},
+      {icon:'🍔',title:'Cena — Burger di legumi + insalata mista + olio EVO',detail:'Prepara in batch domenica e congela. Scalda in friggitrice ad aria o micro.',time:'19:30'},
+    ],
+    5:[
+      {icon:'🍳',title:'Colazione — Uova strapazzate + pane integrale',detail:'Weekend con calma. Proteico. Pane integrale piccolo.',time:'8:30'},
+      {icon:'🍓',title:'Spuntino — Frullato veloce fragole + yogurt',detail:'Anche in trasferta con i bimbi.',time:'11:00'},
+      {icon:'🥗',title:'Pranzo — Insalata greca: feta, cetrioli, pomodori, olive, pane integrale',detail:'Feta = ottimo latticino mediterraneo. Insalata completa in 5 min.',time:'13:30'},
+      {icon:'🍫',title:'Spuntino — Fondente 85% + caffè',detail:'Post-camminata. Meritato.',time:'16:00'},
+      {icon:'🍗',title:'Cena — Pollo al curry leggero + riso integrale piccolo',detail:'Curcuma = antinfiammatoria. Riso integrale porzione piccola (40g crudo).',time:'19:30'},
+    ],
+    6:[
+      {icon:'🥞',title:'Colazione — Pancake avena + yogurt greco + frutti di bosco',detail:'Domenica con calma. Bimbi-friendly. Bimby o padella antiaderente.',time:'9:00'},
+      {icon:'🫐',title:'Spuntino — Porridge avena + frutti di bosco',detail:'Post-circuito. Ripristina le energie senza picco glicemico.',time:'11:00'},
+      {icon:'🍽️',title:'Pranzo famiglia — Frittata verdure (dal batch) + insalata fresca',detail:'Riscalda la frittata preparata nel batch. Aggiungi insalata fresca.',time:'13:00'},
+      {icon:'🍎',title:'Spuntino — Mela + mandorle',detail:'Classico mediterraneo.',time:'16:30'},
+      {icon:'🥣',title:'Cena — Minestrone di verdure e legumi + orzo',detail:'Prepara doppia porzione: vale anche lunedì sera. Batch cucina domenicale.',time:'19:30'},
+    ],
+  },
+  studio: {
+    default:[{icon:'📖',title:'Test CBT EPSO — eutraining.eu',detail:'25 min · Ragionamento verbale e numerico',time:'Sera'}],
+    1:[{icon:'💰',title:'Finanze: audit estratto conto',detail:'25 min · Classifica spese · Cerca 30-50€ recuperabili',time:'Sera'}],
+    3:[{icon:'🇪🇺',title:'DG HOME: networking + epso.eu',detail:'20 min · Profili funzionari DG HOME · Bandi aperti',time:'Sera'}],
+    5:[{icon:'📚',title:'Studio EPSO approfondito',detail:'45 min · EU Academy o Policy Briefing JHA',time:'Pomeriggio'}],
+    6:[{icon:'🎓',title:'Revisione settimana + pianificazione',detail:'30 min · Rivedi errori CBT · Prossima settimana',time:'Pomeriggio'}],
+  },
+  finanze: {
+    6:[{icon:'💶',title:'Revisione spese settimanale',detail:'10 min · Classifica le spese della settimana · Nota dove puoi recuperare 30-50€',time:'Sera',cat:'finanze'}],
+  },
+  skincare: {
+    mattina:[
+      {step:'Detergente pH fisiologico',note:'Avene, La Roche-Posay o Bioderma Sensibio · Acqua tiepida',time:'Mattina'},
+      {step:'Siero lenitivo o niacinamide',note:'Riduce rossori, rinforza la barriera cutanea',time:'Mattina'},
+      {step:'Crema idratante per pelle sensibile',note:'Senza profumi, senza alcol',time:'Mattina'},
+      {step:'SPF 30-50 ogni giorno',note:'Fondamentale per rosacea — protegge i capillari',time:'Mattina'},
+    ],
+    sera:[
+      {step:'Struccante micellar water delicato',note:'No sfregamento · Tamponare con cotone morbido',time:'Sera'},
+      {step:'Detergente delicato in schiuma',note:'Secondo passaggio per pulizia completa',time:'Sera'},
+      {step:'Crema notte con ceramidi o centella',note:'Evita retinolo in questo periodo',time:'Sera'},
+    ],
+  },
+};
+
+const RICETTE = [
+  // ── BATCH COOKING DOMENICALE ──────────────────────────────────────────────────
+  {giorno:'Domenica (prep)',pasto:'Batch Cooking — 90 min',titolo:'Kit frullati × 5 giorni',nota:'Porziona: frutta (frutti di bosco/pera/mela/fragole/banana piccola) + avena + semi di chia + noci/mandorle in sacchetti. In frigo o freezer. Al mattino: aggiungi yogurt/kefir e frulla 30 sec.',tag:['Batch','Bimby','Frigo 5gg']},
+  {giorno:'Domenica (prep)',pasto:'Batch Cooking — cereali',titolo:'Farro + orzo + riso integrale (cotti)',nota:'Cuoci tutto nel Bimby o in pentola. Dividi in contenitori monodose. Base dei pranzi lunedì, giovedì e domenica.',tag:['Batch','Bimby','Frigo 4gg']},
+  {giorno:'Domenica (prep)',pasto:'Batch Cooking — proteine',titolo:'Petto di pollo (cotto) + uova sode × 5',nota:'Pollo al forno o friggitrice ad aria. Uova sode lessate. Base per wrap mercoledì e spuntini.',tag:['Batch','Frigo 4gg','Proteine']},
+  {giorno:'Domenica (prep)',pasto:'Batch Cooking — verdure',titolo:'Verdure grigliate miste (zucchine, broccoli, peperoni, finocchi)',nota:'Forno a 200°C o friggitrice ad aria. Usa per pranzo venerdì e cene della settimana.',tag:['Batch','Forno','Frigo 4gg']},
+  {giorno:'Domenica (prep)',pasto:'Batch Cooking — base',titolo:'Frittata di verdure al forno (grande)',nota:'2-3 uova + verdure miste. Taglia a quadrati. Pranzo domenica + lunedì se avanza.',tag:['Batch','Proteine','Versatile']},
+  // ── FRULLATI SETTIMANALI ─────────────────────────────────────────────────────
+  {giorno:'Lunedì',pasto:'Colazione',titolo:'Yogurt greco + frutti di bosco + avena + semi di chia',nota:'IG bassissimo. Semi di chia rallentano assorbimento. 30 sec di frullatore.',tag:['Anti-IR','No picco','2 min']},
+  {giorno:'Martedì',pasto:'Colazione',titolo:'Kefir + pera + mandorle + cannella',nota:'Kefir = probiotico. La cannella abbassa la risposta glicemica. Ottimo per insulino-resistenza.',tag:['Anti-IR','Probiotico','Cannella']},
+  {giorno:'Mercoledì',pasto:'Colazione',titolo:'Yogurt greco + cacao amaro + banana piccola + burro mandorle',nota:'Cacao amaro = anti-infiammatorio. Banana piccola tollerabile con i grassi del burro di mandorle.',tag:['Anti-infiammatorio','Cioccolato sì']},
+  {giorno:'Giovedì',pasto:'Colazione',titolo:'Kefir + fragole + yogurt greco o whey',nota:'Fragole = vitamina C per rosacea + IG basso. Whey opzionale per aumentare proteine.',tag:['Anti-IR','Rosacea','Proteine']},
+  {giorno:'Venerdì',pasto:'Colazione',titolo:'Yogurt greco + mela + noci + avena + cannella',nota:'Chiudi la settimana con stabilità glicemica. Noci = omega-3 vegetali antinfiammatori.',tag:['Anti-IR','Omega-3']},
+  {giorno:'Domenica',pasto:'Colazione (eccezione salata)',titolo:'Uova strapazzate + pane integrale',nota:'L\'unica colazione salata della settimana. Domenica con calma. Proteine complete.',tag:['Weekend','Proteico','Salato OK']},
+  // ── PRANZI VELOCI DA SCRIVANIA ───────────────────────────────────────────────
+  {giorno:'Lunedì',pasto:'Pranzo (3 min)',titolo:'Farro freddo + ceci + pomodorini + olive + olio EVO',nota:'Tutto dal batch. Nessuna cottura. Sequenza: verdura prima → cereali → legumi. Freddo o a temperatura ambiente.',tag:['Batch','3 min','Anti-IR','Freddo']},
+  {giorno:'Martedì',pasto:'Pranzo (3 min)',titolo:'Insalata verde + mozzarella fresca + tonno + pomodorini + basilico',nota:'Mozzarella = calcio e proteine. Tonno = omega-3. Olio EVO. Verdure prima della mozzarella.',tag:['Mozzarella','3 min','Mediterraneo']},
+  {giorno:'Mercoledì',pasto:'Pranzo (5 min)',titolo:'Wrap integrale + stracchino/crescenza + pollo precotto + insalata',nota:'Scalda wrap 1 min al micro. Spalma stracchino o crescenza. Aggiungi pollo dal batch e verdure fresche.',tag:['Stracchino','Crescenza','5 min','Micro']},
+  {giorno:'Giovedì',pasto:'Pranzo (3 min)',titolo:'Orzo freddo + tonno + fagiolini + olive + limone',nota:'Dal batch. Freddo. 3 min assemblaggio. Il limone abbassa l\'indice glicemico dell\'orzo.',tag:['Batch','3 min','Anti-IR','Limone IG']},
+  {giorno:'Venerdì',pasto:'Pranzo (5 min)',titolo:'Scamorza + verdure grigliate + pane integrale piccolo',nota:'Scamorza a fette sulle verdure già pronte. Scalda 2 min al micro. Pane integrale piccolo.',tag:['Scamorza','5 min','Micro','Saporito']},
+  // ── CENE MEDITERRANEE ────────────────────────────────────────────────────────
+  {giorno:'Lunedì',pasto:'Cena',titolo:'Orata al forno + zucchine grigliate + olio EVO',nota:'Pesce bianco = proteine magre, anti-infiammatorio. Zucchine dal batch. 15 min.',tag:['Pesce','Mediterraneo','15 min']},
+  {giorno:'Martedì',pasto:'Cena',titolo:'Frittata di spinaci + ricotta + pomodorini',nota:'Ricotta = latticino leggero. Spinaci = ferro e folati. 10 min totali.',tag:['Ricotta','Uova','10 min']},
+  {giorno:'Mercoledì',pasto:'Cena',titolo:'Pasta integrale + zucchine + gamberi + olio EVO',nota:'Carboidrati solo a cena e in piccola porzione (60g crudo). Gamberi anti-infiammatori.',tag:['Carboidrati sera','Gamberi','20 min']},
+  {giorno:'Giovedì',pasto:'Cena',titolo:'Merluzzo al forno + finocchi + olio EVO',nota:'Finocchi = digestivi e antinfiammatori. Merluzzo = proteine magre, poche calorie. 15 min.',tag:['Pesce','Finocchi','15 min']},
+  {giorno:'Venerdì',pasto:'Cena',titolo:'Burger di legumi + insalata mista + olio EVO',nota:'Prepara in batch domenica e congela. Scalda in friggitrice ad aria (8 min) o micro.',tag:['Legumi','Batch','Congela','Vegano']},
+  {giorno:'Sabato',pasto:'Cena',titolo:'Pollo al curry leggero + riso integrale piccolo',nota:'Curcuma = potente antinfiammatoria. Riso integrale porzione piccola (40g crudo).',tag:['Curcuma','Weekend','Anti-infiammatorio']},
+  {giorno:'Domenica',pasto:'Cena',titolo:'Minestrone verdure + legumi + orzo',nota:'Prepara doppia porzione: vale anche lunedì sera. Centralissimo nel batch cooking.',tag:['Batch','Famiglia','Legumi','2 sere']},
+  // ── REGOLA BASE ─────────────────────────────────────────────────────────────
+  {giorno:'Ogni pasto',pasto:'Regola d\'oro anti-IR',titolo:'Sequenza: verdura/insalata → proteine/grassi → carboidrati',nota:'Mangia sempre le verdure PRIMA. Poi proteine e grassi. I carboidrati per ultimi (o solo a cena). Abbassa il picco glicemico fino al 40%.',tag:['Anti-IR','Fondamentale','Sempre']},
+  {giorno:'⚠️ Da evitare sempre',pasto:'Esclusioni confermate',titolo:'Salmone · Gallette di riso · Latte vegetale · Carote · Patate · Zucca',nota:'Gallette di riso IG elevatissimo. Esclusioni personalizzate — non sostituirle.',tag:['Escludi','IG alto','Personale']},
+];
+
+const ESERCIZI = [
+  {titolo:'Routine Cervicale',sub:'Lun — Ven',dur:'20 min',passi:['Mobilità cervicale (5 min): rotazioni lente, chin tuck. MAI rotazioni 360°.','Stretching pettorali (5 min): cobra, braccia a croce sul muro.','Rinforzo scapolare (5 min): bird-dog, ponte glutei.','Respirazione diaframmatica (5 min): fondamentale post-parto.']},
+  {titolo:'Camminata Metabolica',sub:'Sabato',dur:'60 min',passi:['Ritmo sostenuto ma non corsa — zona metabolica brucia grassi.','Porta i bimbi in passeggino: Parco delle Valli o Villa Glori.','Schiena dritta durante la spinta del passeggino.']},
+  {titolo:'Circuito Corpo Libero',sub:'Domenica',dur:'45 min',passi:['3 giri da 12 ripetizioni, 60s recupero tra giri.','Squat · Affondi alternati · Push-up facilitati.','Plank 30s · Ponte glutei · Mountain climber lento.']},
+];
+
+const STUDIO_PIANO = [
+  {titolo:'Test CBT EPSO',badge:'Lun · Mer · Ven',corpo:'25 min serali su eutraining.eu. Ragionamento verbale, numerico, astratto.',link:'https://www.eutraining.eu'},
+  {titolo:'EU Academy — Law, Justice & Migration',badge:'Mesi 1-3',corpo:'Piattaforma Commissione UE. Gratuito con attestato.',link:'https://academy.europa.eu'},
+  {titolo:'International Security Management',badge:'Mesi 3-6',corpo:'Coursera — Erasmus University. Audit gratuito, 49€ certificato.',link:'https://www.coursera.org'},
+  {titolo:'JHA Council — aggiornamento mensile',badge:'Sempre',corpo:'Comunicati su consilium.europa.eu.',link:'https://www.consilium.europa.eu'},
+];
+
+// ── STATE ──────────────────────────────────────────────
+let oggiDone    = JSON.parse(localStorage.getItem('av7_oggi')  || '{}');
+let skincareDone= JSON.parse(localStorage.getItem('av7_skin')  || '{}');
+let glucoseData = JSON.parse(localStorage.getItem('av7_gluc')  || '[]');
+let domaniExtra = JSON.parse(localStorage.getItem('av7_dex')   || '[]');
+let notes       = JSON.parse(localStorage.getItem('av7_notes') || '[]');
+let pesoData    = JSON.parse(localStorage.getItem('av8_peso')  || '[]');
+let streak      = parseInt(localStorage.getItem('av7_streak')  || '0');
+let lastDate    = localStorage.getItem('av7_lastdate')         || '';
+let energy      = localStorage.getItem('av7_energy')           || '';
+let darkMode    = localStorage.getItem('av8_dark') === 'true';
+let spese       = JSON.parse(localStorage.getItem('av10_spese') || '[]');
+const saveSpese = () => localStorage.setItem('av10_spese', JSON.stringify(spese));
+
+const SPESE_CAT = {
+  spesa:     {icon:'🛒', label:'Spesa alimentare'},
+  bimbi:     {icon:'👶', label:'Bimbi'},
+  trasporti: {icon:'🚗', label:'Trasporti'},
+  salute:    {icon:'💊', label:'Salute & farmacia'},
+  io:        {icon:'💅', label:'Io'},
+  fuori:     {icon:'🍽️', label:'Fuori pasto'},
+  casa:      {icon:'🏠', label:'Casa & utenze'},
+  varie:     {icon:'📦', label:'Varie'},
+};
+
+const saveOggi = () => localStorage.setItem('av7_oggi',  JSON.stringify(oggiDone));
+const saveSkin = () => localStorage.setItem('av7_skin',  JSON.stringify(skincareDone));
+const saveGluc = () => localStorage.setItem('av7_gluc',  JSON.stringify(glucoseData));
+const saveDex  = () => localStorage.setItem('av7_dex',   JSON.stringify(domaniExtra));
+const savePeso = () => localStorage.setItem('av8_peso',  JSON.stringify(pesoData));
+
+// ── DARK MODE ──────────────────────────────────────────
+function applyDark() {
+  document.documentElement.setAttribute('data-theme', darkMode ? 'dark' : 'light');
+  document.getElementById('dark-btn').textContent = darkMode ? '☀️' : '🌙';
+}
+function toggleDark() {
+  darkMode = !darkMode;
+  localStorage.setItem('av8_dark', darkMode);
+  applyDark();
+}
+applyDark();
+
+// ── HELPERS ────────────────────────────────────────────
+const esc = s => String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+const getDayArr = (o, i) => o[i] !== undefined ? o[i] : (o['default'] || []);
+
+const CC = {corpo:'cc-corpo',cucina:'cc-cucina',studio:'cc-studio',finanze:'cc-finanze',bimbi:'cc-sand',io:'cc-slate',skincare:'cc-skincare',diabete:'cc-diabete',casa:'cc-sand'};
+const CI = {corpo:'💪',cucina:'🍳',studio:'📚',finanze:'💶',bimbi:'👶',io:'✨',skincare:'🌸',diabete:'🩺',casa:'🏠'};
+const CL = {corpo:'Corpo',cucina:'Cucina',studio:'Studio',finanze:'Finanze',bimbi:'Bimbi',io:'Io',skincare:'Skincare',diabete:'Glicemia',casa:'Casa'};
+
+function calLink(t, time) {
+  const d = new Date(NOW);
+  const [h,m] = (time||'09:00').split(':');
+  d.setHours(parseInt(h)||9, parseInt(m)||0, 0, 0);
+  const e = new Date(d); e.setHours(e.getHours()+1);
+  const f = x => x.toISOString().replace(/[-:]/g,'').split('.')[0]+'Z';
+  return `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(t)}&dates=${f(d)}/${f(e)}`;
+}
+function remLink(t, time) {
+  return `x-apple-reminderkit://REMCDReminder?title=${encodeURIComponent(t+(time?' — '+time:''))}`;
+}
+
+function actHTML(it, key, done, del, cal, tmr) {
+  const c = CC[it.cat||'io']||'cc-sage';
+  return `<div class="act ${c}${done?' done':''}"${!tmr?` onclick="tog('${key}',this)"`:''}>
+    <div class="act-ico">${it.icon||CI[it.cat]||'📌'}</div>
+    <div class="act-body">
+      <div class="act-cat">${CL[it.cat||'io']||''}</div>
+      <div class="act-title">${esc(it.title||it.step||'')}</div>
+      ${it.detail||it.note?`<div class="act-detail">${esc(it.detail||it.note)}</div>`:''}
+      ${it.time?`<span class="act-time">${it.time}</span>`:''}
+      ${cal?`<div class="act-links"><a href="${calLink(it.title||it.step,it.time)}" target="_blank">📅 Calendar</a><a href="${remLink(it.title||it.step,it.time)}">🔔 Promemoria</a></div>`:''}
+    </div>
+    <div class="act-r">
+      ${del?`<button class="act-del" onclick="event.stopPropagation();delDex('${key}')">✕</button>`:''}
+      ${!tmr?`<div class="act-check">${done?'✓':''}</div>`:''}
+    </div>
+  </div>`;
+}
+
+// ── ENERGY ────────────────────────────────────────────
+function setEnergy(btn, val) {
+  document.querySelectorAll('.e-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  energy = val;
+  localStorage.setItem('av7_energy', val);
+}
+if (energy) {
+  document.querySelectorAll('.e-btn').forEach(b => {
+    if (b.textContent.trim().startsWith(energy)) b.classList.add('active');
+  });
+}
+
+// ── GLUCOSE ───────────────────────────────────────────
+function renderGluc() {
+  const el = document.getElementById('gluc-widget');
+  const tk = NOW.toISOString().split('T')[0];
+  const td = glucoseData.find(g => g.date === tk) || {digiuno:'',post1:'',post2:'',post3:''};
+  const gs = (v, d) => {
+    const n = parseFloat(v);
+    if (isNaN(n)) return '';
+    return d
+      ? (n<=100?'<span class="g-st g-ok">✓ Norma</span>':n<=125?'<span class="g-st g-warn">⚠ Att.</span>':'<span class="g-st g-hi">↑ Alto</span>')
+      : (n<=140?'<span class="g-st g-ok">✓ OK</span>'   :n<=180?'<span class="g-st g-warn">⚠ Ctrl</span>':'<span class="g-st g-hi">↑ Alto</span>');
+  };
+  el.innerHTML = `<div class="gluc-outer"><div class="gluc-card">
+    <div class="gluc-hdr"><div class="gluc-ttl">Glicemia</div><div class="gluc-badge">mg/dL</div></div>
+    <div class="gluc-grid">
+      ${[['digiuno','⏰ A digiuno',true],['post1','🍽️ Post colazione',false],['post2','🥗 Post pranzo',false],['post3','🌙 Post cena',false]].map(([id,lbl,dig]) => `
+      <div class="g-slot"><div class="g-lbl">${lbl}</div>
+        <div class="g-row"><input class="g-inp" id="g-${id}" type="number" min="50" max="400" placeholder="—" value="${td[id]||''}" oninput="updG('${id}',${dig})"><span class="g-unit">mg/dL</span></div>
+        <div id="gs-${id}">${gs(td[id],dig)}</div>
+      </div>`).join('')}
+    </div>
+    <button class="gluc-btn" onclick="saveGluc2()">Salva misurazioni ✓</button>
+  </div></div>`;
+}
+
+function updG(id, dig) {
+  const n = parseFloat(document.getElementById('g-'+id).value);
+  if (isNaN(n)) return;
+  document.getElementById('gs-'+id).innerHTML = dig
+    ? (n<=100?'<span class="g-st g-ok">✓ Norma</span>':n<=125?'<span class="g-st g-warn">⚠ Att.</span>':'<span class="g-st g-hi">↑ Alto</span>')
+    : (n<=140?'<span class="g-st g-ok">✓ OK</span>'   :n<=180?'<span class="g-st g-warn">⚠ Ctrl</span>':'<span class="g-st g-hi">↑ Alto</span>');
+}
+
+function saveGluc2() {
+  const tk = NOW.toISOString().split('T')[0];
+  const e = {date:tk,digiuno:document.getElementById('g-digiuno').value,post1:document.getElementById('g-post1').value,post2:document.getElementById('g-post2').value,post3:document.getElementById('g-post3').value};
+  const i = glucoseData.findIndex(g => g.date === tk);
+  if (i>-1) glucoseData[i]=e; else glucoseData.push(e);
+  if (glucoseData.length>14) glucoseData=glucoseData.slice(-14);
+  saveGluc();
+  showToast('Glicemia salvata ✓');
+}
+
+// ── SKINCARE ──────────────────────────────────────────
+function renderSkin() {
+  const el = document.getElementById('skin-widget');
+  const tk = NOW.toISOString().split('T')[0];
+  const mk = (p,i) => `${tk}_${p}_${i}`;
+  const stps = (arr,pfx) => arr.map((s,i) => {
+    const k = mk(pfx,i);
+    const dn = !!skincareDone[k];
+    return `<div class="skin-step${dn?' done-sk':''}" onclick="togSkin('${k}',this)">
+      <div class="sk-chk">${dn?'✓':''}</div>
+      <div class="sk-info"><div class="sk-name">${s.step}</div><div class="sk-note">${s.note}</div></div>
+      <span class="sk-tag">${s.time}</span></div>`;
+  }).join('');
+  el.innerHTML = `<div class="skin-outer"><div class="skin-card">
+    <div class="skin-hdr"><div class="skin-ttl">Skincare — Rosacea</div><div class="skin-badge">Daily</div></div>
+    <div class="skin-grp-lbl">☀️ Routine mattina</div>${stps(SCHED.skincare.mattina,'mat')}
+    <div class="skin-grp-lbl">🌙 Routine sera</div>${stps(SCHED.skincare.sera,'ser')}
+  </div></div>`;
+}
+
+function togSkin(k, el) {
+  skincareDone[k] = !skincareDone[k];
+  saveSkin();
+  el.classList.toggle('done-sk');
+  el.querySelector('.sk-chk').textContent = skincareDone[k]?'✓':'';
+  if (skincareDone[k]) showToast('✓ Fatto!');
+}
+
+// ── PESO ──────────────────────────────────────────────
+function renderPeso() {
+  const el = document.getElementById('peso-widget');
+  const tk = NOW.toISOString().split('T')[0];
+  const today = pesoData.find(p => p.date===tk);
+  const last = pesoData.length ? pesoData[pesoData.length-1] : null;
+  const first = pesoData.length>1 ? pesoData[0] : null;
+  const diff = (last&&first) ? (last.kg-first.kg).toFixed(1) : null;
+  const diffStr = diff!==null ? (diff>0?`+${diff}`:`${diff}`)+' kg' : '—';
+  const diffColor = diff!==null ? (diff<0?'var(--corpo)':diff>0?'var(--rose)':'var(--muted)') : 'var(--muted)';
+  el.innerHTML = `<div class="peso-outer"><div class="peso-card">
+    <div class="peso-hdr"><div class="peso-ttl">Peso corporeo</div><div class="peso-badge">Trend</div></div>
+    <div class="peso-input-row">
+      <input class="peso-inp" id="peso-val" type="number" min="40" max="150" step="0.1" placeholder="${today?today.kg:'65.0'}" value="${today?today.kg:''}">
+      <span class="peso-unit">kg</span>
+      <button class="peso-save" onclick="savePesoEntry()">Salva ✓</button>
+    </div>
+    <div class="peso-stats">
+      <div class="peso-stat"><div class="peso-stat-n">${last?last.kg:'—'}</div><div class="peso-stat-l">Ultimo</div></div>
+      <div class="peso-stat"><div class="peso-stat-n" style="color:${diffColor}">${diffStr}</div><div class="peso-stat-l">Trend 14gg</div></div>
+      <div class="peso-stat"><div class="peso-stat-n">${pesoData.length}</div><div class="peso-stat-l">Misurazioni</div></div>
+    </div>
+    ${pesoData.length>=2?`<div class="peso-chart"><div class="peso-chart-lbl">Andamento recente</div>${buildPesoChart(pesoData.slice(-14),260,60)}</div>`:''}
+  </div></div>`;
+}
+
+function buildPesoChart(data, w, h) {
+  if (data.length<2) return '';
+  const vals = data.map(d=>d.kg);
+  const min = Math.min(...vals)-.5, max = Math.max(...vals)+.5;
+  const pad = 6;
+  const xs = data.map((_,i) => pad+(i/(data.length-1))*(w-pad*2));
+  const ys = vals.map(v => h-pad-((v-min)/(max-min))*(h-pad*2));
+  const path = xs.map((x,i)=>`${i===0?'M':'L'}${x.toFixed(1)},${ys[i].toFixed(1)}`).join(' ');
+  const area = `M${xs[0].toFixed(1)},${h} `+xs.map((x,i)=>`L${x.toFixed(1)},${ys[i].toFixed(1)}`).join(' ')+` L${xs[xs.length-1].toFixed(1)},${h} Z`;
+  const last2 = vals[vals.length-1];
+  const lx = xs[xs.length-1], ly = ys[ys.length-1];
+  return `<svg id="peso-svg" height="${h}" viewBox="0 0 ${w} ${h}">
+    <defs><linearGradient id="pg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#8B5CF6" stop-opacity="0.2"/>
+      <stop offset="100%" stop-color="#8B5CF6" stop-opacity="0"/>
+    </linearGradient></defs>
+    <path d="${area}" fill="url(#pg)"/>
+    <path d="${path}" fill="none" stroke="#8B5CF6" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+    <circle cx="${lx.toFixed(1)}" cy="${ly.toFixed(1)}" r="4" fill="#A3E635"/>
+    <text x="${Math.min(lx+6,w-28)}" y="${(ly-6).toFixed(1)}" fill="#A3E635" font-size="10" font-family="Inter,sans-serif" font-weight="700">${last2}</text>
+  </svg>`;
+}
+
+function savePesoEntry() {
+  const inp = document.getElementById('peso-val');
+  const v = parseFloat(inp.value);
+  if (isNaN(v)||v<30||v>200) { showToast('Valore non valido'); return; }
+  const tk = NOW.toISOString().split('T')[0];
+  const i = pesoData.findIndex(p=>p.date===tk);
+  if (i>-1) pesoData[i].kg=v; else pesoData.push({date:tk,kg:v});
+  if (pesoData.length>14) pesoData=pesoData.slice(-14);
+  savePeso();
+  showToast('Peso salvato ✓');
+  renderPeso();
+}
+
+function renderPesoRecap() {
+  const el = document.getElementById('peso-recap');
+  if (pesoData.length<2) {
+    el.innerHTML='<div style="padding:0 16px 12px"><div style="background:var(--surf);border:1px solid var(--border);border-radius:var(--r);padding:16px;font-size:.78rem;color:var(--muted);font-style:italic">Registra almeno 2 misurazioni per vedere il trend.</div></div>';
+    return;
+  }
+  const last14 = pesoData.slice(-14);
+  el.innerHTML = `<div style="padding:0 16px;margin-bottom:4px"><div style="background:var(--surf);border:1px solid var(--border);border-radius:var(--r);padding:17px">
+    <div style="font-size:.6rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:14px">Ultimi 14 giorni</div>
+    ${buildPesoChart(last14,330,80)}
+    <div style="display:flex;gap:8px;margin-top:12px">
+      ${last14.slice(-5).reverse().map(p=>`<div style="flex:1;text-align:center">
+        <div style="font-size:1rem;font-weight:800;color:var(--text)">${p.kg}</div>
+        <div style="font-size:.48rem;color:var(--muted);margin-top:2px">${new Date(p.date).toLocaleDateString('it-IT',{day:'numeric',month:'short'})}</div>
+      </div>`).join('')}
+    </div>
+  </div></div>`;
+}
+
+// ── OGGI ──────────────────────────────────────────────
+function getItems() {
+  return {
+    corpo:   getDayArr(SCHED.corpo,  dayIdx).map((it,i)=>({...it,cat:'corpo',  key:`c_${i}`})),
+    cucina:  getDayArr(SCHED.cucina, dayIdx).map((it,i)=>({...it,cat:'cucina', key:`cu_${i}`})),
+    studio:  getDayArr(SCHED.studio, dayIdx).map((it,i)=>({...it,cat:'studio', key:`st_${i}`})),
+    finanze: getDayArr(SCHED.finanze||{}, dayIdx).map((it,i)=>({...it,cat:'finanze',key:`fi_${i}`})),
+  };
+}
+
+function renderOggi() {
+  const items = getItems();
+  let total = 0, done = 0;
+
+  ['corpo','cucina','studio'].forEach(cat => {
+    const el = document.getElementById('o-'+cat);
+    const list = items[cat];
+    if (!list.length) { el.innerHTML='<div class="empty">Giorno libero ✓</div>'; return; }
+    total += list.length;
+    el.innerHTML = list.map(it => {
+      const d = !!oggiDone[it.key];
+      if (d) done++;
+      return actHTML(it, it.key, d, false, true, false);
+    }).join('');
+  });
+
+  renderSpese();
+
+  const tk = NOW.toISOString().split('T')[0];
+  const skT = SCHED.skincare.mattina.length+SCHED.skincare.sera.length;
+  const skD = Object.keys(skincareDone).filter(k=>k.startsWith(tk)&&skincareDone[k]).length;
+  total+=skT; done+=skD;
+
+  document.getElementById('o-todo').textContent = total-done;
+  document.getElementById('o-done').textContent = done;
+
+  const today = NOW.toDateString();
+  if (lastDate!==today && done>0) {
+    const y = new Date(NOW); y.setDate(y.getDate()-1);
+    streak = lastDate===y.toDateString() ? streak+1 : 1;
+    lastDate = today;
+    localStorage.setItem('av7_streak',streak);
+    localStorage.setItem('av7_lastdate',lastDate);
+  }
+  document.getElementById('o-streak').textContent = streak;
+  document.getElementById('streak-badge').textContent = `🔥 ${streak}`;
+
+  const pw = document.getElementById('o-prog');
+  if (total>0) {
+    pw.classList.add('visible');
+    const pct = Math.round((done/total)*100);
+    document.getElementById('o-fill').style.width = pct+'%';
+    document.getElementById('o-pct').textContent = pct+'%';
+  }
+}
+
+function tog(key, el) {
+  oggiDone[key] = !oggiDone[key];
+  saveOggi();
+  el.classList.toggle('done');
+  el.querySelector('.act-check').textContent = oggiDone[key]?'✓':'';
+  if (oggiDone[key]) showToast('✓ Fatto!');
+  renderOggi();
+}
+
+// ── DOMANI ────────────────────────────────────────────
+function renderDomani() {
+  const dC  = getDayArr(SCHED.corpo,  tomorrowIdx);
+  const dCu = getDayArr(SCHED.cucina, tomorrowIdx);
+  const dSt = getDayArr(SCHED.studio, tomorrowIdx);
+
+  document.getElementById('preview-banner').innerHTML = `<div class="prev-outer"><div class="prev-card">
+    <div class="prev-over">Anteprima</div>
+    <div class="prev-date">${domaniStr}</div>
+    <div class="prev-chips">
+      ${dC.map(it  =>`<div class="prev-chip">💪 ${it.title.substring(0,22)}${it.title.length>22?'…':''}</div>`).join('')}
+      ${dCu.map(it =>`<div class="prev-chip">🍳 ${it.title.substring(0,22)}${it.title.length>22?'…':''}</div>`).join('')}
+      ${dSt.map(it =>`<div class="prev-chip">📚 ${it.title.substring(0,22)}${it.title.length>22?'…':''}</div>`).join('')}
+      <div class="prev-chip">🌸 Skincare ×${SCHED.skincare.mattina.length+SCHED.skincare.sera.length}</div>
+      <div class="prev-chip">🩺 Glicemia ×4</div>
+    </div>
+  </div></div>`;
+
+  const diabItems = [
+    {icon:'🩺',title:'Misurazione a digiuno',       detail:'Prima di qualsiasi cibo',   time:'7:00', cat:'diabete'},
+    {icon:'🩺',title:'Misurazione post colazione',  detail:'2 ore dopo la colazione',   time:'9:30', cat:'diabete'},
+    {icon:'🩺',title:'Misurazione post pranzo',     detail:'2 ore dopo il pranzo',      time:'15:00',cat:'diabete'},
+    {icon:'🩺',title:'Misurazione post cena',       detail:'2 ore dopo la cena',        time:'21:30',cat:'diabete'},
+  ];
+  document.getElementById('d-diabete').innerHTML  = diabItems.map((it,i) => actHTML(it,`dd${i}`,false,false,true,true)).join('');
+  document.getElementById('d-skincare').innerHTML = [
+    ...SCHED.skincare.mattina.map(s=>({icon:'🌸',title:s.step,detail:s.note,time:s.time,cat:'skincare'})),
+    ...SCHED.skincare.sera.map(s   =>({icon:'🌙',title:s.step,detail:s.note,time:s.time,cat:'skincare'})),
+  ].map((it,i) => actHTML(it,`dsk${i}`,false,false,true,true)).join('');
+  document.getElementById('d-corpo').innerHTML   = dC.length  ? dC.map((it,i) => actHTML({...it,cat:'corpo'}, `dc${i}`, false,false,true,true)).join('') : '<div class="empty">Nessun esercizio pianificato.</div>';
+  document.getElementById('d-cucina').innerHTML  = dCu.length ? dCu.map((it,i)=> actHTML({...it,cat:'cucina'},`dcu${i}`,false,false,true,true)).join('') : '<div class="empty">Nessuna ricetta pianificata.</div>';
+  document.getElementById('d-studio').innerHTML  = dSt.length ? dSt.map((it,i)=> actHTML({...it,cat:'studio'},`dst${i}`,false,false,true,true)).join('') : '<div class="empty">Giorno di pausa.</div>';
+  document.getElementById('d-finanze').innerHTML = '<div class="empty">Nessuna attività finanziaria.</div>';
+  renderDex();
+}
+
+function renderDex() {
+  const el = document.getElementById('d-extra');
+  if (!domaniExtra.length) { el.innerHTML='<div class="empty">Nessun task extra.</div>'; return; }
+  el.innerHTML = domaniExtra.map(t => actHTML({icon:CI[t.cat]||'📌',title:t.text,detail:'',time:t.time,cat:t.cat},t.id,false,true,true,true)).join('');
+}
+
+function addDomani() {
+  const inp = document.getElementById('dom-input');
+  const tx = inp.value.trim();
+  if (!tx) { inp.focus(); return; }
+  domaniExtra.push({id:'dx'+Date.now(),text:tx,cat:document.getElementById('dom-cat').value,time:document.getElementById('dom-time').value});
+  saveDex();
+  inp.value='';
+  document.getElementById('dom-time').value='';
+  renderDex();
+  showToast('Aggiunto ✓');
+}
+
+function delDex(id) {
+  domaniExtra = domaniExtra.filter(t=>t.id!==id);
+  saveDex();
+  renderDex();
+  showToast('Rimosso');
+}
+
+// ── RECAP ─────────────────────────────────────────────
+function renderRecap() {
+  const tk = NOW.toISOString().split('T')[0];
+  const items = getItems();
+  let total=0, done=0;
+  ['corpo','cucina','studio'].forEach(cat=>{items[cat].forEach(it=>{total++;if(oggiDone[it.key])done++;});});
+  const skT = SCHED.skincare.mattina.length+SCHED.skincare.sera.length;
+  const skD = Object.keys(skincareDone).filter(k=>k.startsWith(tk)&&skincareDone[k]).length;
+  total+=skT; done+=skD;
+
+  const ring = (pct,col,lbl) => {
+    const r=20, c=2*Math.PI*r, off=c*(1-pct/100);
+    return `<div class="ring-wrap">
+      <svg class="ring-svg" width="54" height="54" viewBox="0 0 48 48">
+        <circle class="r-bg" cx="24" cy="24" r="${r}"/>
+        <circle class="r-fg" cx="24" cy="24" r="${r}" stroke="${col}" stroke-dasharray="${c.toFixed(2)}" stroke-dashoffset="${off.toFixed(2)}"/>
+      </svg>
+      <div class="r-pct" style="color:${col}">${pct}%</div>
+      <div class="r-lbl">${lbl}</div>
+    </div>`;
+  };
+
+  document.getElementById('rings-row').innerHTML =
+    ring(total?Math.round((done/total)*100):0,'var(--studio)','Oggi') +
+    ring(skT  ?Math.round((skD/skT)*100)  :0,'var(--skincare)','Skincare') +
+    ring(streak?Math.min(streak*10,100)   :0,'var(--cucina)','Streak');
+
+  renderPesoRecap();
+
+  const aD = [
+    {key:'corpo',   l:'💪 Corpo',   c:'var(--corpo)'},
+    {key:'cucina',  l:'🍳 Cucina',  c:'var(--cucina)'},
+    {key:'studio',  l:'📚 Studio',  c:'var(--studio)'},
+    {key:'skincare',l:'🌸 Skincare',c:'var(--skincare)'},
+  ];
+  document.getElementById('areas-outer').innerHTML = aD.map(a => {
+    let t=0,d=0;
+    if (a.key==='skincare') { t=skT; d=skD; }
+    else if (items[a.key]) items[a.key].forEach(it=>{t++;if(oggiDone[it.key])d++;});
+    const pct = t?Math.round((d/t)*100):0;
+    return `<div class="area-card">
+      <div class="area-top"><span class="area-nm">${a.l}</span><span class="area-pct" style="color:${a.c}">${pct}%</span></div>
+      <div class="area-track"><div class="area-fill" style="width:${pct}%;background:${a.c}"></div></div>
+      <div class="area-stats"><span class="area-s">Totali: <strong>${t}</strong></span><span class="area-s">Fatte: <strong>${d}</strong></span></div>
+    </div>`;
+  }).join('');
+
+  const gh = document.getElementById('gluc-history');
+  if (!glucoseData.length) {
+    gh.innerHTML='<div style="font-size:.75rem;color:var(--muted);padding:4px 0">Nessuna misurazione salvata.</div>';
+  } else {
+    gh.innerHTML = `<div class="gt-row"><div class="gt-h">Data</div><div class="gt-h">Digiuno</div><div class="gt-h">Post pranzo</div><div class="gt-h">Sera</div></div>`+
+      glucoseData.slice(-7).reverse().map(g=>`<div class="gt-row">
+        <div>${new Date(g.date).toLocaleDateString('it-IT',{day:'numeric',month:'short'})}</div>
+        <div style="color:${parseFloat(g.digiuno)>100?'var(--rose)':'var(--corpo)'};font-weight:700">${g.digiuno||'—'}</div>
+        <div style="color:${parseFloat(g.post2)>140?'var(--rose)':'var(--corpo)'};font-weight:700">${g.post2||'—'}</div>
+        <div style="color:${parseFloat(g.post3)>140?'var(--rose)':'var(--corpo)'};font-weight:700">${g.post3||'—'}</div>
+      </div>`).join('');
+  }
+
+  const pn = document.getElementById('past-notes');
+  if (!notes.length) {
+    pn.innerHTML='<div style="color:var(--muted);font-size:.77rem;padding:0 16px 12px">Nessuna nota ancora.</div>';
+  } else {
+    pn.innerHTML = notes.slice().reverse().slice(0,5).map(n =>
+      `<div class="past-note"><div class="pn-d">${new Date(n.date).toLocaleDateString('it-IT',{weekday:'short',day:'numeric',month:'short'})}</div><div class="pn-t">${esc(n.text)}</div></div>`
+    ).join('');
+  }
+
+  renderFinRecap();
+  const tn = notes.find(n=>n.date.startsWith(NOW.toISOString().split('T')[0]));
+  if (tn) document.getElementById('note-text').value = tn.text;
+}
+
+function saveNote() {
+  const text = document.getElementById('note-text').value.trim();
+  if (!text) return;
+  const today = NOW.toISOString().split('T')[0];
+  const i = notes.findIndex(n=>n.date.startsWith(today));
+  if (i>-1) notes[i].text=text; else notes.push({date:NOW.toISOString(),text});
+  localStorage.setItem('av7_notes',JSON.stringify(notes));
+  showToast('Nota salvata ✓');
+  renderRecap();
+}
+
+// ── PIANO ─────────────────────────────────────────────
+function renderPiano() {
+  document.getElementById('piano-ricette').innerHTML = RICETTE.map(r =>
+    `<div class="piano-card">
+      <div class="pc-d">${r.giorno}</div>
+      <div class="pc-m">${r.pasto}</div>
+      <div class="pc-ttl">${r.titolo}</div>
+      <div class="pc-nota">${r.nota}</div>
+      <div class="pc-tags">${r.tag.map(t=>`<span class="pc-tag">${t}</span>`).join('')}</div>
+    </div>`
+  ).join('');
+
+  document.getElementById('piano-esercizi').innerHTML = ESERCIZI.map(ex =>
+    `<div class="ex-card">
+      <div class="ex-hdr"><div><div class="ex-nm">${ex.titolo}</div><div class="ex-sb">${ex.sub}</div></div><div class="ex-dur">${ex.dur}</div></div>
+      ${ex.passi.map((p,i)=>`<div class="ex-step"><div class="ex-n">${i+1}</div><div>${p}</div></div>`).join('')}
+    </div>`
+  ).join('');
+
+  document.getElementById('piano-studio').innerHTML = STUDIO_PIANO.map(s =>
+    `<div class="study-card">
+      <div class="sc-hdr"><div class="sc-ttl">${s.titolo}</div><div class="sc-badge">${s.badge}</div></div>
+      <div class="sc-body">${s.corpo}<br><a class="sc-link" href="${s.link}" target="_blank">→ ${s.link.replace('https://','')}</a></div>
+    </div>`
+  ).join('');
+}
+
+// ── NAVIGATION ────────────────────────────────────────
+function sv(name) {
+  document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
+  document.querySelectorAll('.nb').forEach(b=>b.classList.remove('active'));
+  document.getElementById('view-'+name).classList.add('active');
+  document.getElementById('nav-' +name).classList.add('active');
+  if (name==='recap') renderRecap();
+  if (name==='piano') renderPiano();
+  window.scrollTo(0,0);
+}
+
+// ── TOAST ─────────────────────────────────────────────
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),2000);
+}
+
+// ── EXPENSE TRACKER ─────────────────────────────────
+function renderSpese() {
+  const el = document.getElementById('o-finanze');
+  const tk = NOW.toISOString().split('T')[0];
+  const todaySpese = spese.filter(s => s.date === tk);
+  const todayTotal = todaySpese.reduce((sum, s) => sum + s.amount, 0);
+
+  const catOptions = Object.entries(SPESE_CAT).map(([k,v]) =>
+    `<option value="${k}">${v.icon} ${v.label}</option>`
+  ).join('');
+
+  const itemsHTML = todaySpese.length
+    ? todaySpese.map(s => {
+        const cat = SPESE_CAT[s.cat] || {icon:'📦', label:'Varie'};
+        return `<div class="exp-item">
+          <span class="exp-item-ico">${cat.icon}</span>
+          <div class="exp-item-body">
+            <div class="exp-item-cat">${cat.label}</div>
+            ${s.note ? `<div class="exp-item-note">${esc(s.note)}</div>` : ''}
+          </div>
+          <span class="exp-item-amt">€${s.amount.toFixed(2)}</span>
+          <button class="exp-item-del" onclick="delSpesa('${s.id}')">✕</button>
+        </div>`;
+      }).join('')
+    : '<div class="exp-empty">Nessuna spesa registrata oggi.</div>';
+
+  el.innerHTML = `<div class="exp-wrap"><div class="exp-card">
+    <div class="exp-hdr">
+      <div class="exp-ttl">💶 Spese di oggi</div>
+      ${todayTotal > 0 ? `<div class="exp-today-total">€${todayTotal.toFixed(2)}</div>` : ''}
+    </div>
+    <div class="exp-form">
+      <div class="exp-row1">
+        <input class="exp-amt" id="exp-amt" type="number" min="0" step="0.01" placeholder="€ 0.00">
+        <select class="exp-cat" id="exp-cat">${catOptions}</select>
+      </div>
+      <input class="exp-note" id="exp-note" placeholder="Descrizione (opzionale)" maxlength="80" onkeydown="if(event.key==='Enter')addSpesa()">
+      <button class="exp-add-btn" onclick="addSpesa()">+ Aggiungi spesa</button>
+    </div>
+    ${todaySpese.length ? '<div class="exp-divider"></div>' : ''}
+    <div class="exp-list">${itemsHTML}</div>
+  </div></div>`;
+}
+
+function addSpesa() {
+  const amtEl = document.getElementById('exp-amt');
+  const amt = parseFloat(amtEl.value);
+  if (isNaN(amt) || amt <= 0) { amtEl.focus(); showToast('Inserisci un importo'); return; }
+  const tk = NOW.toISOString().split('T')[0];
+  spese.push({
+    id: 'sp' + Date.now(),
+    date: tk,
+    amount: amt,
+    cat: document.getElementById('exp-cat').value,
+    note: document.getElementById('exp-note').value.trim(),
+  });
+  saveSpese();
+  amtEl.value = '';
+  document.getElementById('exp-note').value = '';
+  renderSpese();
+  showToast('Spesa registrata ✓');
+}
+
+function delSpesa(id) {
+  spese = spese.filter(s => s.id !== id);
+  saveSpese();
+  renderSpese();
+  showToast('Rimossa');
+}
+
+function renderFinRecap() {
+  const el = document.getElementById('fin-recap-section');
+  if (!el) return;
+
+  const now = new Date();
+  const tk = now.toISOString().split('T')[0];
+
+  // Last 7 days
+  const days7 = [];
+  for (let i = 6; i >= 0; i--) {
+    const d = new Date(now); d.setDate(d.getDate() - i);
+    days7.push(d.toISOString().split('T')[0]);
+  }
+  // Current month
+  const monthKey = tk.substring(0, 7);
+
+  const week7  = spese.filter(s => days7.includes(s.date));
+  const month  = spese.filter(s => s.date.startsWith(monthKey));
+
+  const weekTotal  = week7.reduce((sum, s) => sum + s.amount, 0);
+  const monthTotal = month.reduce((sum, s) => sum + s.amount, 0);
+
+  // By category (month)
+  const byCat = {};
+  month.forEach(s => { byCat[s.cat] = (byCat[s.cat] || 0) + s.amount; });
+  const maxCat = Math.max(...Object.values(byCat), 1);
+  const catRows = Object.entries(byCat).sort((a,b) => b[1]-a[1]).map(([k,v]) => {
+    const cat = SPESE_CAT[k] || {icon:'📦', label:'Varie'};
+    const pct = Math.round((v / maxCat) * 100);
+    return `<div class="fin-cat-row">
+      <span class="fin-cat-ico">${cat.icon}</span>
+      <span class="fin-cat-lbl">${cat.label}</span>
+      <div class="fin-cat-bar-wrap"><div class="fin-cat-bar" style="width:${pct}%"></div></div>
+      <span class="fin-cat-amt">€${v.toFixed(0)}</span>
+    </div>`;
+  }).join('') || '<div class="exp-empty">Nessuna spesa questo mese.</div>';
+
+  // Daily history (last 7 days with totals)
+  const dayRows = days7.reverse().map(d => {
+    const dayTotal = spese.filter(s => s.date === d).reduce((sum, s) => sum + s.amount, 0);
+    const label = new Date(d).toLocaleDateString('it-IT', {weekday:'short', day:'numeric', month:'short'});
+    return `<div class="fin-day-row">
+      <span class="fin-day-date">${label}</span>
+      <span class="fin-day-amt">${dayTotal > 0 ? '€' + dayTotal.toFixed(2) : '—'}</span>
+    </div>`;
+  }).join('');
+
+  el.innerHTML = `<div class="fin-recap-wrap"><div class="fin-recap-card">
+    <div class="fin-recap-ttl">💶 Riepilogo spese</div>
+    <div class="fin-totals">
+      <div class="fin-tot"><div class="fin-tot-n">€${weekTotal.toFixed(0)}</div><div class="fin-tot-l">Ultimi 7 giorni</div></div>
+      <div class="fin-tot"><div class="fin-tot-n">€${monthTotal.toFixed(0)}</div><div class="fin-tot-l">Questo mese</div></div>
+    </div>
+    <div style="font-size:.65rem;font-weight:700;text-transform:uppercase;color:var(--muted);letter-spacing:.1em;margin-bottom:8px">Per categoria (mese)</div>
+    <div class="fin-cats">${catRows}</div>
+    <div class="fin-divider" style="height:1px;background:var(--border);margin:10px 0"></div>
+    <div style="font-size:.65rem;font-weight:700;text-transform:uppercase;color:var(--muted);letter-spacing:.1em;margin-bottom:8px">Ultimi 7 giorni</div>
+    <div class="fin-history">${dayRows}</div>
+  </div></div>`;
+}
+
+// ── INIT ──────────────────────────────────────────────
+renderGluc();
+renderSkin();
+renderPeso();
+renderOggi();
+renderDomani();
+</script>
+</body>
+</html>

@@ -404,6 +404,49 @@ input,select,textarea{font-family:var(--f)}
 .fin-day-date{color:var(--sub);font-weight:600;text-transform:capitalize}
 .fin-day-amt{color:var(--text);font-weight:800}
 
+
+/* ── METEO ── */
+.meteo-wrap{padding:0 16px 14px}
+.meteo-card{background:var(--surf);border:1px solid var(--border);border-radius:var(--r);padding:14px 16px;display:flex;align-items:center;gap:12px}
+.meteo-icon{font-size:2rem;line-height:1;flex-shrink:0}
+.meteo-main{flex:1;min-width:0}
+.meteo-temp{font-size:1.5rem;font-weight:900;color:var(--text);line-height:1}
+.meteo-desc{font-size:.72rem;font-weight:600;color:var(--sub);margin-top:2px;text-transform:capitalize}
+.meteo-right{text-align:right;flex-shrink:0}
+.meteo-minmax{font-size:.7rem;font-weight:700;color:var(--sub)}
+.meteo-loc{font-size:.6rem;font-weight:500;color:var(--sub);opacity:.7;margin-top:3px}
+.meteo-loading{font-size:.78rem;color:var(--sub);padding:4px 0}
+
+/* ── TREND ────────────────────────────────────────────── */
+.trend-tabs{display:flex;gap:6px;padding:0 16px 14px}
+.trend-tab{flex:1;padding:7px 4px;border-radius:10px;border:1.5px solid var(--border);background:var(--surf2);font-size:.7rem;font-weight:700;color:var(--sub);cursor:pointer;text-align:center;transition:all .18s}
+.trend-tab.active{background:var(--acc);color:#fff;border-color:var(--acc)}
+.trend-block{padding:0 16px 16px}
+.trend-card{background:var(--surf);border:1px solid var(--border);border-radius:var(--r);padding:16px;margin-bottom:12px}
+.trend-ttl{font-size:.7rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:var(--sub);margin-bottom:12px}
+.trend-stat-row{display:flex;gap:10px;margin-bottom:14px}
+.trend-stat{flex:1;background:var(--surf2);border-radius:10px;padding:10px 8px;text-align:center}
+.trend-stat-n{font-size:1.3rem;font-weight:900;color:var(--text);line-height:1}
+.trend-stat-l{font-size:.6rem;font-weight:600;color:var(--sub);margin-top:3px;text-transform:uppercase;letter-spacing:.05em}
+.trend-stat-n.warn{color:var(--rose)}
+.trend-stat-n.good{color:#16A34A}
+.trend-chart{width:100%;overflow:hidden;border-radius:8px;background:var(--surf2);padding:8px 4px 4px}
+.trend-chart svg{display:block;width:100%;height:80px}
+.trend-month-bars{display:flex;align-items:flex-end;gap:4px;height:60px;margin-bottom:4px}
+.trend-bar-wrap{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px}
+.trend-bar{width:100%;border-radius:4px 4px 0 0;min-height:3px;transition:height .3s}
+.trend-bar-lbl{font-size:.55rem;font-weight:700;color:var(--sub);text-align:center}
+.trend-bar-val{font-size:.55rem;font-weight:700;color:var(--sub);text-align:center}
+.trend-alert{background:rgba(219,39,119,.07);border:1px solid rgba(219,39,119,.18);border-radius:10px;padding:10px 12px;font-size:.75rem;color:var(--text);line-height:1.5;margin-top:10px}
+.trend-alert strong{color:#DB2777}
+.trend-ok{background:rgba(22,163,74,.07);border:1px solid rgba(22,163,74,.18);border-radius:10px;padding:10px 12px;font-size:.75rem;color:var(--text);line-height:1.5;margin-top:10px}
+.trend-ok strong{color:#16A34A}
+.trend-ciclo-row{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--border)}
+.trend-ciclo-row:last-child{border-bottom:none}
+.trend-ciclo-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0}
+.trend-ciclo-lbl{font-size:.75rem;font-weight:600;color:var(--text);flex:1}
+.trend-ciclo-val{font-size:.7rem;font-weight:700;color:var(--sub)}
+.trend-empty{font-size:.78rem;color:var(--sub);padding:8px 0;text-align:center}
 </style>
 </head>
 <body>
@@ -488,32 +531,32 @@ input,select,textarea{font-family:var(--f)}
 
   <header class="page-hdr">
     <div>
-      <p class="hdr-over">Preview</p>
+      <p class="hdr-over">Pianifica la sera</p>
       <h1 class="hdr-title"><span class="acc">Domani</span></h1>
       <p class="hdr-date" id="domani-lbl"></p>
     </div>
   </header>
 
-  <div id="preview-banner"></div>
+  <!-- meteo domani -->
+  <div class="meteo-wrap">
+    <div class="meteo-card" id="meteo-card">
+      <div class="meteo-loading">Caricamento meteo…</div>
+    </div>
+  </div>
 
-  <div class="sec-hdr"><div class="sec-dot dot-diabete"></div><span class="sec-txt">Glicemia</span><div class="sec-line"></div></div>
-  <div class="act-list" id="d-diabete"></div>
+  <!-- MIT: 3 priorità -->
+  <div class="sec-hdr"><div class="sec-dot" style="background:#F59E0B"></div><span class="sec-txt">Le 3 priorità</span><div class="sec-line"></div></div>
+  <div id="mit-widget"></div>
 
-  <div class="sec-hdr"><div class="sec-dot dot-skincare"></div><span class="sec-txt">Skincare</span><div class="sec-line"></div></div>
-  <div class="act-list" id="d-skincare"></div>
+  <!-- Prepara stasera -->
+  <div class="sec-hdr"><div class="sec-dot" style="background:#16A34A"></div><span class="sec-txt">Prepara stasera</span><div class="sec-line"></div></div>
+  <div id="prep-widget"></div>
 
-  <div class="sec-hdr"><div class="sec-dot dot-corpo"></div><span class="sec-txt">Corpo</span><div class="sec-line"></div></div>
-  <div class="act-list" id="d-corpo"></div>
+  <!-- Preview pasti domani -->
+  <div class="sec-hdr"><div class="sec-dot dot-cucina"></div><span class="sec-txt">Pasti di domani</span><div class="sec-line"></div></div>
+  <div id="d-pasti"></div>
 
-  <div class="sec-hdr"><div class="sec-dot dot-cucina"></div><span class="sec-txt">Cucina</span><div class="sec-line"></div></div>
-  <div class="act-list" id="d-cucina"></div>
-
-  <div class="sec-hdr"><div class="sec-dot dot-studio"></div><span class="sec-txt">Studio</span><div class="sec-line"></div></div>
-  <div class="act-list" id="d-studio"></div>
-
-  <div class="sec-hdr"><div class="sec-dot dot-finanze"></div><span class="sec-txt">Finanze</span><div class="sec-line"></div></div>
-  <div class="act-list" id="d-finanze"></div>
-
+  <!-- Task extra -->
   <div class="sec-hdr"><div class="sec-dot dot-extra"></div><span class="sec-txt">Task extra</span><div class="sec-line"></div></div>
   <div class="add-outer">
     <div class="add-card">
@@ -560,6 +603,17 @@ input,select,textarea{font-family:var(--f)}
 
   <div class="sec-hdr"><div class="sec-dot dot-diabete"></div><span class="sec-txt">Storico glicemia</span><div class="sec-line"></div></div>
   <div class="gt-outer"><div class="gt-card"><div class="gt-ttl">Ultime misurazioni</div><div id="gluc-history"></div></div></div>
+
+
+  <!-- ── TREND ─────────────────────────────────────── -->
+  <div class="sec-hdr"><div class="sec-dot" style="background:#6366F1"></div><span class="sec-txt">Trend nel tempo</span><div class="sec-line"></div></div>
+  <div class="trend-tabs">
+    <button class="trend-tab active" onclick="setTrendPeriod(1,this)">1M</button>
+    <button class="trend-tab" onclick="setTrendPeriod(3,this)">3M</button>
+    <button class="trend-tab" onclick="setTrendPeriod(6,this)">6M</button>
+    <button class="trend-tab" onclick="setTrendPeriod(12,this)">12M</button>
+  </div>
+  <div id="trend-block"></div>
 
   <div class="sec-hdr"><div class="sec-dot dot-recap"></div><span class="sec-txt">Per area</span><div class="sec-line"></div></div>
   <div class="areas-outer" id="areas-outer"></div>
@@ -780,6 +834,10 @@ let ciclo = JSON.parse(localStorage.getItem('av10_ciclo') || '{"lastPeriod":"202
 const saveCiclo = () => localStorage.setItem('av10_ciclo', JSON.stringify(ciclo));
 const saveSpese = () => localStorage.setItem('av10_spese', JSON.stringify(spese));
 let lista = JSON.parse(localStorage.getItem('av10_lista') || '[]');
+let mitData  = JSON.parse(localStorage.getItem('av10_mit')  || '{}');
+let prepData = JSON.parse(localStorage.getItem('av10_prep') || '{}');
+const saveMit  = () => localStorage.setItem('av10_mit',  JSON.stringify(mitData));
+const savePrep = () => localStorage.setItem('av10_prep', JSON.stringify(prepData));
 const saveLista = () => localStorage.setItem('av10_lista', JSON.stringify(lista));
 
 const SPESE_CAT = {
@@ -1088,38 +1146,119 @@ function tog(key, el) {
 }
 
 // ── DOMANI ────────────────────────────────────────────
-function renderDomani() {
-  const dC  = getDayArr(SCHED.corpo,  tomorrowIdx);
-  const dCu = getDayArr(SCHED.cucina, tomorrowIdx);
-  const dSt = getDayArr(SCHED.studio, tomorrowIdx);
+// Genera prep items intelligenti basati sul menu di domani
+function getPrepItems(dCu) {
+  const items = [];
+  // Items fissi
+  items.push({id:'outfit', icon:'👗', text:'Outfit pronto — tuo e bimbi', fixed:true});
+  items.push({id:'bimbi',  icon:'👶', text:'Zaino/kit bimbi pronto',       fixed:true});
+  // Items dinamici dal menu
+  const titles = dCu.map(it => (it.title||'').toLowerCase());
+  const joined = titles.join(' ');
+  if (joined.includes('frullat') || joined.includes('frutta') || joined.includes('yogurt'))
+    items.push({id:'kit_frullato', icon:'🥤', text:'Prepara kit frullato: porziona frutta + avena in sacchetto', fixed:false});
+  if (joined.includes('uov'))
+    items.push({id:'uova_sode', icon:'🥚', text:'Metti a bollire le uova sode (8 min)', fixed:false});
+  if (joined.includes('farro') || joined.includes('orzo') || joined.includes('riso'))
+    items.push({id:'cereali', icon:'🌾', text:'Controlla cereali cotti in frigo — se finiti, cuoci domani mattina', fixed:false});
+  if (joined.includes('pollo') || joined.includes('petto'))
+    items.push({id:'pollo', icon:'🍗', text:'Scongela il pollo per domani (metti in frigo stasera)', fixed:false});
+  if (joined.includes('wrap'))
+    items.push({id:'wrap', icon:'🌯', text:'Tieni il wrap integrale a temperatura ambiente', fixed:false});
+  if (joined.includes('verdur') || joined.includes('grigliata') || joined.includes('zucchine'))
+    items.push({id:'verdure', icon:'🥦', text:'Verdure grigliate pronte in frigo? Controlla batch', fixed:false});
+  if (joined.includes('burger') || joined.includes('legumi'))
+    items.push({id:'burger', icon:'🍔', text:'Scongela i burger di legumi (metti in frigo stasera)', fixed:false});
+  if (joined.includes('pancake'))
+    items.push({id:'pancake', icon:'🥞', text:'Controlla avena e uova per i pancake di domenica', fixed:false});
+  // Domenica = batch cooking
+  const dom = domaniDate.getDay();
+  if (dom === 0)
+    items.push({id:'batch', icon:'🍳', text:'Domenica = BATCH COOKING 90 min — prepara lista ingredienti', fixed:false});
+  return items;
+}
 
-  document.getElementById('preview-banner').innerHTML = `<div class="prev-outer"><div class="prev-card">
-    <div class="prev-over">Anteprima</div>
-    <div class="prev-date">${domaniStr}</div>
-    <div class="prev-chips">
-      ${dC.map(it  =>`<div class="prev-chip">💪 ${it.title.substring(0,22)}${it.title.length>22?'…':''}</div>`).join('')}
-      ${dCu.map(it =>`<div class="prev-chip">🍳 ${it.title.substring(0,22)}${it.title.length>22?'…':''}</div>`).join('')}
-      ${dSt.map(it =>`<div class="prev-chip">📚 ${it.title.substring(0,22)}${it.title.length>22?'…':''}</div>`).join('')}
-      <div class="prev-chip">🌸 Skincare ×${SCHED.skincare.mattina.length+SCHED.skincare.sera.length}</div>
-      <div class="prev-chip">🩺 Glicemia ×4</div>
-    </div>
+function renderMit() {
+  const el = document.getElementById('mit-widget');
+  if (!el) return;
+  const dk = domaniDate.toISOString().split('T')[0];
+  const saved = mitData[dk] || ['','',''];
+  el.innerHTML = `<div style="padding:0 16px 4px"><div style="background:var(--surf);border:1px solid var(--border);border-radius:var(--r);padding:16px;border-top:3px solid #F59E0B">
+    <div style="font-size:.65rem;color:var(--muted);font-weight:700;letter-spacing:.08em;text-transform:uppercase;margin-bottom:12px">Le 3 cose più importanti di domani</div>
+    ${[0,1,2].map(i=>`<div style="display:flex;align-items:center;gap:10px;margin-bottom:8px">
+      <div style="width:24px;height:24px;border-radius:50%;background:${i===0?'#F59E0B':i===1?'rgba(245,158,11,.5)':'rgba(245,158,11,.25)'};color:#fff;font-size:.7rem;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0">${i+1}</div>
+      <input style="flex:1;background:var(--surf2);border:1px solid var(--border);border-radius:10px;padding:9px 12px;font-size:.83rem;color:var(--text);outline:none;font-family:var(--f)" 
+        placeholder="Priorità ${i+1}…" 
+        value="${esc(saved[i]||'')}"
+        onchange="saveMitItem(${i},this.value)"
+        onblur="saveMitItem(${i},this.value)">
+    </div>`).join('')}
   </div></div>`;
+}
 
-  const diabItems = [
-    {icon:'🩺',title:'Misurazione a digiuno',       detail:'Prima di qualsiasi cibo',   time:'7:00', cat:'diabete'},
-    {icon:'🩺',title:'Misurazione post colazione',  detail:'2 ore dopo la colazione',   time:'9:30', cat:'diabete'},
-    {icon:'🩺',title:'Misurazione post pranzo',     detail:'2 ore dopo il pranzo',      time:'15:00',cat:'diabete'},
-    {icon:'🩺',title:'Misurazione post cena',       detail:'2 ore dopo la cena',        time:'21:30',cat:'diabete'},
-  ];
-  document.getElementById('d-diabete').innerHTML  = diabItems.map((it,i) => actHTML(it,`dd${i}`,false,false,true,true)).join('');
-  document.getElementById('d-skincare').innerHTML = [
-    ...SCHED.skincare.mattina.map(s=>({icon:'🌸',title:s.step,detail:s.note,time:s.time,cat:'skincare'})),
-    ...SCHED.skincare.sera.map(s   =>({icon:'🌙',title:s.step,detail:s.note,time:s.time,cat:'skincare'})),
-  ].map((it,i) => actHTML(it,`dsk${i}`,false,false,true,true)).join('');
-  document.getElementById('d-corpo').innerHTML   = dC.length  ? dC.map((it,i) => actHTML({...it,cat:'corpo'}, `dc${i}`, false,false,true,true)).join('') : '<div class="empty">Nessun esercizio pianificato.</div>';
-  document.getElementById('d-cucina').innerHTML  = dCu.length ? dCu.map((it,i)=> actHTML({...it,cat:'cucina'},`dcu${i}`,false,false,true,true)).join('') : '<div class="empty">Nessuna ricetta pianificata.</div>';
-  document.getElementById('d-studio').innerHTML  = dSt.length ? dSt.map((it,i)=> actHTML({...it,cat:'studio'},`dst${i}`,false,false,true,true)).join('') : '<div class="empty">Giorno di pausa.</div>';
-  document.getElementById('d-finanze').innerHTML = '<div class="empty">Nessuna attività finanziaria.</div>';
+function saveMitItem(idx, val) {
+  const dk = domaniDate.toISOString().split('T')[0];
+  if (!mitData[dk]) mitData[dk] = ['','',''];
+  mitData[dk][idx] = val;
+  saveMit();
+}
+
+function renderPrep() {
+  const el = document.getElementById('prep-widget');
+  if (!el) return;
+  const dk = domaniDate.toISOString().split('T')[0];
+  const dCu = getDayArr(SCHED.cucina, tomorrowIdx);
+  const items = getPrepItems(dCu);
+  const saved = prepData[dk] || {};
+  const itemsHTML = items.map(it => {
+    const done = !!saved[it.id];
+    return `<div style="display:flex;align-items:center;gap:10px;padding:10px 12px;background:var(--surf2);border-radius:10px;margin-bottom:6px;cursor:pointer;${done?'opacity:.5':''}" onclick="togPrep('${it.id}')">
+      <div style="width:22px;height:22px;border-radius:7px;border:2px solid ${done?'var(--corpo)':'var(--border)'};background:${done?'var(--corpo)':'var(--surf)'};display:flex;align-items:center;justify-content:center;font-size:.7rem;color:#fff;flex-shrink:0">${done?'✓':''}</div>
+      <span style="font-size:.9rem;flex-shrink:0">${it.icon}</span>
+      <span style="font-size:.82rem;font-weight:600;color:var(--text);flex:1;${done?'text-decoration:line-through':''}">${it.text}</span>
+      ${!it.fixed?'<span style="font-size:.58rem;font-weight:700;color:var(--cucina);background:rgba(217,119,6,.1);padding:2px 6px;border-radius:6px;flex-shrink:0">PASTO</span>':''}
+    </div>`;
+  }).join('');
+  const tot = items.length, done = Object.values(saved).filter(Boolean).length;
+  el.innerHTML = `<div style="padding:0 16px 4px"><div style="background:var(--surf);border:1px solid var(--border);border-radius:var(--r);padding:16px;border-top:3px solid var(--corpo)">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+      <div style="font-size:.65rem;color:var(--muted);font-weight:700;letter-spacing:.08em;text-transform:uppercase">Cosa fare stasera</div>
+      <div style="font-size:.75rem;font-weight:800;color:var(--corpo)">${done}/${tot} ✓</div>
+    </div>
+    <div style="height:4px;background:var(--surf2);border-radius:99px;margin-bottom:12px"><div style="height:100%;width:${tot?Math.round(done/tot*100):0}%;background:var(--corpo);border-radius:99px;transition:width .4s"></div></div>
+    ${itemsHTML}
+  </div></div>`;
+}
+
+function togPrep(id) {
+  const dk = domaniDate.toISOString().split('T')[0];
+  if (!prepData[dk]) prepData[dk] = {};
+  prepData[dk][id] = !prepData[dk][id];
+  savePrep();
+  renderPrep();
+  showToast(prepData[dk][id] ? '✓ Fatto!' : 'Da fare');
+}
+
+function renderPastiDomani() {
+  const el = document.getElementById('d-pasti');
+  if (!el) return;
+  const dCu = getDayArr(SCHED.cucina, tomorrowIdx);
+  if (!dCu.length) { el.innerHTML='<div style="padding:0 16px 8px"><div class="empty">Nessun pasto pianificato.</div></div>'; return; }
+  el.innerHTML = `<div style="padding:0 16px 8px;display:flex;flex-direction:column;gap:6px">` +
+    dCu.map(it => `<div style="display:flex;align-items:flex-start;gap:10px;background:var(--surf);border:1px solid var(--border);border-radius:var(--r);padding:11px 14px;border-left:4px solid var(--cucina)">
+      <span style="font-size:1.2rem;flex-shrink:0">${it.icon||'🍽️'}</span>
+      <div style="flex:1;min-width:0">
+        <div style="font-size:.58rem;font-weight:700;color:var(--cucina);text-transform:uppercase;letter-spacing:.08em">${it.time||''}</div>
+        <div style="font-size:.84rem;font-weight:700;color:var(--text);margin-top:1px;line-height:1.3">${it.title||''}</div>
+        ${it.detail?`<div style="font-size:.7rem;color:var(--sub);margin-top:3px;line-height:1.4">${it.detail}</div>`:''}
+      </div>
+    </div>`).join('') + `</div>`;
+}
+
+function renderDomani() {
+  renderMit();
+  renderPrep();
+  renderPastiDomani();
   renderDex();
 }
 
@@ -1146,6 +1285,251 @@ function delDex(id) {
   saveDex();
   renderDex();
   showToast('Rimosso');
+}
+
+
+// ── TREND ─────────────────────────────────────────────
+let trendMonths = 1;
+
+function setTrendPeriod(m, btn) {
+  trendMonths = m;
+  document.querySelectorAll('.trend-tab').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  renderTrend();
+}
+
+function trendFromDate() {
+  const d = new Date(NOW);
+  d.setMonth(d.getMonth() - trendMonths);
+  return d;
+}
+
+// mini sparkline SVG (polyline)
+function sparkline(values, col, highThresh) {
+  if (!values.length) return '<div class="trend-empty">Dati insufficienti</div>';
+  const w = 300, h = 64, pad = 6;
+  const mn = Math.min(...values) - 2;
+  const mx = Math.max(...values) + 2;
+  const range = mx - mn || 1;
+  const pts = values.map((v, i) => {
+    const x = pad + (i / Math.max(values.length - 1, 1)) * (w - pad * 2);
+    const y = h - pad - ((v - mn) / range) * (h - pad * 2);
+    return `${x.toFixed(1)},${y.toFixed(1)}`;
+  }).join(' ');
+  // threshold line
+  let threshLine = '';
+  if (highThresh !== undefined && highThresh >= mn && highThresh <= mx) {
+    const ty = h - pad - ((highThresh - mn) / range) * (h - pad * 2);
+    threshLine = `<line x1="${pad}" y1="${ty.toFixed(1)}" x2="${w - pad}" y2="${ty.toFixed(1)}" stroke="var(--rose)" stroke-width="1" stroke-dasharray="4,3" opacity=".5"/>`;
+  }
+  // colored dots: red if above threshold
+  const dots = values.map((v, i) => {
+    const x = pad + (i / Math.max(values.length - 1, 1)) * (w - pad * 2);
+    const y = h - pad - ((v - mn) / range) * (h - pad * 2);
+    const c = (highThresh !== undefined && v > highThresh) ? 'var(--rose)' : col;
+    return `<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="3" fill="${c}"/>`;
+  }).join('');
+  return `<div class="trend-chart"><svg viewBox="0 0 ${w} ${h}" preserveAspectRatio="none">
+    ${threshLine}
+    <polyline points="${pts}" fill="none" stroke="${col}" stroke-width="2" stroke-linejoin="round" stroke-linecap="round" opacity=".7"/>
+    ${dots}
+  </svg></div>`;
+}
+
+// monthly bar chart
+function monthBars(monthMap, col, unit) {
+  const entries = Object.entries(monthMap).sort((a, b) => a[0].localeCompare(b[0]));
+  if (!entries.length) return '<div class="trend-empty">Dati insufficienti</div>';
+  const max = Math.max(...entries.map(e => e[1]), 1);
+  const bars = entries.map(([k, v]) => {
+    const pct = Math.round((v / max) * 100);
+    const mo = k.split('-')[1];
+    const moLabel = ['', 'Gen', 'Feb', 'Mar', 'Apr', 'Mag', 'Giu', 'Lug', 'Ago', 'Set', 'Ott', 'Nov', 'Dic'][parseInt(mo)];
+    return `<div class="trend-bar-wrap">
+      <div class="trend-bar-val">${unit === '€' ? '€' + Math.round(v) : Math.round(v * 10) / 10}</div>
+      <div class="trend-bar" style="height:${pct}%;background:${col}"></div>
+      <div class="trend-bar-lbl">${moLabel}</div>
+    </div>`;
+  }).join('');
+  return `<div class="trend-month-bars">${bars}</div>`;
+}
+
+function renderTrend() {
+  const el = document.getElementById('trend-block');
+  if (!el) return;
+  const from = trendFromDate();
+  const fromStr = from.toISOString().split('T')[0];
+
+  // ── GLICEMIA ────────────────────────────────────────
+  const glucFilt = glucoseData.filter(g => g.date >= fromStr);
+  const digValues = glucFilt.map(g => parseFloat(g.digiuno)).filter(v => !isNaN(v));
+  const digHigh   = digValues.filter(v => v > 100).length;
+  const digAvg    = digValues.length ? (digValues.reduce((a, b) => a + b, 0) / digValues.length).toFixed(1) : '—';
+  const digMax    = digValues.length ? Math.max(...digValues).toFixed(0) : '—';
+
+  // monthly avg digiuno
+  const glucByMo = {};
+  const glucCntMo = {};
+  glucFilt.forEach(g => {
+    const mo = g.date.substring(0, 7);
+    const v = parseFloat(g.digiuno);
+    if (!isNaN(v)) { glucByMo[mo] = (glucByMo[mo] || 0) + v; glucCntMo[mo] = (glucCntMo[mo] || 0) + 1; }
+  });
+  const glucMoAvg = {};
+  Object.keys(glucByMo).forEach(k => { glucMoAvg[k] = glucByMo[k] / glucCntMo[k]; });
+
+  const glucAlert = digValues.length === 0
+    ? '<div class="trend-empty">Nessuna misurazione nel periodo.</div>'
+    : digHigh === 0
+    ? `<div class="trend-ok">✅ <strong>Nessuna glicemia alta</strong> a digiuno nel periodo selezionato.</div>`
+    : `<div class="trend-alert">⚠️ Glicemia a digiuno <strong>&gt;100 mg/dL</strong> in <strong>${digHigh} misurazione${digHigh > 1 ? 'i' : 'e'}</strong> su ${digValues.length} — ${Math.round((digHigh / digValues.length) * 100)}% dei controlli.</div>`;
+
+  // ── PESO ─────────────────────────────────────────────
+  const pesoFilt = pesoData.filter(p => p.date >= fromStr).sort((a, b) => a.date.localeCompare(b.date));
+  const pesoVals = pesoFilt.map(p => parseFloat(p.val)).filter(v => !isNaN(v));
+  let pesoTrend = '→';
+  let pesoTrendCol = 'var(--sub)';
+  let pesoDelta = '—';
+  if (pesoVals.length >= 2) {
+    const delta = pesoVals[pesoVals.length - 1] - pesoVals[0];
+    pesoDelta = (delta >= 0 ? '+' : '') + delta.toFixed(1) + ' kg';
+    if (delta < -0.5)      { pesoTrend = '↓'; pesoTrendCol = '#16A34A'; }
+    else if (delta > 0.5)  { pesoTrend = '↑'; pesoTrendCol = 'var(--rose)'; }
+    else                   { pesoTrend = '→'; pesoTrendCol = 'var(--sub)'; }
+  }
+  const pesoMin = pesoVals.length ? Math.min(...pesoVals).toFixed(1) : '—';
+  const pesoMax2 = pesoVals.length ? Math.max(...pesoVals).toFixed(1) : '—';
+
+  // ── FINANZE ──────────────────────────────────────────
+  const speseFilt = spese.filter(s => s.date >= fromStr);
+  const speseByMo = {};
+  speseFilt.forEach(s => {
+    const mo = s.date.substring(0, 7);
+    speseByMo[mo] = (speseByMo[mo] || 0) + s.amount;
+  });
+  const totSpese = speseFilt.reduce((a, b) => a + b.amount, 0);
+  const moCount = Object.keys(speseByMo).length || 1;
+  const avgMoSpese = (totSpese / moCount).toFixed(0);
+  const maxMoSpese = Object.values(speseByMo).length ? Math.max(...Object.values(speseByMo)).toFixed(0) : '—';
+
+  // ── CICLO ─────────────────────────────────────────────
+  const today = NOW.toISOString().split('T')[0];
+  const dayNum = ciclo.lastPeriod
+    ? Math.floor((NOW - new Date(ciclo.lastPeriod)) / 86400000) + 1
+    : null;
+  const FASI = [
+    {nome:'Mestruale',    gg:[1,7],   col:'#DB2777'},
+    {nome:'Follicolare',  gg:[8,13],  col:'#16A34A'},
+    {nome:'Ovulazione',   gg:[14,16], col:'#F59E0B'},
+    {nome:'Luteale',      gg:[17,28], col:'#6366F1'},
+    {nome:'Ciclo lungo',  gg:[29,999],col:'#9333EA'},
+  ];
+  let faseAttuale = dayNum ? FASI.find(f => dayNum >= f.gg[0] && dayNum <= f.gg[1]) : null;
+  if (!faseAttuale && dayNum) faseAttuale = FASI[4];
+
+  // sintomi aggregati nel periodo
+  const sintomsAll = ciclo.sintomi || {};
+  const sintFilt = Object.entries(sintomsAll)
+    .filter(([k]) => k >= fromStr)
+    .map(([, v]) => v).flat();
+  const sintomsCount = {};
+  sintFilt.forEach(s => { sintomsCount[s] = (sintomsCount[s] || 0) + 1; });
+  const topSint = Object.entries(sintomsCount).sort((a, b) => b[1] - a[1]).slice(0, 5);
+
+  const cicloRows = FASI.map(f => {
+    const isCurrent = faseAttuale && faseAttuale.nome === f.nome;
+    return `<div class="trend-ciclo-row" style="${isCurrent ? 'background:rgba(99,102,241,.06);border-radius:8px;padding:8px 8px;margin:0 -4px' : ''}">
+      <div class="trend-ciclo-dot" style="background:${f.col}"></div>
+      <div class="trend-ciclo-lbl">${f.nome}${isCurrent ? ' <span style="font-size:.6rem;font-weight:700;color:var(--acc)">← sei qui (giorno ' + dayNum + ')</span>' : ''}</div>
+      <div class="trend-ciclo-val">Giorni ${f.gg[0]}–${f.gg[1] > 100 ? '…' : f.gg[1]}</div>
+    </div>`;
+  }).join('');
+
+  const sintHtml = topSint.length
+    ? `<div style="margin-top:10px"><div class="trend-ttl">Sintomi più frequenti (${trendMonths}M)</div>` +
+      topSint.map(([s, n]) => `<div style="display:flex;justify-content:space-between;font-size:.75rem;padding:4px 0;border-bottom:1px solid var(--border)"><span>${s}</span><span style="font-weight:700;color:var(--sub)">${n}×</span></div>`).join('') +
+      '</div>'
+    : '';
+
+  const lastPeriodStr = ciclo.lastPeriod
+    ? new Date(ciclo.lastPeriod).toLocaleDateString('it-IT', {day:'numeric', month:'long', year:'numeric'})
+    : '—';
+
+  // ── RENDER ───────────────────────────────────────────
+  el.innerHTML = `
+  <div class="trend-block">
+
+    <!-- Glicemia -->
+    <div class="trend-card">
+      <div class="trend-ttl">🩸 Glicemia a digiuno</div>
+      <div class="trend-stat-row">
+        <div class="trend-stat">
+          <div class="trend-stat-n ${parseFloat(digAvg) > 100 ? 'warn' : digAvg !== '—' ? 'good' : ''}">${digAvg}</div>
+          <div class="trend-stat-l">Media mg/dL</div>
+        </div>
+        <div class="trend-stat">
+          <div class="trend-stat-n ${digHigh > 0 ? 'warn' : 'good'}">${digHigh}</div>
+          <div class="trend-stat-l">Valori &gt;100</div>
+        </div>
+        <div class="trend-stat">
+          <div class="trend-stat-n">${digMax}</div>
+          <div class="trend-stat-l">Max mg/dL</div>
+        </div>
+      </div>
+      ${digValues.length >= 2 ? sparkline(digValues, '#DB2777', 100) : '<div class="trend-empty">Inserisci almeno 2 misurazioni per vedere il grafico.</div>'}
+      ${digValues.length >= 3 ? '<div style="margin-top:10px"><div class="trend-ttl">Media mensile</div>' + monthBars(glucMoAvg, '#DB2777', '') + '</div>' : ''}
+      ${glucAlert}
+    </div>
+
+    <!-- Peso -->
+    <div class="trend-card">
+      <div class="trend-ttl">⚖️ Peso corporeo</div>
+      <div class="trend-stat-row">
+        <div class="trend-stat">
+          <div class="trend-stat-n" style="color:${pesoTrendCol}">${pesoTrend}</div>
+          <div class="trend-stat-l">Tendenza</div>
+        </div>
+        <div class="trend-stat">
+          <div class="trend-stat-n">${pesoDelta}</div>
+          <div class="trend-stat-l">Variazione</div>
+        </div>
+        <div class="trend-stat">
+          <div class="trend-stat-n">${pesoMin} – ${pesoMax2}</div>
+          <div class="trend-stat-l">Min – Max kg</div>
+        </div>
+      </div>
+      ${pesoVals.length >= 2 ? sparkline(pesoVals, '#6366F1') : '<div class="trend-empty">Inserisci almeno 2 pesate per vedere il grafico.</div>'}
+    </div>
+
+    <!-- Finanze -->
+    <div class="trend-card">
+      <div class="trend-ttl">💶 Spese</div>
+      <div class="trend-stat-row">
+        <div class="trend-stat">
+          <div class="trend-stat-n">€${Math.round(totSpese)}</div>
+          <div class="trend-stat-l">Totale periodo</div>
+        </div>
+        <div class="trend-stat">
+          <div class="trend-stat-n">€${avgMoSpese}</div>
+          <div class="trend-stat-l">Media / mese</div>
+        </div>
+        <div class="trend-stat">
+          <div class="trend-stat-n">€${maxMoSpese}</div>
+          <div class="trend-stat-l">Mese più alto</div>
+        </div>
+      </div>
+      ${Object.keys(speseByMo).length >= 1 ? monthBars(speseByMo, '#F59E0B', '€') : '<div class="trend-empty">Nessuna spesa nel periodo.</div>'}
+    </div>
+
+    <!-- Ciclo -->
+    <div class="trend-card">
+      <div class="trend-ttl">🌸 Ciclo mestruale</div>
+      <div style="font-size:.72rem;color:var(--sub);margin-bottom:12px">Ultimo ciclo: <strong style="color:var(--text)">${lastPeriodStr}</strong>${dayNum ? ' · Giorno <strong style="color:var(--acc)">' + dayNum + '</strong>' : ''}</div>
+      ${cicloRows}
+      ${sintHtml}
+    </div>
+
+  </div>`;
 }
 
 // ── RECAP ─────────────────────────────────────────────
@@ -1268,7 +1652,7 @@ function sv(name) {
   document.querySelectorAll('.nb').forEach(b=>b.classList.remove('active'));
   document.getElementById('view-'+name).classList.add('active');
   document.getElementById('nav-' +name).classList.add('active');
-  if (name==='recap') renderRecap();
+  if (name==='recap') { renderRecap(); renderTrend(); }
   if (name==='piano') renderPiano();
   window.scrollTo(0,0);
 }
@@ -1816,6 +2200,58 @@ function renderCicloRecap() {
   </div></div>`;
 }
 
+
+// ── METEO ──────────────────────────────────────────────
+const WMO = {
+  0:'Sereno',1:'Prevalentemente sereno',2:'Parzialmente nuvoloso',3:'Nuvoloso',
+  45:'Nebbia',48:'Nebbia con brina',
+  51:'Pioggia leggera',53:'Pioggia moderata',55:'Pioggia intensa',
+  61:'Pioggia leggera',63:'Pioggia moderata',65:'Pioggia intensa',
+  71:'Neve leggera',73:'Neve moderata',75:'Neve intensa',
+  80:'Rovesci leggeri',81:'Rovesci moderati',82:'Rovesci violenti',
+  85:'Rovesci di neve',86:'Rovesci di neve intensi',
+  95:'Temporale',96:'Temporale con grandine',99:'Temporale con grandine intensa'
+};
+const WMO_ICON = {
+  0:'☀️',1:'🌤️',2:'⛅',3:'☁️',
+  45:'🌫️',48:'🌫️',
+  51:'🌦️',53:'🌧️',55:'🌧️',
+  61:'🌦️',63:'🌧️',65:'🌧️',
+  71:'🌨️',73:'❄️',75:'❄️',
+  80:'🌦️',81:'🌧️',82:'⛈️',
+  85:'🌨️',86:'❄️',
+  95:'⛈️',96:'⛈️',99:'⛈️'
+};
+
+async function fetchMeteo() {
+  const card = document.getElementById('meteo-card');
+  try {
+    const url = 'https://api.open-meteo.com/v1/forecast?latitude=41.93&longitude=12.57&current=temperature_2m,weathercode&daily=temperature_2m_max,temperature_2m_min&timezone=Europe%2FRome&forecast_days=1';
+    const r = await fetch(url);
+    const d = await r.json();
+    const cur = d.current;
+    const day = d.daily;
+    const code = cur.weathercode;
+    const temp = Math.round(cur.temperature_2m);
+    const tmax = Math.round(day.temperature_2m_max[0]);
+    const tmin = Math.round(day.temperature_2m_min[0]);
+    const icon = WMO_ICON[code] || '🌡️';
+    const desc = WMO[code] || 'N/D';
+    card.innerHTML = `
+      <div class="meteo-icon">${icon}</div>
+      <div class="meteo-main">
+        <div class="meteo-temp">${temp}°C</div>
+        <div class="meteo-desc">${desc}</div>
+      </div>
+      <div class="meteo-right">
+        <div class="meteo-minmax">▲${tmax}° ▼${tmin}°</div>
+        <div class="meteo-loc">Roma · Oggi</div>
+      </div>`;
+  } catch(e) {
+    card.innerHTML = '<div class="meteo-loading" style="color:var(--rose)">Meteo non disponibile</div>';
+  }
+}
+
 // ── INIT ──────────────────────────────────────────────
 renderGluc();
 renderSkin();
@@ -1823,6 +2259,7 @@ renderPeso();
 renderOggi();
 renderDomani();
 renderCiclo();
+fetchMeteo();
 </script>
 </body>
 </html>

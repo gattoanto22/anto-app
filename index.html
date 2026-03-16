@@ -407,15 +407,11 @@ input,select,textarea{font-family:var(--f)}
 
 /* ── METEO ── */
 .meteo-wrap{padding:0 16px 14px}
-.meteo-card{background:var(--surf);border:1px solid var(--border);border-radius:var(--r);padding:14px 16px;display:flex;align-items:center;gap:12px}
-.meteo-icon{font-size:2rem;line-height:1;flex-shrink:0}
-.meteo-main{flex:1;min-width:0}
-.meteo-temp{font-size:1.5rem;font-weight:900;color:var(--text);line-height:1}
-.meteo-desc{font-size:.72rem;font-weight:600;color:var(--sub);margin-top:2px;text-transform:capitalize}
-.meteo-right{text-align:right;flex-shrink:0}
-.meteo-minmax{font-size:.7rem;font-weight:700;color:var(--sub)}
-.meteo-loc{font-size:.6rem;font-weight:500;color:var(--sub);opacity:.7;margin-top:3px}
-.meteo-loading{font-size:.78rem;color:var(--sub);padding:4px 0}
+.meteo-3b{background:var(--surf);border:1px solid var(--border);border-radius:var(--r);overflow:hidden}
+.meteo-3b-scroll{overflow-x:auto;overflow-y:hidden;-webkit-overflow-scrolling:touch;line-height:0}
+.meteo-3b-scroll iframe{display:block;border-radius:var(--r) var(--r) 0 0}
+.meteo-3b-src{padding:5px 12px 7px;font-size:.6rem;color:var(--sub);text-align:right}
+.meteo-3b-src a{color:var(--sub);text-decoration:none;font-weight:600}
 
 /* ── TREND ────────────────────────────────────────────── */
 .trend-tabs{display:flex;gap:6px;padding:0 16px 14px}
@@ -537,10 +533,17 @@ input,select,textarea{font-family:var(--f)}
     </div>
   </header>
 
-  <!-- meteo domani -->
+  <!-- meteo 3BMeteo -->
   <div class="meteo-wrap">
-    <div class="meteo-card" id="meteo-card">
-      <div class="meteo-loading">Caricamento meteo…</div>
+    <div class="meteo-3b">
+      <div class="meteo-3b-scroll">
+        <iframe
+          src="https://www.3bmeteo.com/moduli_esterni/localita_7_giorni_compatto/5913/f5f5fa/2563eb/555570/f5f5fa/it"
+          width="364" height="176" frameborder="0" scrolling="no"
+          title="Meteo Roma — 3BMeteo" loading="lazy">
+        </iframe>
+      </div>
+      <div class="meteo-3b-src">Dati <a href="https://www.3bmeteo.com/meteo/roma" target="_blank" rel="noopener">3BMeteo · Roma</a></div>
     </div>
   </div>
 
@@ -688,10 +691,14 @@ document.getElementById('domani-lbl').textContent = domaniStr;
 // ── SCHEDULES ──────────────────────────────────────────
 const SCHED = {
   corpo: {
+    // 0=LUN 1=MAR 2=MER 3=GIO 4=VEN 5=SAB(libero) 6=DOM(libero)
     default:[
       {icon:'🧘‍♀️',title:'STRETCHING',detail:'5 min mobilità cervicale · 5 min stretching pettorali · 5 min rinforzo scapolare · 5 min respirazione diaframmatica',time:'Mattina',link:'https://www.youtube.com/results?search_query=sweat+stretching+no+equipment'},
     ],
-    6:[{icon:'💪',title:'Circuito corpo libero — SWEAT',detail:'3 giri da 12 rip: squat · affondi · push-up · plank 30s · ponte glutei. Video 20-30 min no-attrezzi.',time:'Mattina',link:'https://www.youtube.com/results?search_query=sweat+app+full+body+no+equipment'}],
+    1:[{icon:'💪',title:'Circuito corpo libero — SWEAT',detail:'3 giri da 12 rip: squat · affondi · push-up · plank 30s · ponte glutei. Video 20-30 min no-attrezzi.',time:'Mattina',link:'https://www.youtube.com/results?search_query=sweat+app+full+body+no+equipment'}],
+    3:[{icon:'💪',title:'Circuito corpo libero — SWEAT',detail:'3 giri da 12 rip: squat · affondi · push-up · plank 30s · ponte glutei. Video 20-30 min no-attrezzi.',time:'Mattina',link:'https://www.youtube.com/results?search_query=sweat+app+full+body+no+equipment'}],
+    5:[],
+    6:[],
   },
   cucina: {
     // 0=LUN, 1=MAR, 2=MER, 3=GIO, 4=VEN, 5=SAB, 6=DOM
@@ -746,14 +753,23 @@ const SCHED = {
     ],
   },
   studio: {
-    default:[{icon:'📖',title:'Test CBT EPSO',detail:'25 min · Ragionamento verbale e numerico',time:'Sera',link:'https://www.eutraining.eu'}],
-    1:[{icon:'💰',title:'Finanze: audit estratto conto',detail:'25 min · Classifica spese · Cerca 30-50€ recuperabili',time:'Sera'}],
-    3:[{icon:'🇪🇺',title:'DG HOME — epso.eu',detail:'20 min · Profili funzionari DG HOME · Bandi aperti',time:'Sera',link:'https://epso.europa.eu'}],
-    5:[{icon:'📚',title:'EU Academy — Law & Migration',detail:'45 min · Formazione gratuita con attestato',time:'Pomeriggio',link:'https://academy.europa.eu'}],
-    6:[{icon:'🎓',title:'Revisione settimana + pianificazione',detail:'30 min · Rivedi errori CBT · Prossima settimana',time:'Pomeriggio',link:'https://www.eutraining.eu'}],
+    // 0=LUN 1=MAR 2=MER 3=GIO 4=VEN 5=SAB(libero) 6=DOM(libero)
+    0:[{icon:'🇫🇷',title:'Francese — Assimil',detail:'30 min · Lezione del giorno · Ascolto + ripetizione attiva · Inizio settimana con la mente fresca',time:'Sera',link:'https://www.assimil.com/fr/'}],
+    1:[{icon:'🧠',title:'Test Psicometrici — EPSO',detail:'30 min · Ragionamento verbale, numerico e astratto · Allena velocità e precisione',time:'Sera',link:'https://www.eutraining.eu'}],
+    2:[{icon:'🇪🇺',title:'EU Knowledge',detail:'30 min · Istituzioni UE, diritto europeo, politiche DG HOME · Quiz a risposta multipla',time:'Sera',link:'https://epso.europa.eu'}],
+    3:[
+      {icon:'🇫🇷',title:'Francese — Assimil',detail:'30 min · Ripasso lezione precedente + avanzamento · Scrittura e grammatica',time:'Sera',link:'https://www.assimil.com/fr/'},
+      {icon:'📚',title:'EU Academy — Law & Migration',detail:'45 min · Formazione gratuita con attestato · Approfondimento DG HOME',time:'Sera',link:'https://academy.europa.eu'},
+    ],
+    4:[
+      {icon:'🧠',title:'Test Psicometrici — EPSO',detail:'30 min · Simulazione test completo · Chiudi la settimana misurando i progressi',time:'Sera',link:'https://www.eutraining.eu'},
+      {icon:'🎓',title:'Revisione settimana',detail:'20 min · Rivedi errori test · Segna progressi francese · Pianifica la prossima settimana',time:'Sera',link:'https://www.eutraining.eu'},
+    ],
+    5:[],
+    6:[],
   },
   finanze: {
-    6:[{icon:'💶',title:'Revisione spese settimanale',detail:'10 min · Classifica le spese della settimana · Nota dove puoi recuperare 30-50€',time:'Sera',cat:'finanze'}],
+    4:[{icon:'💶',title:'Revisione spese settimanale',detail:'10 min · Classifica le spese della settimana · Nota dove puoi recuperare 30-50€',time:'Sera',cat:'finanze'}],
   },
   skincare: {
     mattina:[
@@ -2201,65 +2217,6 @@ function renderCicloRecap() {
 }
 
 
-// ── METEO ──────────────────────────────────────────────
-const WMO = {
-  0:'Sereno',1:'Prevalentemente sereno',2:'Parzialmente nuvoloso',3:'Nuvoloso',
-  45:'Nebbia',48:'Nebbia con brina',
-  51:'Pioggia leggera',53:'Pioggia moderata',55:'Pioggia intensa',
-  61:'Pioggia leggera',63:'Pioggia moderata',65:'Pioggia intensa',
-  71:'Neve leggera',73:'Neve moderata',75:'Neve intensa',
-  80:'Rovesci leggeri',81:'Rovesci moderati',82:'Rovesci violenti',
-  85:'Rovesci di neve',86:'Rovesci di neve intensi',
-  95:'Temporale',96:'Temporale con grandine',99:'Temporale con grandine intensa'
-};
-const WMO_ICON = {
-  0:'☀️',1:'🌤️',2:'⛅',3:'☁️',
-  45:'🌫️',48:'🌫️',
-  51:'🌦️',53:'🌧️',55:'🌧️',
-  61:'🌦️',63:'🌧️',65:'🌧️',
-  71:'🌨️',73:'❄️',75:'❄️',
-  80:'🌦️',81:'🌧️',82:'⛈️',
-  85:'🌨️',86:'❄️',
-  95:'⛈️',96:'⛈️',99:'⛈️'
-};
-
-async function fetchMeteo() {
-  const card = document.getElementById('meteo-card');
-  try {
-    const url = 'https://api.open-meteo.com/v1/forecast?latitude=41.93&longitude=12.57&current=temperature_2m,weathercode&daily=temperature_2m_max,temperature_2m_min&timezone=Europe%2FRome&forecast_days=1';
-    const r = await fetch(url);
-    const d = await r.json();
-    const cur = d.current;
-    const day = d.daily;
-    const code = cur.weathercode;
-    const temp = Math.round(cur.temperature_2m);
-    const tmax = Math.round(day.temperature_2m_max[0]);
-    const tmin = Math.round(day.temperature_2m_min[0]);
-    const icon = WMO_ICON[code] || '🌡️';
-    const desc = WMO[code] || 'N/D';
-    card.innerHTML = `
-      <div class="meteo-icon">${icon}</div>
-      <div class="meteo-main">
-        <div class="meteo-temp">${temp}°C</div>
-        <div class="meteo-desc">${desc}</div>
-      </div>
-      <div class="meteo-right">
-        <div class="meteo-minmax">▲${tmax}° ▼${tmin}°</div>
-        <div class="meteo-loc">Roma · Oggi</div>
-      </div>`;
-  } catch(e) {
-    card.innerHTML = '<div class="meteo-loading" style="color:var(--rose)">Meteo non disponibile</div>';
-  }
-}
-
-// ── INIT ──────────────────────────────────────────────
-renderGluc();
-renderSkin();
-renderPeso();
-renderOggi();
-renderDomani();
-renderCiclo();
-fetchMeteo();
 </script>
 </body>
 </html>

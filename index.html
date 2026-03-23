@@ -443,6 +443,33 @@ input,select,textarea{font-family:var(--f)}
 .trend-ciclo-lbl{font-size:.75rem;font-weight:600;color:var(--text);flex:1}
 .trend-ciclo-val{font-size:.7rem;font-weight:700;color:var(--sub)}
 .trend-empty{font-size:.78rem;color:var(--sub);padding:8px 0;text-align:center}
+
+/* ── BACKUP ──────────────────────────────────────────── */
+.backup-wrap{padding:0 16px 16px}
+.backup-card{background:var(--surf);border:1px solid var(--border);border-radius:var(--r);padding:16px}
+.backup-ttl{font-size:.88rem;font-weight:800;color:var(--text);margin-bottom:4px}
+.backup-sub{font-size:.72rem;color:var(--sub);margin-bottom:14px;line-height:1.5}
+.backup-btns{display:flex;gap:10px}
+.backup-btn{flex:1;padding:11px 8px;border-radius:10px;border:none;font-size:.78rem;font-weight:800;cursor:pointer;letter-spacing:.03em}
+.backup-btn.exp{background:linear-gradient(135deg,#6366F1,#8B5CF6);color:#fff}
+.backup-btn.imp{background:var(--surf2);color:var(--text);border:1.5px solid var(--border)}
+.backup-last{font-size:.65rem;color:var(--sub);margin-top:10px;text-align:center}
+
+/* ── BUDGET MENSILE ───────────────────────────────────── */
+.bud-wrap{padding:0 16px 14px}
+.bud-card{background:var(--surf);border:1px solid var(--border);border-radius:var(--r);padding:16px}
+.bud-ttl{font-size:.88rem;font-weight:800;color:var(--text);margin-bottom:14px}
+.bud-row{margin-bottom:12px}
+.bud-row:last-child{margin-bottom:0}
+.bud-top{display:flex;align-items:center;gap:8px;margin-bottom:5px}
+.bud-ico{font-size:.95rem;width:20px;text-align:center;flex-shrink:0}
+.bud-lbl{font-size:.75rem;font-weight:700;color:var(--text);flex:1}
+.bud-nums{font-size:.7rem;font-weight:800;color:var(--sub)}
+.bud-bar-bg{height:8px;background:var(--surf2);border-radius:99px;overflow:hidden}
+.bud-bar-fill{height:100%;border-radius:99px;transition:width .4s}
+.bud-alert{font-size:.65rem;font-weight:700;margin-top:4px;padding:3px 8px;border-radius:6px;display:inline-block}
+.bud-alert.warn{background:rgba(245,158,11,.12);color:#D97706}
+.bud-alert.stop{background:rgba(239,68,68,.12);color:#DC2626}
 </style>
 </head>
 <body>
@@ -511,7 +538,10 @@ input,select,textarea{font-family:var(--f)}
   <div class="sec-hdr"><div class="sec-dot dot-studio"></div><span class="sec-txt">Studio</span><div class="sec-line"></div></div>
   <div class="act-list" id="o-studio"></div>
 
-  <div class="sec-hdr"><div class="sec-dot dot-finanze"></div><span class="sec-txt">Finanze</span><div class="sec-line"></div></div>
+  <div class="sec-hdr"><div class="sec-dot dot-finanze"></div><span class="sec-txt">Budget mensile</span><div class="sec-line"></div></div>
+  <div id="budget-widget"></div>
+
+  <div class="sec-hdr"><div class="sec-dot dot-finanze"></div><span class="sec-txt">Spese di oggi</span><div class="sec-line"></div></div>
   <div class="act-list" id="o-finanze"></div>
 
   <div class="sec-hdr"><div class="sec-dot" style="background:#16A34A"></div><span class="sec-txt">Lista della spesa</span><div class="sec-line"></div></div>
@@ -629,6 +659,23 @@ input,select,textarea{font-family:var(--f)}
 
   <div class="sec-hdr"><div class="sec-dot" style="background:#DB2777"></div><span class="sec-txt">Ciclo mestruale</span><div class="sec-line"></div></div>
   <div id="ciclo-recap-section"></div>
+
+
+  <div class="sec-hdr"><div class="sec-dot" style="background:#6366F1"></div><span class="sec-txt">Backup dati</span><div class="sec-line"></div></div>
+  <div class="backup-wrap">
+    <div class="backup-card">
+      <div class="backup-ttl">💾 Esporta / Importa</div>
+      <div class="backup-sub">Scarica un file JSON con tutti i tuoi dati (glicemia, peso, spese, ciclo, note) e salvalo nella cartella <strong>APP ANTO › Backups</strong> sul tuo Mac.</div>
+      <div class="backup-btns">
+        <button class="backup-btn exp" onclick="exportBackup()">⬇ Esporta backup</button>
+        <label class="backup-btn imp" style="text-align:center;cursor:pointer">
+          ⬆ Importa backup
+          <input type="file" accept=".json" style="display:none" onchange="importBackup(event)">
+        </label>
+      </div>
+      <div class="backup-last" id="backup-last"></div>
+    </div>
+  </div>
 
   <div class="sec-hdr"><div class="sec-dot dot-extra"></div><span class="sec-txt">Nota della sera</span><div class="sec-line"></div></div>
   <div class="note-outer">
@@ -846,7 +893,7 @@ let darkMode    = localStorage.getItem('av8_dark') === 'true';
 let spese       = JSON.parse(localStorage.getItem('av10_spese') || '[]');
 let idroVit     = JSON.parse(localStorage.getItem('av10_idro')  || '{}');
 const saveIdroVit = () => localStorage.setItem('av10_idro', JSON.stringify(idroVit));
-let ciclo = JSON.parse(localStorage.getItem('av10_ciclo') || '{"lastPeriod":"2026-02-06","sintomi":{}}');
+let ciclo = JSON.parse(localStorage.getItem('av10_ciclo') || '{"lastPeriod":"2026-03-18","sintomi":{}}');
 const saveCiclo = () => localStorage.setItem('av10_ciclo', JSON.stringify(ciclo));
 const saveSpese = () => localStorage.setItem('av10_spese', JSON.stringify(spese));
 let lista = JSON.parse(localStorage.getItem('av10_lista') || '[]');
@@ -857,14 +904,26 @@ const savePrep = () => localStorage.setItem('av10_prep', JSON.stringify(prepData
 const saveLista = () => localStorage.setItem('av10_lista', JSON.stringify(lista));
 
 const SPESE_CAT = {
-  spesa:     {icon:'🛒', label:'Spesa alimentare'},
   bimbi:     {icon:'👶', label:'Bimbi'},
-  trasporti: {icon:'🚗', label:'Trasporti'},
+  amazon:    {icon:'📦', label:'Amazon'},
+  beauty:    {icon:'💅', label:'Beauty'},
+  fuori:     {icon:'🍽️', label:'Ristoranti & fuori'},
+  palestra:  {icon:'🏋️', label:'Palestra'},
   salute:    {icon:'💊', label:'Salute & farmacia'},
-  io:        {icon:'💅', label:'Io'},
-  fuori:     {icon:'🍽️', label:'Fuori pasto'},
+  spesa:     {icon:'🛒', label:'Spesa alimentare'},
+  trasporti: {icon:'🚗', label:'Trasporti'},
   casa:      {icon:'🏠', label:'Casa & utenze'},
   varie:     {icon:'📦', label:'Varie'},
+};
+
+// Budget mensili per categoria
+const BUDGET_MENSILE = {
+  bimbi:    80,
+  amazon:   60,
+  beauty:   90,
+  fuori:    80,
+  palestra: 89,
+  salute:   100,
 };
 
 const saveOggi = () => localStorage.setItem('av7_oggi',  JSON.stringify(oggiDone));
@@ -1117,6 +1176,7 @@ function renderOggi() {
   });
 
   renderSpese();
+  renderBudget();
   renderLista();
   renderCiclo();
 
@@ -1668,7 +1728,7 @@ function sv(name) {
   document.querySelectorAll('.nb').forEach(b=>b.classList.remove('active'));
   document.getElementById('view-'+name).classList.add('active');
   document.getElementById('nav-' +name).classList.add('active');
-  if (name==='recap') { renderRecap(); renderTrend(); }
+  if (name==='recap') { renderRecap(); renderTrend(); renderBackupDate(); }
   if (name==='piano') renderPiano();
   window.scrollTo(0,0);
 }
@@ -1770,6 +1830,7 @@ function addSpesa() {
   amtEl.value = '';
   document.getElementById('exp-note').value = '';
   renderSpese();
+  renderBudget();
   showToast('Spesa registrata ✓');
 }
 
@@ -1777,6 +1838,7 @@ function delSpesa(id) {
   spese = spese.filter(s => s.id !== id);
   saveSpese();
   renderSpese();
+  renderBudget();
   showToast('Rimossa');
 }
 
@@ -2116,12 +2178,20 @@ function renderCiclo() {
       <div style="font-size:.65rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px">Sintomi di oggi</div>
       <div style="display:flex;flex-wrap:wrap;gap:6px">${sintHTML}</div>
     </div>
+    <div style="margin-bottom:10px">
+      <div style="font-size:.65rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px">Data inizio ciclo</div>
+      <div style="display:flex;gap:8px;align-items:center">
+        <input type="date" id="ciclo-date-inp"
+          style="flex:1;background:var(--surf2);border:1.5px solid var(--border);color:var(--text);font-size:.85rem;font-weight:700;border-radius:10px;padding:9px 12px;outline:none;font-family:var(--f)"
+          value="${ciclo.lastPeriod || NOW.toISOString().split('T')[0]}">
+        <button onclick="setLastPeriodDate()" style="padding:10px 14px;background:linear-gradient(135deg,#BE185D,#DB2777);color:#fff;font-size:.8rem;font-weight:800;border-radius:10px;border:none;cursor:pointer;white-space:nowrap">
+          🔴 Salva
+        </button>
+      </div>
+    </div>
     <div style="display:flex;gap:8px">
-      <button onclick="setLastPeriod()" style="flex:1;padding:10px;background:linear-gradient(135deg,#BE185D,#DB2777);color:#fff;font-size:.78rem;font-weight:800;border-radius:10px;border:none;cursor:pointer">
-        🔴 Inizia ciclo oggi
-      </button>
-      <button onclick="showIntegratori()" style="padding:10px 12px;background:rgba(139,92,246,.12);color:var(--studio);font-size:.78rem;font-weight:800;border-radius:10px;border:1px solid rgba(139,92,246,.25);cursor:pointer">
-        💊 Integr.
+      <button onclick="showIntegratori()" style="flex:1;padding:10px 12px;background:rgba(139,92,246,.12);color:var(--studio);font-size:.78rem;font-weight:800;border-radius:10px;border:1px solid rgba(139,92,246,.25);cursor:pointer">
+        💊 Integratori PCOS
       </button>
     </div>
     ${ciclo.lastPeriod?`<div style="text-align:center;font-size:.63rem;color:var(--muted);margin-top:8px">Ultimo ciclo: ${new Date(ciclo.lastPeriod).toLocaleDateString('it-IT',{day:'numeric',month:'long'})}</div>`:''}
@@ -2148,12 +2218,15 @@ function showIntegratori() {
   </div>`;
 }
 
-function setLastPeriod() {
-  const tk = NOW.toISOString().split('T')[0];
-  ciclo.lastPeriod = tk;
+function setLastPeriodDate() {
+  const inp = document.getElementById('ciclo-date-inp');
+  const val = inp ? inp.value : NOW.toISOString().split('T')[0];
+  if (!val) { showToast('Seleziona una data'); return; }
+  ciclo.lastPeriod = val;
   saveCiclo();
   renderCiclo();
-  showToast('🔴 Ciclo registrato');
+  const d = new Date(val).toLocaleDateString('it-IT',{day:'numeric',month:'long',year:'numeric'});
+  showToast('🔴 Ciclo aggiornato: ' + d);
 }
 
 function togSintomo(id) {
@@ -2216,13 +2289,124 @@ function renderCicloRecap() {
   </div></div>`;
 }
 
+
+// ── BACKUP ────────────────────────────────────────────
+function exportBackup() {
+  const data = {
+    version: 1,
+    date: new Date().toISOString(),
+    av7_oggi:    localStorage.getItem('av7_oggi'),
+    av7_skin:    localStorage.getItem('av7_skin'),
+    av7_gluc:    localStorage.getItem('av7_gluc'),
+    av7_notes:   localStorage.getItem('av7_notes'),
+    av7_streak:  localStorage.getItem('av7_streak'),
+    av7_lastdate:localStorage.getItem('av7_lastdate'),
+    av7_energy:  localStorage.getItem('av7_energy'),
+    av8_peso:    localStorage.getItem('av8_peso'),
+    av8_dark:    localStorage.getItem('av8_dark'),
+    av10_spese:  localStorage.getItem('av10_spese'),
+    av10_idro:   localStorage.getItem('av10_idro'),
+    av10_ciclo:  localStorage.getItem('av10_ciclo'),
+    av10_lista:  localStorage.getItem('av10_lista'),
+    av10_mit:    localStorage.getItem('av10_mit'),
+    av10_prep:   localStorage.getItem('av10_prep'),
+  };
+  const blob = new Blob([JSON.stringify(data, null, 2)], {type:'application/json'});
+  const url  = URL.createObjectURL(blob);
+  const a    = document.createElement('a');
+  const dateStr = new Date().toISOString().split('T')[0];
+  a.href = url;
+  a.download = `backup_anto_${dateStr}.json`;
+  a.click();
+  URL.revokeObjectURL(url);
+  localStorage.setItem('av10_lastbackup', new Date().toISOString());
+  renderBackupDate();
+  showToast('Backup esportato ✓');
+}
+
+function importBackup(e) {
+  const file = e.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = function(ev) {
+    try {
+      const data = JSON.parse(ev.target.result);
+      if (!data.version) { showToast('File non valido ✗'); return; }
+      const keys = ['av7_oggi','av7_skin','av7_gluc','av7_notes','av7_streak','av7_lastdate',
+                    'av7_energy','av8_peso','av8_dark','av10_spese','av10_idro','av10_ciclo',
+                    'av10_lista','av10_mit','av10_prep'];
+      keys.forEach(k => { if (data[k] != null) localStorage.setItem(k, data[k]); });
+      localStorage.setItem('av10_lastbackup', new Date().toISOString());
+      showToast('Dati ripristinati ✓ — ricarico…');
+      setTimeout(() => location.reload(), 1200);
+    } catch(err) {
+      showToast('Errore importazione ✗');
+    }
+  };
+  reader.readAsText(file);
+}
+
+function renderBackupDate() {
+  const el = document.getElementById('backup-last');
+  if (!el) return;
+  const d = localStorage.getItem('av10_lastbackup');
+  el.textContent = d
+    ? 'Ultimo backup: ' + new Date(d).toLocaleDateString('it-IT',{day:'numeric',month:'long',year:'numeric',hour:'2-digit',minute:'2-digit'})
+    : 'Nessun backup ancora effettuato';
+}
+
+
+// ── BUDGET MENSILE ────────────────────────────────────
+function renderBudget() {
+  const el = document.getElementById('budget-widget');
+  if (!el) return;
+  const monthKey = NOW.toISOString().substring(0, 7);
+  const meseSpese = spese.filter(s => s.date.startsWith(monthKey));
+
+  const rows = Object.entries(BUDGET_MENSILE).map(([cat, limit]) => {
+    const info = SPESE_CAT[cat] || {icon:'📦', label:cat};
+    const spent = meseSpese.filter(s => s.cat === cat).reduce((a, b) => a + b.amount, 0);
+    const pct   = Math.min(Math.round((spent / limit) * 100), 100);
+    const over  = spent > limit;
+    const warn  = !over && pct >= 70;
+
+    let barColor = '#16A34A';
+    if (over)      barColor = '#DC2626';
+    else if (warn) barColor = '#D97706';
+
+    let alertHTML = '';
+    if (over)      alertHTML = `<div class="bud-alert stop">🛑 Limite raggiunto — €${(spent - limit).toFixed(0)} oltre</div>`;
+    else if (warn) alertHTML = `<div class="bud-alert warn">⚠️ ${pct}% usato — restano €${(limit - spent).toFixed(0)}</div>`;
+
+    return `<div class="bud-row">
+      <div class="bud-top">
+        <span class="bud-ico">${info.icon}</span>
+        <span class="bud-lbl">${info.label}</span>
+        <span class="bud-nums" style="color:${over?'#DC2626':warn?'#D97706':'var(--sub)'}">€${spent.toFixed(0)} / €${limit}</span>
+      </div>
+      <div class="bud-bar-bg">
+        <div class="bud-bar-fill" style="width:${pct}%;background:${barColor}"></div>
+      </div>
+      ${alertHTML}
+    </div>`;
+  }).join('');
+
+  const monthLabel = NOW.toLocaleDateString('it-IT', {month:'long', year:'numeric'});
+  el.innerHTML = `<div class="bud-wrap"><div class="bud-card">
+    <div class="bud-ttl">📊 Budget ${monthLabel}</div>
+    ${rows}
+  </div></div>`;
+}
+
 // ── INIT ──────────────────────────────────────────────
 renderGluc();
 renderSkin();
 renderPeso();
 renderOggi();
+renderBudget();
 renderDomani();
 renderCiclo();
+renderBackupDate();
 </script>
 </body>
 </html>

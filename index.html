@@ -674,6 +674,11 @@ input,select,textarea{font-family:var(--f)}
         </label>
       </div>
       <div class="backup-last" id="backup-last"></div>
+      <div style="margin-top:14px;padding-top:14px;border-top:1px solid rgba(255,255,255,.07)">
+        <div style="font-size:.7rem;color:var(--muted);font-weight:700;letter-spacing:.08em;text-transform:uppercase;margin-bottom:8px">☁️ Sync Firebase</div>
+        <div id="fbStatusApp" style="font-size:.75rem;color:var(--muted);margin-bottom:8px">Non configurato</div>
+        <button class="backup-btn exp" onclick="fbSetupApp()" style="width:100%;text-align:center;margin-bottom:0">⚙️ Configura sync</button>
+      </div>
     </div>
   </div>
 
@@ -2398,6 +2403,70 @@ function renderBudget() {
   </div></div>`;
 }
 
+
+// ══════════════════════════════════════════════════════
+// FIREBASE REAL-TIME SYNC
+// ══════════════════════════════════════════════════════
+const FB_URL_KEY = 'dash_fburl';
+let FIREBASE_URL = localStorage.getItem(FB_URL_KEY) || '';
+const FB_PATH = '/anto_data';
+const FB_SYNC_KEYS = ['av7_gluc','av8_peso','av10_ciclo','av10_spese','av10_prep'];
+let _fbTimer = null;
+
+function fbScheduleSync() {
+  if (!FIREBASE_URL) return;
+  if (_fbTimer) clearTimeout(_fbTimer);
+  _fbTimer = setTimeout(fbPush, 1800);
+}
+
+async function fbPush() {
+  if (!FIREBASE_URL) return;
+  const data = {};
+  FB_SYNC_KEYS.forEach(k => { const v = localStorage.getItem(k); if (v) data[k] = v; });
+  try {
+    await fetch(FIREBASE_URL + FB_PATH + '.json', {
+      method:'PATCH', headers:{'Content-Type':'application/json'}, body:JSON.stringify(data)
+    });
+  } catch(e) {}
+}
+
+async function fbPull() {
+  if (!FIREBASE_URL) return false;
+  try {
+    const r = await fetch(FIREBASE_URL + FB_PATH + '.json');
+    if (!r.ok) return false;
+    const fbData = await r.json();
+    if (!fbData) return false;
+    FB_SYNC_KEYS.forEach(k => {
+      const fb = fbData[k];
+      if (fb === undefined || fb === null) return;
+      const local = localStorage.getItem(k);
+      if (!local) { localStorage.setItem(k, fb); return; }
+      try {
+        const fbArr = JSON.parse(fb), locArr = JSON.parse(local);
+        if (Array.isArray(fbArr) && Array.isArray(locArr)) {
+          const keyF = (fbArr[0] || locArr[0] || {}).id ? 'id' : 'date';
+          const map = new Map();
+          [...locArr, ...fbArr].forEach(item => { if (item && item[keyF]) map.set(item[keyF], item); });
+          localStorage.setItem(k, JSON.stringify([...map.values()]));
+        } else {
+          localStorage.setItem(k, fb);
+        }
+      } catch(e) { localStorage.setItem(k, fb); }
+    });
+    return true;
+  } catch(e) { return false; }
+}
+
+// Intercept localStorage.setItem to auto-trigger sync
+(function() {
+  const _orig = localStorage.setItem.bind(localStorage);
+  localStorage.setItem = function(key, value) {
+    _orig(key, value);
+    if (FB_SYNC_KEYS.includes(key)) fbScheduleSync();
+  };
+})();
+
 // ── INIT ──────────────────────────────────────────────
 renderGluc();
 renderSkin();
@@ -2407,6 +2476,49 @@ renderBudget();
 renderDomani();
 renderCiclo();
 renderBackupDate();
+
+// Firebase setup for app
+function fbSetupApp() {
+  const cur = localStorage.getItem('dash_fburl') || '';
+  const url = prompt('Incolla l\'URL del tuo Firebase Realtime Database:', cur);
+  if (!url) return;
+  const clean = url.trim().replace(/\/$/, '');
+  if (!clean.startsWith('https://') || (!clean.includes('firebaseio') && !clean.includes('firebasedatabase.app'))) {
+    alert('URL non valido'); return;
+  }
+  FIREBASE_URL = clean;
+  localStorage.setItem('dash_fburl', FIREBASE_URL);
+  const el = document.getElementById('fbStatusApp');
+  if (el) el.textContent = '⏳ Connessione...';
+  fbPull().then(ok => {
+    if (ok) {
+      glucoseData = JSON.parse(localStorage.getItem('av7_gluc') || '[]');
+      pesoData    = JSON.parse(localStorage.getItem('av8_peso')  || '[]');
+      spese       = JSON.parse(localStorage.getItem('av10_spese')|| '[]');
+      ciclo       = JSON.parse(localStorage.getItem('av10_ciclo')|| '{"lastPeriod":"2026-03-18","sintomi":{}}');
+      renderGluc(); renderPeso(); renderBudget(); renderCiclo();
+      if (el) el.textContent = '✅ Connesso e sincronizzato';
+    } else {
+      if (el) el.textContent = '✅ Configurato (database vuoto)';
+    }
+  });
+}
+
+// Firebase: pull remote data on startup
+if (FIREBASE_URL) {
+  const fbEl = document.getElementById('fbStatusApp');
+  if (fbEl) fbEl.textContent = '☁️ Firebase attivo';
+  fbPull().then(ok => {
+    if (!ok) return;
+    glucoseData = JSON.parse(localStorage.getItem('av7_gluc') || '[]');
+    pesoData    = JSON.parse(localStorage.getItem('av8_peso')  || '[]');
+    spese       = JSON.parse(localStorage.getItem('av10_spese')|| '[]');
+    ciclo       = JSON.parse(localStorage.getItem('av10_ciclo')|| '{"lastPeriod":"2026-03-18","sintomi":{}}');
+    prepData    = JSON.parse(localStorage.getItem('av10_prep') || '{}');
+    renderGluc(); renderPeso(); renderBudget(); renderCiclo();
+  });
+}
+
 </script>
 </body>
 </html>

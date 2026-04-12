@@ -316,13 +316,6 @@ input,select,textarea{font-family:var(--f)}
 .ex-n{width:22px;height:22px;border-radius:7px;background:rgba(34,197,94,.15);color:var(--corpo);font-size:.72rem;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
 .ex-step div{font-size:.78rem;color:var(--sub);line-height:1.5}
 
-.study-list{padding:0 16px;display:flex;flex-direction:column;gap:10px;margin-bottom:4px}
-.study-card{background:var(--surf);border:1px solid var(--border);border-radius:var(--r);padding:14px;border-left:4px solid var(--studio)}
-.sc-hdr{display:flex;justify-content:space-between;align-items:flex-start;gap:8px;margin-bottom:8px}
-.sc-ttl{font-size:.88rem;font-weight:800;color:var(--text);line-height:1.3;flex:1}
-.sc-badge{font-size:.6rem;font-weight:700;background:rgba(139,92,246,.15);color:var(--studio);border-radius:6px;padding:3px 8px;flex-shrink:0;text-align:center}
-.sc-body{font-size:.75rem;color:var(--sub);line-height:1.6}
-.sc-link{color:var(--studio);font-weight:700;font-size:.72rem;display:block;margin-top:6px}
 
 /* ── BOTTOM NAV ──────────────────────────────────────── */
 .nav{
@@ -470,6 +463,13 @@ input,select,textarea{font-family:var(--f)}
 .bud-alert{font-size:.65rem;font-weight:700;margin-top:4px;padding:3px 8px;border-radius:6px;display:inline-block}
 .bud-alert.warn{background:rgba(245,158,11,.12);color:#D97706}
 .bud-alert.stop{background:rgba(239,68,68,.12);color:#DC2626}
+.bud-alert.ok{background:rgba(22,163,74,.12);color:#16A34A}
+.bud-summary{display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:0 16px 10px}
+.bud-sum-item{background:var(--surf);border:1px solid var(--border);border-radius:12px;padding:10px 12px}
+.bud-sum-lbl{font-size:.65rem;font-weight:700;color:var(--sub);margin-bottom:4px}
+.bud-sum-val{font-size:1.05rem;font-weight:900;color:var(--text)}
+.bud-savings{background:var(--surf);border:1px solid var(--border);border-radius:var(--r);padding:14px 16px;margin:0 16px 10px}
+.bud-sav-hdr{display:flex;justify-content:space-between;align-items:center;font-size:.78rem;font-weight:700;color:var(--sub);margin-bottom:8px}
 </style>
 </head>
 <body>
@@ -535,9 +535,6 @@ input,select,textarea{font-family:var(--f)}
   <div class="sec-hdr"><div class="sec-dot dot-cucina"></div><span class="sec-txt">Cucina</span><div class="sec-line"></div></div>
   <div class="act-list" id="o-cucina"></div>
 
-  <div class="sec-hdr"><div class="sec-dot dot-studio"></div><span class="sec-txt">Studio</span><div class="sec-line"></div></div>
-  <div class="act-list" id="o-studio"></div>
-
   <div class="sec-hdr"><div class="sec-dot dot-finanze"></div><span class="sec-txt">Budget mensile</span><div class="sec-line"></div></div>
   <div id="budget-widget"></div>
 
@@ -599,7 +596,6 @@ input,select,textarea{font-family:var(--f)}
         <select class="add-sel" id="dom-cat">
           <option value="corpo">💪 Corpo</option>
           <option value="cucina">🍳 Cucina</option>
-          <option value="studio">📚 Studio</option>
           <option value="finanze">💶 Finanze</option>
           <option value="bimbi">👶 Bimbi</option>
           <option value="io">✨ Io</option>
@@ -712,8 +708,6 @@ input,select,textarea{font-family:var(--f)}
   <div class="sec-hdr"><div class="sec-dot dot-corpo"></div><span class="sec-txt">Esercizi</span><div class="sec-line"></div></div>
   <div class="ex-list" id="piano-esercizi"></div>
 
-  <div class="sec-hdr"><div class="sec-dot dot-studio"></div><span class="sec-txt">Formazione EPSO</span><div class="sec-line"></div></div>
-  <div class="study-list" id="piano-studio"></div>
 
 </div>
 
@@ -743,82 +737,59 @@ document.getElementById('domani-lbl').textContent = domaniStr;
 // ── SCHEDULES ──────────────────────────────────────────
 const SCHED = {
   corpo: {
-    // 0=LUN 1=MAR 2=MER 3=GIO 4=VEN 5=SAB(libero) 6=DOM(libero)
+    // 0=LUN 1=MAR 2=MER 3=GIO 4=VEN 5=SAB 6=DOM
     default:[
-      {icon:'🧘‍♀️',title:'STRETCHING',detail:'5 min mobilità cervicale · 5 min stretching pettorali · 5 min rinforzo scapolare · 5 min respirazione diaframmatica',time:'Mattina',link:'https://www.youtube.com/results?search_query=sweat+stretching+no+equipment'},
+      {icon:'🧘‍♀️',title:'STRETCHING',detail:'5 min mobilità cervicale · 5 min stretching pettorali · 5 min rinforzo scapolare · 5 min respirazione diaframmatica',time:'Mattina',link:'https://www.youtube.com/results?search_query=stretching+mobilità'},
     ],
-    1:[{icon:'💪',title:'Circuito corpo libero — SWEAT',detail:'3 giri da 12 rip: squat · affondi · push-up · plank 30s · ponte glutei. Video 20-30 min no-attrezzi.',time:'Mattina',link:'https://www.youtube.com/results?search_query=sweat+app+full+body+no+equipment'}],
-    3:[{icon:'💪',title:'Circuito corpo libero — SWEAT',detail:'3 giri da 12 rip: squat · affondi · push-up · plank 30s · ponte glutei. Video 20-30 min no-attrezzi.',time:'Mattina',link:'https://www.youtube.com/results?search_query=sweat+app+full+body+no+equipment'}],
-    5:[],
-    6:[],
+    0:[{icon:'🏋️',title:'Forza — Lower Body',detail:'45-55 min · Goblet squat 4×10-12 · Romanian Deadlift 3×12 · Affondi alternati 3×10/lato · Hip Thrust 4×15 · Leg Curl 3×12 · Plank frontale+laterale 3×30-45s · Recupero 60-90s tra serie.',time:'17:00'}],
+    1:[{icon:'🏊',title:'Piscina',detail:'Riscaldamento crawl lento 200m · Crawl intervallato 6×50m (recupero 30s) · Stile libero continuo 4×100m · Defaticamento 200m · Non spingere sull\'intensità: giornata di recupero attivo.',time:'Mattina'}],
+    2:[{icon:'🏋️',title:'Forza — Upper Body',detail:'50 min · Lat machine o trazioni assistite 4×10 · Rematore con manubri 3×12 · Press manubri su panca 3×12 · Shoulder press 3×10 · Curl bicipiti 3×12 · Tricipiti ai cavi 3×12 · Dead bug + bird dog 3×10 cad.',time:'17:00'}],
+    3:[{icon:'🚶',title:'Riposo Attivo — Camminata/Yoga',detail:'Camminata veloce all\'aperto 30-40 min (oppure yoga/stretching 30 min) + mobilità articolare 10 min. Porta i bimbi se necessario — vale uguale.',time:'Mattina'}],
+    4:[{icon:'⚡',title:'Full Body + HIIT',detail:'Squat+press combinato 3×10 · Romanian DL+curl 3×10 · Push-up varianti 3×10-15 · Kettlebell swing o TRX row 3×15 · FINISHER HIIT 10 min: 20s on/40s off (burpee/mountain climber). HIIT SOLO dopo la forza, MAX 10-12 min.',time:'17:00'}],
+    5:[{icon:'🏊',title:'Piscina o Cammino',detail:'Nuoto libero bassa intensità 30 min — oppure cammino in natura 45-60 min. Movimento come benessere, non come compensazione calorica.',time:'Mattina'}],
+    6:[{icon:'😴',title:'Riposo Completo',detail:'Nessun allenamento strutturato. Passeggiata post-pranzo opzionale 10-15 min · Stretching serale 10 min. Il muscolo cresce nel recupero, non nell\'allenamento.',time:'—'}],
   },
   cucina: {
     // 0=LUN, 1=MAR, 2=MER, 3=GIO, 4=VEN, 5=SAB, 6=DOM
     0:[
-      {icon:'🥤',title:'Frullato — Yogurt greco, frutti di bosco, avena, semi di chia',detail:'Frulla 30 sec. Kit già porzionato dal batch cooking domenicale.',time:'7:30'},
-      {icon:'🍎',title:'Spuntino — Mela + mandorle (15g)',detail:'IG basso. Grassi buoni che rallentano l\'assorbimento.',time:'10:30'},
-      {icon:'🥗',title:'Pranzo — Farro freddo + ceci + pomodorini + olive + olio EVO',detail:'Freddo o a t.a. · 3 min assemblaggio · Dal batch cooking. Sequenza: verdura prima.',time:'13:00'},
-      {icon:'🥜',title:'Spuntino — Yogurt greco bianco + noci (10g)',detail:'Proteine per la glicemia pomeridiana.',time:'16:30'},
-      {icon:'🐟',title:'Cena — Orata al forno + zucchine grigliate + olio EVO',detail:'Pesce bianco mediterraneo. Verdure già pronte dal batch.',time:'19:30'},
+      {icon:'🥞',title:'Colazione — Pancake proteici base classica',detail:'Prima colazione, poi caffè. Regola non negoziabile.',time:'7:30'},
+      {icon:'🥛',title:'Spuntino — Yogurt greco + 10 mandorle + cannella',detail:'Solo se hai fame. Non forzare.',time:'10:30'},
+      {icon:'🥗',title:'Pranzo — Insalata mista con olio EVO → 150g petto di pollo → 80g riso basmati freddo',detail:'Aceto di mele 10 min prima. Riso freddo = amido resistente, picco glicemico −35%.',time:'13:00'},
+      {icon:'🍌',title:'Pre-workout — Banana + 1 cucchiaio burro di mandorle',detail:'Mangia 45 min prima della palestra. Non allenarsi senza.',time:'16:30'},
+      {icon:'🐟',title:'Cena — Zucchine grigliate → 160g merluzzo al forno con limone e capperi → ½ patata dolce al forno',detail:'Il merluzzo è proteina magra eccellente. La patata dolce ha IG inferiore alla normale.',time:'20:00'},
     ],
     1:[
-      {icon:'🥤',title:'Frullato — Kefir, pera, mandorle, cannella',detail:'Kefir = probiotico che migliora la risposta insulinica. Cannella abbassa la glicemia.',time:'7:30'},
-      {icon:'🍳',title:'Spuntino — Uovo sodo',detail:'Preparato in batch domenica. Proteico e saziante.',time:'10:30'},
-      {icon:'🧀',title:'Pranzo — Insalata verde + mozzarella fresca + tonno + pomodorini',detail:'3 min · Mozzarella = calcio + proteine. Tonno = omega-3 · Olio EVO. Verdura prima.',time:'13:00'},
-      {icon:'🫐',title:'Spuntino — Frutti di bosco + ricotta (50g)',detail:'Antiossidanti per la rosacea. IG bassissimo.',time:'16:30'},
-      {icon:'🍳',title:'Cena — Frittata spinaci + ricotta + pomodorini',detail:'10 min. Ricotta = latticino leggero ad alto valore proteico. Spinaci = ferro.',time:'19:30'},
+      {icon:'🥤',title:'Colazione — Frullato verde',detail:'200ml latte intero + 150g yogurt greco + 1 banana + spinaci baby + semi di chia. Frulla tutto.',time:'7:30'},
+      {icon:'🥗',title:'Pranzo — Rucola + pomodorini → 180g petto tacchino in padella con erbe → 2 fette pane di segale',detail:'Il pane di segale ha IG molto più basso del pane bianco. Mangialo sempre per ultimo.',time:'13:00'},
+      {icon:'🐟',title:'Cena — Minestrone di verdure → 160g branzino al vapore → 80g lenticchie',detail:'Legumi a cena: fibra solubile + proteine vegetali, ideali per IR. Cuocili con alloro e aglio.',time:'20:00'},
     ],
     2:[
-      {icon:'🥤',title:'Frullato — Yogurt greco, cacao amaro, banana piccola, burro mandorle',detail:'Cacao amaro anti-infiammatorio. Banana piccola tollerabile con i grassi delle mandorle.',time:'7:30'},
-      {icon:'🍎',title:'Spuntino — Mela verde + noci (10g)',detail:'IG basso, saziante fino a pranzo.',time:'10:30'},
-      {icon:'🌯',title:'Pranzo — Wrap integrale + stracchino/crescenza + pollo precotto + insalata',detail:'Scalda il wrap 1 min al micro · Spalma il formaggio · Pollo dal batch · Verdure fresche.',time:'13:00'},
-      {icon:'🥜',title:'Spuntino — Mix frutta secca (30g)',detail:'Stabilizza la glicemia nel pomeriggio.',time:'16:30'},
-      {icon:'🍝',title:'Cena — Pasta integrale + zucchine + gamberi + olio EVO',detail:'Pasta solo a cena. Porzione piccola (60g crudo). Gamberi = proteine magre.',time:'19:30'},
+      {icon:'🥞',title:'Colazione — Pancake versione ricotta',detail:'50g avena + 100g ricotta + miele + cannella. La ricotta è proteina nobile, bassa insulinogenicità.',time:'7:30'},
+      {icon:'🥗',title:'Pranzo — Finocchi e carote crude → 120g tonno + 100g ceci + olio EVO → 1 fetta pane integrale',detail:'Tonno + ceci = combinazione proteina animale + vegetale. Ottimo per IR e sazietà prolungata.',time:'13:00'},
+      {icon:'🍯',title:'Pre-workout — Yogurt greco 150g + 1 cucchiaino miele + 30g fiocchi d\'avena',detail:'Mangia 45 min prima della palestra.',time:'16:30'},
+      {icon:'🍗',title:'Cena — Insalata cavolo cappuccio → 160g pollo con curry leggero → funghi trifolati + 80g farro',detail:'Curcuma = antinfiammatoria. Farro = cereale a basso IG.',time:'20:00'},
     ],
     3:[
-      {icon:'🥤',title:'Frullato — Kefir, fragole, proteine whey o yogurt greco',detail:'Fragole = vitamina C per la rosacea e IG basso. Whey opzionale.',time:'7:30'},
-      {icon:'🍵',title:'Spuntino — Tè verde + noci del Brasile (3)',detail:'Selenio antinfiammatorio. Tè verde migliora la sensibilità insulinica.',time:'10:30'},
-      {icon:'🥗',title:'Pranzo — Orzo freddo + tonno + fagiolini + olive + limone',detail:'Dal batch · 3 min · Freddo · Il limone abbassa l\'IG del cereale.',time:'13:00'},
-      {icon:'🫐',title:'Spuntino — Frutti di bosco freschi (pugno)',detail:'Zero IG, antiossidanti per pelle e glicemia.',time:'16:30'},
-      {icon:'🐟',title:'Cena — Merluzzo al forno + finocchi + olio EVO',detail:'Finocchi = antinfiammatori, digestivi. Merluzzo = proteine magre.',time:'19:30'},
+      {icon:'🫐',title:'Colazione — Frullato berries',detail:'200ml latte + 150g yogurt greco + 100g frutti di bosco + 30g whey vaniglia + 10 mandorle.',time:'7:30'},
+      {icon:'🥗',title:'Pranzo — Zuppa di verdure → 200g fagioli borlotti con rosmarino + bresaola 60g → 1 fetta pane integrale',detail:'La bresaola è la proteina animale con meno grassi saturi. Ottima alternativa alle uova.',time:'13:00'},
+      {icon:'🥩',title:'Cena — Insalata rucola + parmigiano → 180g bistecca di manzo → caponata di verdure',detail:'Carne rossa 1-2x/settimana: ferro biodisponibile, cruciale in postpartum e durante il ciclo.',time:'20:00'},
     ],
     4:[
-      {icon:'🥤',title:'Frullato — Yogurt greco, mela, noci, avena, cannella',detail:'Cannella abbassa la risposta glicemica. Chiudi la settimana con stabilità.',time:'7:30'},
-      {icon:'🍳',title:'Spuntino — Uovo sodo + cetriolo',detail:'Semplice, veloce, proteico.',time:'10:30'},
-      {icon:'🧀',title:'Pranzo — Scamorza + verdure grigliate + pane integrale piccolo',detail:'Scamorza a fette · Scalda 2 min al micro sulle verdure già pronte dal batch.',time:'13:00'},
-      {icon:'🍫',title:'Spuntino — 2 quadretti fondente 85% + caffè',detail:'Fondente >70% ha IG basso. Il venerdì te lo meriti.',time:'16:00'},
-      {icon:'🍔',title:'Cena — Burger di legumi + insalata mista + olio EVO',detail:'Prepara in batch domenica e congela. Scalda in friggitrice ad aria o micro.',time:'19:30'},
+      {icon:'🥞',title:'Colazione — Pancake base classica',detail:'Prima colazione, poi caffè. Regola non negoziabile.',time:'7:30'},
+      {icon:'🥗',title:'Pranzo — Insalata finocchi e arance → 150g orata al forno con erbe → 80g quinoa fredda',detail:'La quinoa è un "pseudocereale" con tutti gli aminoacidi essenziali.',time:'13:00'},
+      {icon:'🍯',title:'Pre-workout — Yogurt greco 150g + 1 cucchiaino miele + frutta fresca a pezzi',detail:'Mangia 45 min prima della palestra.',time:'16:30'},
+      {icon:'🥦',title:'Cena post-workout — Broccoli al vapore → 160g tacchino al forno + ricotta 80g → 100g patate bollite',detail:'Post-HIIT: carboidrati + proteine entro 60 min. Non saltarli la sera dopo allenamento intenso.',time:'20:30'},
     ],
     5:[
-      {icon:'🍳',title:'Colazione — Uova strapazzate + pane integrale',detail:'Weekend con calma. Proteico. Pane integrale piccolo.',time:'8:30'},
-      {icon:'🍓',title:'Spuntino — Frullato veloce fragole + yogurt',detail:'Anche in trasferta con i bimbi.',time:'11:00'},
-      {icon:'🥗',title:'Pranzo — Insalata greca: feta, cetrioli, pomodori, olive, pane integrale',detail:'Feta = ottimo latticino mediterraneo. Insalata completa in 5 min.',time:'13:30'},
-      {icon:'🍫',title:'Spuntino — Fondente 85% + caffè',detail:'Post-camminata. Meritato.',time:'16:00'},
-      {icon:'🍗',title:'Cena — Pollo al curry leggero + riso integrale piccolo',detail:'Curcuma = antinfiammatoria. Riso integrale porzione piccola (40g crudo).',time:'19:30'},
+      {icon:'🥞',title:'Colazione — Pancake versione cacao (weekend)',detail:'50g avena + 1 uovo + 120g yogurt greco + cacao amaro + burro di mandorle. Topping: banana.',time:'7:30'},
+      {icon:'🍲',title:'Pranzo leggero — Zuppa di lenticchie rosse + bresaola 80g',detail:'Pranzo leggero e proteico il giorno della pizza. Non elimini carboidrati: li bilanci nell\'arco del giorno.',time:'13:00'},
+      {icon:'🍕',title:'Pizza — Goditela. Regola unica: inizia con un\'insalata.',detail:'Food order anche qui. L\'insalata prima abbatte il picco glicemico della pizza del 30%.',time:'19:30'},
     ],
     6:[
-      {icon:'🥞',title:'Colazione — Pancake avena + yogurt greco + frutti di bosco',detail:'Domenica con calma. Bimbi-friendly. Bimby o padella antiaderente.',time:'9:00'},
-      {icon:'🫐',title:'Spuntino — Porridge avena + frutti di bosco',detail:'Post-circuito. Ripristina le energie senza picco glicemico.',time:'11:00'},
-      {icon:'🍽️',title:'Pranzo famiglia — Frittata verdure (dal batch) + insalata fresca',detail:'Riscalda la frittata preparata nel batch. Aggiungi insalata fresca.',time:'13:00'},
-      {icon:'🍎',title:'Spuntino — Mela + mandorle',detail:'Classico mediterraneo.',time:'16:30'},
-      {icon:'🥣',title:'Cena — Minestrone di verdure e legumi + orzo',detail:'Prepara doppia porzione: vale anche lunedì sera. Batch cucina domenicale.',time:'19:30'},
+      {icon:'🥞',title:'Colazione — Pancake elaborati del weekend',detail:'Scegli la variante preferita, preparali con calma.',time:'8:30'},
+      {icon:'🍗',title:'Pranzo — Pinzimonio verdure crude → pollo arrosto con rosmarino → insalata di farro con verdure grigliate',detail:'Domenica con tutta la famiglia. Prepara in abbondanza.',time:'13:30'},
+      {icon:'🥣',title:'Cena — Minestrone ricco → 120g tonno + 100g cannellini + olio EVO → 1 fetta pane di segale',detail:'Domenica cena leggera: parte con una settimana metabolicamente pulita.',time:'20:00'},
     ],
-  },
-  studio: {
-    // 0=LUN 1=MAR 2=MER 3=GIO 4=VEN 5=SAB(libero) 6=DOM(libero)
-    0:[{icon:'🇫🇷',title:'Francese — Assimil',detail:'30 min · Lezione del giorno · Ascolto + ripetizione attiva · Inizio settimana con la mente fresca',time:'Sera',link:'https://www.assimil.com/fr/'}],
-    1:[{icon:'🧠',title:'Test Psicometrici — EPSO',detail:'30 min · Ragionamento verbale, numerico e astratto · Allena velocità e precisione',time:'Sera',link:'https://www.eutraining.eu'}],
-    2:[{icon:'🇪🇺',title:'EU Knowledge',detail:'30 min · Istituzioni UE, diritto europeo, politiche DG HOME · Quiz a risposta multipla',time:'Sera',link:'https://epso.europa.eu'}],
-    3:[
-      {icon:'🇫🇷',title:'Francese — Assimil',detail:'30 min · Ripasso lezione precedente + avanzamento · Scrittura e grammatica',time:'Sera',link:'https://www.assimil.com/fr/'},
-      {icon:'📚',title:'EU Academy — Law & Migration',detail:'45 min · Formazione gratuita con attestato · Approfondimento DG HOME',time:'Sera',link:'https://academy.europa.eu'},
-    ],
-    4:[
-      {icon:'🧠',title:'Test Psicometrici — EPSO',detail:'30 min · Simulazione test completo · Chiudi la settimana misurando i progressi',time:'Sera',link:'https://www.eutraining.eu'},
-      {icon:'🎓',title:'Revisione settimana',detail:'20 min · Rivedi errori test · Segna progressi francese · Pianifica la prossima settimana',time:'Sera',link:'https://www.eutraining.eu'},
-    ],
-    5:[],
-    6:[],
   },
   finanze: {
     4:[{icon:'💶',title:'Revisione spese settimanale',detail:'10 min · Classifica le spese della settimana · Nota dove puoi recuperare 30-50€',time:'Sera',cat:'finanze'}],
@@ -839,50 +810,47 @@ const SCHED = {
 };
 
 const RICETTE = [
-  // ── BATCH COOKING DOMENICALE ──────────────────────────────────────────────────
-  {giorno:'Domenica (prep)',pasto:'Batch Cooking — 90 min',titolo:'Kit frullati × 5 giorni',nota:'Porziona: frutta (frutti di bosco/pera/mela/fragole/banana piccola) + avena + semi di chia + noci/mandorle in sacchetti. In frigo o freezer. Al mattino: aggiungi yogurt/kefir e frulla 30 sec.',tag:['Batch','Bimby','Frigo 5gg']},
-  {giorno:'Domenica (prep)',pasto:'Batch Cooking — cereali',titolo:'Farro + orzo + riso integrale (cotti)',nota:'Cuoci tutto nel Bimby o in pentola. Dividi in contenitori monodose. Base dei pranzi lunedì, giovedì e domenica.',tag:['Batch','Bimby','Frigo 4gg']},
-  {giorno:'Domenica (prep)',pasto:'Batch Cooking — proteine',titolo:'Petto di pollo (cotto) + uova sode × 5',nota:'Pollo al forno o friggitrice ad aria. Uova sode lessate. Base per wrap mercoledì e spuntini.',tag:['Batch','Frigo 4gg','Proteine']},
-  {giorno:'Domenica (prep)',pasto:'Batch Cooking — verdure',titolo:'Verdure grigliate miste (zucchine, broccoli, peperoni, finocchi)',nota:'Forno a 200°C o friggitrice ad aria. Usa per pranzo venerdì e cene della settimana.',tag:['Batch','Forno','Frigo 4gg']},
-  {giorno:'Domenica (prep)',pasto:'Batch Cooking — base',titolo:'Frittata di verdure al forno (grande)',nota:'2-3 uova + verdure miste. Taglia a quadrati. Pranzo domenica + lunedì se avanza.',tag:['Batch','Proteine','Versatile']},
-  // ── FRULLATI SETTIMANALI ─────────────────────────────────────────────────────
-  {giorno:'Lunedì',pasto:'Colazione',titolo:'Yogurt greco + frutti di bosco + avena + semi di chia',nota:'IG bassissimo. Semi di chia rallentano assorbimento. 30 sec di frullatore.',tag:['Anti-IR','No picco','2 min']},
-  {giorno:'Martedì',pasto:'Colazione',titolo:'Kefir + pera + mandorle + cannella',nota:'Kefir = probiotico. La cannella abbassa la risposta glicemica. Ottimo per insulino-resistenza.',tag:['Anti-IR','Probiotico','Cannella']},
-  {giorno:'Mercoledì',pasto:'Colazione',titolo:'Yogurt greco + cacao amaro + banana piccola + burro mandorle',nota:'Cacao amaro = anti-infiammatorio. Banana piccola tollerabile con i grassi del burro di mandorle.',tag:['Anti-infiammatorio','Cioccolato sì']},
-  {giorno:'Giovedì',pasto:'Colazione',titolo:'Kefir + fragole + yogurt greco o whey',nota:'Fragole = vitamina C per rosacea + IG basso. Whey opzionale per aumentare proteine.',tag:['Anti-IR','Rosacea','Proteine']},
-  {giorno:'Venerdì',pasto:'Colazione',titolo:'Yogurt greco + mela + noci + avena + cannella',nota:'Chiudi la settimana con stabilità glicemica. Noci = omega-3 vegetali antinfiammatori.',tag:['Anti-IR','Omega-3']},
-  {giorno:'Domenica',pasto:'Colazione (eccezione salata)',titolo:'Uova strapazzate + pane integrale',nota:'L\'unica colazione salata della settimana. Domenica con calma. Proteine complete.',tag:['Weekend','Proteico','Salato OK']},
-  // ── PRANZI VELOCI DA SCRIVANIA ───────────────────────────────────────────────
-  {giorno:'Lunedì',pasto:'Pranzo (3 min)',titolo:'Farro freddo + ceci + pomodorini + olive + olio EVO',nota:'Tutto dal batch. Nessuna cottura. Sequenza: verdura prima → cereali → legumi. Freddo o a temperatura ambiente.',tag:['Batch','3 min','Anti-IR','Freddo']},
-  {giorno:'Martedì',pasto:'Pranzo (3 min)',titolo:'Insalata verde + mozzarella fresca + tonno + pomodorini + basilico',nota:'Mozzarella = calcio e proteine. Tonno = omega-3. Olio EVO. Verdure prima della mozzarella.',tag:['Mozzarella','3 min','Mediterraneo']},
-  {giorno:'Mercoledì',pasto:'Pranzo (5 min)',titolo:'Wrap integrale + stracchino/crescenza + pollo precotto + insalata',nota:'Scalda wrap 1 min al micro. Spalma stracchino o crescenza. Aggiungi pollo dal batch e verdure fresche.',tag:['Stracchino','Crescenza','5 min','Micro']},
-  {giorno:'Giovedì',pasto:'Pranzo (3 min)',titolo:'Orzo freddo + tonno + fagiolini + olive + limone',nota:'Dal batch. Freddo. 3 min assemblaggio. Il limone abbassa l\'indice glicemico dell\'orzo.',tag:['Batch','3 min','Anti-IR','Limone IG']},
-  {giorno:'Venerdì',pasto:'Pranzo (5 min)',titolo:'Scamorza + verdure grigliate + pane integrale piccolo',nota:'Scamorza a fette sulle verdure già pronte. Scalda 2 min al micro. Pane integrale piccolo.',tag:['Scamorza','5 min','Micro','Saporito']},
-  // ── CENE MEDITERRANEE ────────────────────────────────────────────────────────
-  {giorno:'Lunedì',pasto:'Cena',titolo:'Orata al forno + zucchine grigliate + olio EVO',nota:'Pesce bianco = proteine magre, anti-infiammatorio. Zucchine dal batch. 15 min.',tag:['Pesce','Mediterraneo','15 min']},
-  {giorno:'Martedì',pasto:'Cena',titolo:'Frittata di spinaci + ricotta + pomodorini',nota:'Ricotta = latticino leggero. Spinaci = ferro e folati. 10 min totali.',tag:['Ricotta','Uova','10 min']},
-  {giorno:'Mercoledì',pasto:'Cena',titolo:'Pasta integrale + zucchine + gamberi + olio EVO',nota:'Carboidrati solo a cena e in piccola porzione (60g crudo). Gamberi anti-infiammatori.',tag:['Carboidrati sera','Gamberi','20 min']},
-  {giorno:'Giovedì',pasto:'Cena',titolo:'Merluzzo al forno + finocchi + olio EVO',nota:'Finocchi = digestivi e antinfiammatori. Merluzzo = proteine magre, poche calorie. 15 min.',tag:['Pesce','Finocchi','15 min']},
-  {giorno:'Venerdì',pasto:'Cena',titolo:'Burger di legumi + insalata mista + olio EVO',nota:'Prepara in batch domenica e congela. Scalda in friggitrice ad aria (8 min) o micro.',tag:['Legumi','Batch','Congela','Vegano']},
-  {giorno:'Sabato',pasto:'Cena',titolo:'Pollo al curry leggero + riso integrale piccolo',nota:'Curcuma = potente antinfiammatoria. Riso integrale porzione piccola (40g crudo).',tag:['Curcuma','Weekend','Anti-infiammatorio']},
-  {giorno:'Domenica',pasto:'Cena',titolo:'Minestrone verdure + legumi + orzo',nota:'Prepara doppia porzione: vale anche lunedì sera. Centralissimo nel batch cooking.',tag:['Batch','Famiglia','Legumi','2 sere']},
-  // ── REGOLA BASE ─────────────────────────────────────────────────────────────
-  {giorno:'Ogni pasto',pasto:'Regola d\'oro anti-IR',titolo:'Sequenza: verdura/insalata → proteine/grassi → carboidrati',nota:'Mangia sempre le verdure PRIMA. Poi proteine e grassi. I carboidrati per ultimi (o solo a cena). Abbassa il picco glicemico fino al 40%.',tag:['Anti-IR','Fondamentale','Sempre']},
-  {giorno:'⚠️ Da evitare sempre',pasto:'Esclusioni confermate',titolo:'Salmone · Gallette di riso · Latte vegetale · Carote · Patate · Zucca',nota:'Gallette di riso IG elevatissimo. Esclusioni personalizzate — non sostituirle.',tag:['Escludi','IG alto','Personale']},
+  // ── COLAZIONI ────────────────────────────────────────────────────────────────
+  {giorno:'Lun / Mer / Ven',pasto:'Colazione — Pancake Base Classica',titolo:'50g avena frullata + 1 uovo + 150g yogurt greco + ½ banana schiacciata',nota:'Cuoci in padella antiaderente senza olio. Servi con frutti di bosco + 1 cucchiaino miele. Senza uovo: usa 30g proteine whey neutre. P:24g C:45g G:8g ~345kcal',tag:['Pancake','Anti-IR','P:24g','~345kcal']},
+  {giorno:'Mercoledì (alt.)',pasto:'Colazione — Pancake Versione Ricotta',titolo:'50g avena + 100g ricotta vaccina + 1 cucchiaio miele + cannella + latte qb',nota:'Topping: mela a fettine o frutti di bosco. La ricotta è proteina nobile. La cannella migliora la sensibilità insulinica. P:20g C:48g G:10g ~360kcal',tag:['Pancake','Ricotta','Cannella','~360kcal']},
+  {giorno:'Sabato / Weekend',pasto:'Colazione — Pancake Versione Cacao',titolo:'50g avena + 1 uovo + 120g yogurt greco + 1 cucchiaio cacao amaro + 1 cucchiaio burro di mandorle',nota:'Topping: banana a rondelle. Il cacao amaro ha effetto positivo sull\'insulina. P:22g C:42g G:14g ~380kcal',tag:['Pancake','Cacao','Weekend','~380kcal']},
+  {giorno:'Domenica',pasto:'Colazione — Pancake Elaborati',titolo:'Scegli la variante preferita: base classica, ricotta o cacao',nota:'Domenica: preparali con calma, è il rito del weekend.',tag:['Pancake','Weekend','Rito']},
+  {giorno:'Martedì / Giovedì',pasto:'Colazione — Frullato Verde',titolo:'200ml latte intero + 150g yogurt greco + 1 banana + 1 manciata spinaci baby + 1 cucchiaio semi di chia',nota:'Gli spinaci non si sentono. Aggiungono magnesio + ferro cruciali in postpartum. P:20g C:38g G:10g ~320kcal',tag:['Frullato','3 min','Anti-IR','~320kcal']},
+  {giorno:'Giovedì (alt.)',pasto:'Colazione — Frullato Berries',titolo:'200ml latte + 150g yogurt greco + 100g frutti di bosco congelati + 30g whey vaniglia + 10 mandorle',nota:'I frutti di bosco hanno l\'IG più basso tra tutti i frutti. Ottimi per IR. P:36g C:28g G:10g ~340kcal',tag:['Frullato','Berries','Anti-IR','~340kcal']},
+  // ── PRANZI ───────────────────────────────────────────────────────────────────
+  {giorno:'Lunedì',pasto:'Pranzo',titolo:'Insalata mista con olio EVO → 150g petto di pollo alla piastra → 80g riso basmati freddo',nota:'Aceto di mele 10 min prima. Riso freddo = amido resistente, picco glicemico −35%. Sequenza food order sempre.',tag:['Anti-IR','Pollo','Riso freddo']},
+  {giorno:'Martedì',pasto:'Pranzo',titolo:'Rucola + pomodorini con olio → 180g petto di tacchino in padella con erbe → 2 fette pane di segale',nota:'Il pane di segale ha IG molto più basso del pane bianco. Mangialo sempre per ultimo.',tag:['Tacchino','Pane segale','Anti-IR']},
+  {giorno:'Mercoledì',pasto:'Pranzo',titolo:'Finocchi e carote crude → 120g tonno al naturale + 100g ceci + olio EVO → 1 fetta pane integrale',nota:'Tonno + ceci = combinazione proteina animale + vegetale. Ottimo per IR e sazietà prolungata.',tag:['Tonno','Ceci','Anti-IR']},
+  {giorno:'Giovedì',pasto:'Pranzo',titolo:'Zuppa di verdure → 200g fagioli borlotti con rosmarino + bresaola 60g → 1 fetta pane integrale',nota:'La bresaola è la proteina animale con meno grassi saturi. Ottima alternativa alle uova.',tag:['Bresaola','Legumi','Anti-IR']},
+  {giorno:'Venerdì',pasto:'Pranzo',titolo:'Insalata finocchi e arance → 150g orata al forno con erbe aromatiche → 80g quinoa fredda',nota:'La quinoa è un pseudocereale con tutti gli aminoacidi essenziali. Ottimo per chi vuole ridurre la carne.',tag:['Orata','Quinoa','Anti-IR']},
+  {giorno:'Sabato',pasto:'Pranzo leggero',titolo:'Zuppa di lenticchie rosse + bresaola 80g',nota:'Pranzo leggero e proteico il giorno della pizza. Non elimini carboidrati: li bilanci nell\'arco del giorno.',tag:['Lenticchie','Pizza day','Leggero']},
+  {giorno:'Domenica',pasto:'Pranzo',titolo:'Pinzimonio verdure crude → pollo arrosto con rosmarino → insalata di farro con verdure grigliate',nota:'Domenica con tutta la famiglia. Prepara in abbondanza.',tag:['Famiglia','Pollo','Domenica']},
+  // ── PRE-WORKOUT ──────────────────────────────────────────────────────────────
+  {giorno:'Lun / Ven',pasto:'Pre-workout (45 min prima)',titolo:'1 banana + 1 cucchiaio burro di mandorle',nota:'Mangia questo 45 min prima della palestra. Non allenarsi senza pre-workout: con cortisolo alto brucia muscolo non grasso.',tag:['Pre-workout','ROAR','Obbligatorio']},
+  {giorno:'Mer',pasto:'Pre-workout (45 min prima)',titolo:'150g yogurt greco + 1 cucchiaino miele + 30g fiocchi d\'avena',nota:'Proteina + carboidrati semplici. Ideale per forza upper body.',tag:['Pre-workout','ROAR','Upper']},
+  // ── CENE ─────────────────────────────────────────────────────────────────────
+  {giorno:'Lunedì',pasto:'Cena',titolo:'Zucchine grigliate → 160g merluzzo al forno con limone e capperi → ½ patata dolce al forno',nota:'Il merluzzo è proteina magra eccellente. La patata dolce ha IG inferiore alla normale.',tag:['Merluzzo','Patata dolce','Anti-IR']},
+  {giorno:'Martedì',pasto:'Cena',titolo:'Minestrone di verdure (senza pasta) → 160g branzino al vapore o al cartoccio → 80g lenticchie',nota:'Legumi a cena: fibra solubile + proteine vegetali, ideali per IR. Cuocili con alloro e aglio.',tag:['Branzino','Lenticchie','Anti-IR']},
+  {giorno:'Mercoledì',pasto:'Cena',titolo:'Insalata di cavolo cappuccio → 160g petto di pollo con curry leggero → funghi trifolati + 80g farro',nota:'Curcuma = antinfiammatoria. Farro = cereale a basso IG.',tag:['Pollo','Farro','Curcuma']},
+  {giorno:'Giovedì',pasto:'Cena',titolo:'Insalata rucola + parmigiano → 180g bistecca di manzo alla piastra → caponata di verdure',nota:'Carne rossa 1-2x/settimana: ferro biodisponibile, cruciale in postpartum e durante il ciclo.',tag:['Manzo','Ferro','Ciclo']},
+  {giorno:'Venerdì',pasto:'Cena post-workout',titolo:'Broccoli al vapore → 160g petto di tacchino al forno + ricotta 80g → 100g patate bollite',nota:'Post-HIIT: carboidrati + proteine entro 60 min. Non saltarli la sera dopo allenamento intenso.',tag:['Post-HIIT','Tacchino','Recupero']},
+  {giorno:'Sabato',pasto:'Cena — Pizza Day',titolo:'Goditela. Regola unica: inizia con un\'insalata.',nota:'Food order anche qui. L\'insalata prima abbatte il picco glicemico della pizza del 30%. Non è un sgarro — è nel piano.',tag:['Pizza','Non sgarro','Food order']},
+  {giorno:'Domenica',pasto:'Cena',titolo:'Minestrone ricco → 120g tonno al naturale + 100g cannellini + olio EVO → 1 fetta pane di segale',nota:'Domenica cena leggera: parte con una settimana metabolicamente pulita.',tag:['Leggero','Tonno','Legumi']},
+  // ── REGOLE FONDAMENTALI ──────────────────────────────────────────────────────
+  {giorno:'Ogni pasto',pasto:'Regola d\'oro — Food Order',titolo:'Sequenza: 1° Fibra → 2° Proteine+Grassi → 3° Carboidrati → movimento 2 min',nota:'Abbatte il picco glicemico fino al 73%. Non cambia cosa mangi — cambia come. Abbina aceto di mele (15ml) 10 min prima dei pasti principali.',tag:['Anti-IR','Fondamentale','Glucose Goddess']},
+  {giorno:'Ogni mattina',pasto:'Regola — Colazione prima del caffè',titulo:'Mangia qualcosa di proteico entro 30 min dal risveglio. Poi caffè.',nota:'Il caffè a digiuno alza il cortisolo mattutino — già al picco fisiologico. Invertire l\'ordine è gratis e immediato.',tag:['Cortisolo','ROAR','Obbligatorio']},
 ];
 
 const ESERCIZI = [
-  {titolo:'Routine Cervicale',sub:'Lun — Ven',dur:'20 min',passi:['Mobilità cervicale (5 min): rotazioni lente, chin tuck. MAI rotazioni 360°.','Stretching pettorali (5 min): cobra, braccia a croce sul muro.','Rinforzo scapolare (5 min): bird-dog, ponte glutei.','Respirazione diaframmatica (5 min): fondamentale post-parto.']},
-  {titolo:'Camminata Metabolica',sub:'Sabato',dur:'60 min',passi:['Ritmo sostenuto ma non corsa — zona metabolica brucia grassi.','Porta i bimbi in passeggino: Parco delle Valli o Villa Glori.','Schiena dritta durante la spinta del passeggino.']},
-  {titolo:'Circuito Corpo Libero',sub:'Domenica',dur:'45 min',passi:['3 giri da 12 ripetizioni, 60s recupero tra giri.','Squat · Affondi alternati · Push-up facilitati.','Plank 30s · Ponte glutei · Mountain climber lento.']},
+  {titolo:'Forza Lower Body',sub:'Lunedì',dur:'45-55 min',passi:['Goblet squat o squat libero: 4×10-12 rip · Recupero 60-90s.','Romanian Deadlift con manubri: 3×12 rip.','Affondi alternati: 3×10 per lato.','Hip Thrust: 4×15 rip — il principale esercizio per glutei.','Leg Curl macchina: 3×12 rip.','Plank frontale + laterale: 3×30-45s. Core fondamentale post-parto.','Regola ROAR: mangia il pre-workout 45 min prima. Non allenarsi a digiuno.']},
+  {titolo:'Piscina',sub:'Martedì',dur:'45-60 min',passi:['Riscaldamento crawl lento: 200m.','Crawl intervallato: 6×50m con recupero 30s tra le vasche.','Stile libero continuo: 4×100m a ritmo moderato.','Defaticamento nuoto lento: 200m.','Il nuoto abbassa il cortisolo: non spingere sull\'intensità.']},
+  {titolo:'Forza Upper Body',sub:'Mercoledì',dur:'50 min',passi:['Lat machine o trazioni assistite: 4×10 rip.','Rematore con manubri: 3×12 rip.','Press manubri su panca: 3×12 rip.','Shoulder press: 3×10 rip.','Curl bicipiti: 3×12 rip.','Tricipiti ai cavi: 3×12 rip.','Dead bug + bird dog: 3×10 per lato. Core e coordinazione.']},
+  {titolo:'Riposo Attivo — Camminata',sub:'Giovedì',dur:'40 min',passi:['Camminata veloce all\'aperto: 30-40 min (oppure yoga/stretching 30 min).','Mobilità articolare: 10 min su fianchi, caviglie, spalle.','Porta i bimbi se necessario — vale uguale come recupero attivo.','Una camminata in natura abbassa il cortisolo in modo misurabile entro 20 min.']},
+  {titolo:'Full Body + HIIT',sub:'Venerdì',dur:'50-60 min',passi:['Squat + shoulder press combinato: 3×10 rip.','Romanian DL + curl bicipiti: 3×10 rip.','Push-up varianti (standard, inclinati, sulle ginocchia): 3×10-15.','Kettlebell swing o TRX row: 3×15 rip.','FINISHER HIIT 10 min: 20s on / 40s off. Esercizi: burpee, mountain climber.','L\'HIIT SOLO DOPO la forza, mai prima. MAX 10-12 minuti totali.']},
+  {titolo:'Piscina o Cammino',sub:'Sabato',dur:'30-60 min',passi:['Nuoto libero a bassa intensità: 30 min.','Oppure cammino in natura: 45-60 min (Parco delle Valli, Villa Glori).','Movimento come benessere, non come compensazione calorica della pizza.']},
+  {titolo:'Riposo Completo',sub:'Domenica',dur:'—',passi:['Nessun allenamento strutturato.','Passeggiata post-pranzo opzionale: 10-15 min.','Stretching serale: 10 min.','Il muscolo cresce nel recupero, non nell\'allenamento. Non saltare il riposo.']},
 ];
 
-const STUDIO_PIANO = [
-  {titolo:'Test CBT EPSO',badge:'Lun · Mer · Ven',corpo:'25 min serali su eutraining.eu. Ragionamento verbale, numerico, astratto.',link:'https://www.eutraining.eu'},
-  {titolo:'EU Academy — Law, Justice & Migration',badge:'Mesi 1-3',corpo:'Piattaforma Commissione UE. Gratuito con attestato.',link:'https://academy.europa.eu'},
-  {titolo:'International Security Management',badge:'Mesi 3-6',corpo:'Coursera — Erasmus University. Audit gratuito, 49€ certificato.',link:'https://www.coursera.org'},
-  {titolo:'JHA Council — aggiornamento mensile',badge:'Sempre',corpo:'Comunicati su consilium.europa.eu.',link:'https://www.consilium.europa.eu'},
-];
 
 // ── STATE ──────────────────────────────────────────────
 let oggiDone    = JSON.parse(localStorage.getItem('av7_oggi')  || '{}');
@@ -908,27 +876,36 @@ const saveMit  = () => localStorage.setItem('av10_mit',  JSON.stringify(mitData)
 const savePrep = () => localStorage.setItem('av10_prep', JSON.stringify(prepData));
 const saveLista = () => localStorage.setItem('av10_lista', JSON.stringify(lista));
 
+// ── DATI FINANZIARI ──────────────────────────────────
+const INCOME         = 1700;   // stipendio mensile netto
+const SAVINGS_TARGET = 350;    // obiettivo risparmio mensile
+
 const SPESE_CAT = {
-  bimbi:     {icon:'👶', label:'Bimbi'},
-  amazon:    {icon:'📦', label:'Amazon'},
-  beauty:    {icon:'💅', label:'Beauty'},
-  fuori:     {icon:'🍽️', label:'Ristoranti & fuori'},
-  palestra:  {icon:'🏋️', label:'Palestra'},
-  salute:    {icon:'💊', label:'Salute & farmacia'},
-  spesa:     {icon:'🛒', label:'Spesa alimentare'},
-  trasporti: {icon:'🚗', label:'Trasporti'},
-  casa:      {icon:'🏠', label:'Casa & utenze'},
-  varie:     {icon:'📦', label:'Varie'},
+  fissi:       {icon:'🏠', label:'Fissi (bollette)'},
+  alimentari:  {icon:'🛒', label:'Spesa alimentare'},
+  betterhelp:  {icon:'🧠', label:'BetterHelp'},
+  palestra:    {icon:'🏋️', label:'Palestra'},
+  abbonamenti: {icon:'📱', label:'Abbonamenti'},
+  bambini:     {icon:'👶', label:'Bambini'},
+  farmacia:    {icon:'💊', label:'Farmacia'},
+  uscite:      {icon:'🍽️', label:'Uscite & svago'},
+  bellezza:    {icon:'💅', label:'Bellezza'},
+  amazon:      {icon:'📦', label:'Amazon'},
+  varie:       {icon:'🔖', label:'Varie'},
 };
 
-// Budget mensili per categoria
+// Budget mensili per categoria (fonte: anto-budget.html)
 const BUDGET_MENSILE = {
-  bimbi:    80,
-  amazon:   60,
-  beauty:   90,
-  fuori:    80,
-  palestra: 89,
-  salute:   100,
+  fissi:       220,  // Telecom 51.76 + Eni 101.82 + Verisure 65.14 + Canone 2
+  alimentari:  250,
+  betterhelp:  240,  // 4 sessioni × €60
+  palestra:    100,
+  abbonamenti:  45,  // Apple 22+2.99 + Kindle 9.99
+  bambini:      80,
+  farmacia:     50,
+  uscite:       50,
+  bellezza:     40,
+  amazon:       50,
 };
 
 const saveOggi = () => localStorage.setItem('av7_oggi',  JSON.stringify(oggiDone));
@@ -953,9 +930,9 @@ applyDark();
 const esc = s => String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
 const getDayArr = (o, i) => o[i] !== undefined ? o[i] : (o['default'] || []);
 
-const CC = {corpo:'cc-corpo',cucina:'cc-cucina',studio:'cc-studio',finanze:'cc-finanze',bimbi:'cc-sand',io:'cc-slate',skincare:'cc-skincare',diabete:'cc-diabete',casa:'cc-sand'};
-const CI = {corpo:'💪',cucina:'🍳',studio:'📚',finanze:'💶',bimbi:'👶',io:'✨',skincare:'🌸',diabete:'🩺',casa:'🏠'};
-const CL = {corpo:'Corpo',cucina:'Cucina',studio:'Studio',finanze:'Finanze',bimbi:'Bimbi',io:'Io',skincare:'Skincare',diabete:'Glicemia',casa:'Casa'};
+const CC = {corpo:'cc-corpo',cucina:'cc-cucina',finanze:'cc-finanze',bimbi:'cc-sand',io:'cc-slate',skincare:'cc-skincare',diabete:'cc-diabete',casa:'cc-sand'};
+const CI = {corpo:'💪',cucina:'🍳',finanze:'💶',bimbi:'👶',io:'✨',skincare:'🌸',diabete:'🩺',casa:'🏠'};
+const CL = {corpo:'Corpo',cucina:'Cucina',finanze:'Finanze',bimbi:'Bimbi',io:'Io',skincare:'Skincare',diabete:'Glicemia',casa:'Casa'};
 
 function calLink(t, time) {
   const d = new Date(NOW);
@@ -1157,7 +1134,6 @@ function getItems() {
   return {
     corpo:   getDayArr(SCHED.corpo,  dayIdx).map((it,i)=>({...it,cat:'corpo',  key:`c_${i}`})),
     cucina:  getDayArr(SCHED.cucina, dayIdx).map((it,i)=>({...it,cat:'cucina', key:`cu_${i}`})),
-    studio:  getDayArr(SCHED.studio, dayIdx).map((it,i)=>({...it,cat:'studio', key:`st_${i}`})),
     finanze: getDayArr(SCHED.finanze||{}, dayIdx).map((it,i)=>({...it,cat:'finanze',key:`fi_${i}`})),
   };
 }
@@ -1168,7 +1144,7 @@ function renderOggi() {
 
   renderBenessere();
 
-  ['corpo','cucina','studio'].forEach(cat => {
+  ['corpo','cucina'].forEach(cat => {
     const el = document.getElementById('o-'+cat);
     const list = items[cat];
     if (!list.length) { el.innerHTML='<div class="empty">Giorno libero ✓</div>'; return; }
@@ -1618,7 +1594,7 @@ function renderRecap() {
   const tk = NOW.toISOString().split('T')[0];
   const items = getItems();
   let total=0, done=0;
-  ['corpo','cucina','studio'].forEach(cat=>{items[cat].forEach(it=>{total++;if(oggiDone[it.key])done++;});});
+  ['corpo','cucina'].forEach(cat=>{items[cat].forEach(it=>{total++;if(oggiDone[it.key])done++;});});
   const skT = 2; // skincare mattino + sera (semplificato)
   const skD = [tk+'_skin_mat',tk+'_skin_ser'].filter(k=>skincareDone[k]).length;
   total+=skT; done+=skD;
@@ -1645,7 +1621,6 @@ function renderRecap() {
   const aD = [
     {key:'corpo',   l:'💪 Corpo',   c:'var(--corpo)'},
     {key:'cucina',  l:'🍳 Cucina',  c:'var(--cucina)'},
-    {key:'studio',  l:'📚 Studio',  c:'var(--studio)'},
     {key:'skincare',l:'🌸 Skincare',c:'var(--skincare)'},
   ];
   document.getElementById('areas-outer').innerHTML = aD.map(a => {
@@ -1719,12 +1694,6 @@ function renderPiano() {
     </div>`
   ).join('');
 
-  document.getElementById('piano-studio').innerHTML = STUDIO_PIANO.map(s =>
-    `<div class="study-card">
-      <div class="sc-hdr"><div class="sc-ttl">${s.titolo}</div><div class="sc-badge">${s.badge}</div></div>
-      <div class="sc-body">${s.corpo}<br><a class="sc-link" href="${s.link}" target="_blank">→ ${s.link.replace('https://','')}</a></div>
-    </div>`
-  ).join('');
 }
 
 // ── NAVIGATION ────────────────────────────────────────
@@ -2368,6 +2337,21 @@ function renderBudget() {
   const monthKey = NOW.toISOString().substring(0, 7);
   const meseSpese = spese.filter(s => s.date.startsWith(monthKey));
 
+  // Totali
+  const totalBudget = Object.values(BUDGET_MENSILE).reduce((a, b) => a + b, 0);
+  const totalSpent  = meseSpese.reduce((a, b) => a + b.amount, 0);
+  const available   = INCOME - totalBudget;          // dopo budget (€473 teorici)
+  const saved       = Math.max(0, available - (totalSpent - Object.entries(BUDGET_MENSILE).reduce((acc,[cat,lim])=>{
+    return acc + Math.min(meseSpese.filter(s=>s.cat===cat).reduce((a,b)=>a+b.amount,0), lim);
+  },0)));
+  const leftToSave  = Math.max(0, SAVINGS_TARGET - saved);
+
+  // Giorni rimasti nel mese
+  const lastDay     = new Date(NOW.getFullYear(), NOW.getMonth()+1, 0).getDate();
+  const daysPassed  = NOW.getDate();
+  const daysLeft    = lastDay - daysPassed;
+  const dailyLeft   = daysLeft > 0 ? Math.max(0, (INCOME - totalBudget - totalSpent - SAVINGS_TARGET) / daysLeft) : 0;
+
   const rows = Object.entries(BUDGET_MENSILE).map(([cat, limit]) => {
     const info = SPESE_CAT[cat] || {icon:'📦', label:cat};
     const spent = meseSpese.filter(s => s.cat === cat).reduce((a, b) => a + b.amount, 0);
@@ -2396,11 +2380,52 @@ function renderBudget() {
     </div>`;
   }).join('');
 
+  // Savings ring
+  const savPct   = Math.min(Math.round((Math.max(0, available - totalSpent + Object.values(BUDGET_MENSILE).reduce((a,b)=>a+b,0)) / SAVINGS_TARGET) * 100), 100);
+  const savColor = savPct >= 100 ? '#16A34A' : savPct >= 50 ? '#D97706' : '#DC2626';
+  const spesePct = Math.min(Math.round((totalSpent / totalBudget) * 100), 100);
+
   const monthLabel = NOW.toLocaleDateString('it-IT', {month:'long', year:'numeric'});
-  el.innerHTML = `<div class="bud-wrap"><div class="bud-card">
-    <div class="bud-ttl">📊 Budget ${monthLabel}</div>
-    ${rows}
-  </div></div>`;
+  el.innerHTML = `<div class="bud-wrap">
+
+    <!-- Riepilogo mensile -->
+    <div class="bud-summary">
+      <div class="bud-sum-item">
+        <div class="bud-sum-lbl">💰 Stipendio</div>
+        <div class="bud-sum-val">€${INCOME.toFixed(0)}</div>
+      </div>
+      <div class="bud-sum-item">
+        <div class="bud-sum-lbl">📊 Budget totale</div>
+        <div class="bud-sum-val">€${totalBudget.toFixed(0)}</div>
+      </div>
+      <div class="bud-sum-item">
+        <div class="bud-sum-lbl">🛍️ Speso finora</div>
+        <div class="bud-sum-val" style="color:${totalSpent > totalBudget ? '#DC2626' : 'var(--text)'}">€${totalSpent.toFixed(0)}</div>
+      </div>
+      <div class="bud-sum-item">
+        <div class="bud-sum-lbl">📅 Al giorno</div>
+        <div class="bud-sum-val" style="color:${dailyLeft < 5 ? '#DC2626' : dailyLeft < 15 ? '#D97706' : '#16A34A'}">€${dailyLeft.toFixed(0)}</div>
+      </div>
+    </div>
+
+    <!-- Obiettivo risparmio -->
+    <div class="bud-savings">
+      <div class="bud-sav-hdr">
+        <span>🎯 Obiettivo risparmio</span>
+        <span style="font-weight:900;color:${leftToSave===0?'#16A34A':'var(--sub)'}">€${Math.min(available - totalSpent + totalBudget, SAVINGS_TARGET).toFixed(0)} / €${SAVINGS_TARGET}</span>
+      </div>
+      <div class="bud-bar-bg">
+        <div class="bud-bar-fill" style="width:${Math.min(100, Math.max(0, Math.round(((available - totalSpent + totalBudget) / SAVINGS_TARGET)*100)))}%;background:${savColor}"></div>
+      </div>
+      ${leftToSave === 0 ? '<div class="bud-alert ok">✅ Obiettivo risparmio raggiunto!</div>' : ''}
+    </div>
+
+    <!-- Categorie -->
+    <div class="bud-card">
+      <div class="bud-ttl">📋 Categorie — ${monthLabel}</div>
+      ${rows}
+    </div>
+  </div>`;
 }
 
 

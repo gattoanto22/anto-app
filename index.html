@@ -37,6 +37,7 @@
   --rose:     #DB2777;
   --teal:     #0F766E;
   --acid:     #65A30D;
+  --acc:      #7C3AED;
   --f:        'Inter', system-ui, sans-serif;
   --r:        14px;
   --r-sm:     10px;
@@ -62,6 +63,7 @@
   --rose:     #EC4899;
   --teal:     #14B8A6;
   --acid:     #A3E635;
+  --acc:      #8B5CF6;
 }
 
 /* ── RESET ───────────────────────────────────────────── */
@@ -535,78 +537,8 @@ input,select,textarea{font-family:var(--f)}
   <div class="sec-hdr"><div class="sec-dot dot-cucina"></div><span class="sec-txt">Cucina</span><div class="sec-line"></div></div>
   <div class="act-list" id="o-cucina"></div>
 
-  <div class="sec-hdr"><div class="sec-dot dot-finanze"></div><span class="sec-txt">Budget mensile</span><div class="sec-line"></div></div>
-  <div id="budget-widget"></div>
-
-  <div class="sec-hdr"><div class="sec-dot dot-finanze"></div><span class="sec-txt">Spese di oggi</span><div class="sec-line"></div></div>
-  <div class="act-list" id="o-finanze"></div>
-
-  <div class="sec-hdr"><div class="sec-dot" style="background:#16A34A"></div><span class="sec-txt">Lista della spesa</span><div class="sec-line"></div></div>
-  <div id="lista-widget"></div>
-
   <div class="sec-hdr"><div class="sec-dot" style="background:#DB2777"></div><span class="sec-txt">Ciclo mestruale</span><div class="sec-line"></div></div>
   <div id="ciclo-widget"></div>
-
-</div>
-
-<!-- ══ DOMANI ════════════════════════════════════════════ -->
-<div class="view" id="view-domani">
-
-  <header class="page-hdr">
-    <div>
-      <p class="hdr-over">Pianifica la sera</p>
-      <h1 class="hdr-title"><span class="acc">Domani</span></h1>
-      <p class="hdr-date" id="domani-lbl"></p>
-    </div>
-  </header>
-
-  <!-- meteo 3BMeteo -->
-  <div class="meteo-wrap">
-    <div class="meteo-3b">
-      <div class="meteo-3b-scroll">
-        <iframe
-          src="https://www.3bmeteo.com/moduli_esterni/localita_7_giorni_compatto/5913/f5f5fa/2563eb/555570/f5f5fa/it"
-          width="364" height="176" frameborder="0" scrolling="no"
-          title="Meteo Roma — 3BMeteo" loading="lazy">
-        </iframe>
-      </div>
-      <div class="meteo-3b-src">Dati <a href="https://www.3bmeteo.com/meteo/roma" target="_blank" rel="noopener">3BMeteo · Roma</a></div>
-    </div>
-  </div>
-
-  <!-- MIT: 3 priorità -->
-  <div class="sec-hdr"><div class="sec-dot" style="background:#F59E0B"></div><span class="sec-txt">Le 3 priorità</span><div class="sec-line"></div></div>
-  <div id="mit-widget"></div>
-
-  <!-- Prepara stasera -->
-  <div class="sec-hdr"><div class="sec-dot" style="background:#16A34A"></div><span class="sec-txt">Prepara stasera</span><div class="sec-line"></div></div>
-  <div id="prep-widget"></div>
-
-  <!-- Preview pasti domani -->
-  <div class="sec-hdr"><div class="sec-dot dot-cucina"></div><span class="sec-txt">Pasti di domani</span><div class="sec-line"></div></div>
-  <div id="d-pasti"></div>
-
-  <!-- Task extra -->
-  <div class="sec-hdr"><div class="sec-dot dot-extra"></div><span class="sec-txt">Task extra</span><div class="sec-line"></div></div>
-  <div class="add-outer">
-    <div class="add-card">
-      <div class="add-lbl">Aggiungi per domani</div>
-      <input class="add-inp" id="dom-input" placeholder="Es. Chiamare pediatra, comprare lenticchie…" maxlength="120" onkeydown="if(event.key==='Enter')addDomani()">
-      <div class="add-row">
-        <select class="add-sel" id="dom-cat">
-          <option value="corpo">💪 Corpo</option>
-          <option value="cucina">🍳 Cucina</option>
-          <option value="finanze">💶 Finanze</option>
-          <option value="bimbi">👶 Bimbi</option>
-          <option value="io">✨ Io</option>
-          <option value="casa">🏠 Casa</option>
-        </select>
-        <input type="time" class="add-time" id="dom-time">
-        <button class="add-btn" onclick="addDomani()">+ Aggiungi</button>
-      </div>
-    </div>
-  </div>
-  <div class="act-list" id="d-extra"></div>
 
 </div>
 
@@ -646,9 +578,6 @@ input,select,textarea{font-family:var(--f)}
 
   <div class="sec-hdr"><div class="sec-dot dot-recap"></div><span class="sec-txt">Per area</span><div class="sec-line"></div></div>
   <div class="areas-outer" id="areas-outer"></div>
-
-  <div class="sec-hdr"><div class="sec-dot dot-finanze"></div><span class="sec-txt">Spese</span><div class="sec-line"></div></div>
-  <div id="fin-recap-section"></div>
 
   <div class="sec-hdr"><div class="sec-dot" style="background:#16A34A"></div><span class="sec-txt">Lista della spesa</span><div class="sec-line"></div></div>
   <div id="lista-recap-section"></div>
@@ -714,7 +643,6 @@ input,select,textarea{font-family:var(--f)}
 <!-- ══ NAV ════════════════════════════════════════════════ -->
 <nav class="nav">
   <button class="nb active" id="nav-oggi"   onclick="sv('oggi')">  <span class="ni">☀️</span>Oggi</button>
-  <button class="nb"        id="nav-domani" onclick="sv('domani')"><span class="ni">🌙</span>Domani</button>
   <button class="nb"        id="nav-recap"  onclick="sv('recap')"> <span class="ni">📊</span>Recap</button>
   <button class="nb"        id="nav-piano"  onclick="sv('piano')"> <span class="ni">📋</span>Piano</button>
 </nav>
@@ -732,7 +660,6 @@ const todayStr = NOW.toLocaleDateString('it-IT',{weekday:'long',day:'numeric',mo
 const domaniDate = new Date(NOW); domaniDate.setDate(NOW.getDate()+1);
 const domaniStr = domaniDate.toLocaleDateString('it-IT',{weekday:'long',day:'numeric',month:'long'});
 document.getElementById('today-lbl').textContent = todayStr;
-document.getElementById('domani-lbl').textContent = domaniStr;
 
 // ── SCHEDULES ──────────────────────────────────────────
 const SCHED = {
@@ -1156,9 +1083,6 @@ function renderOggi() {
     }).join('');
   });
 
-  renderSpese();
-  renderBudget();
-  renderLista();
   renderCiclo();
 
   const tk = NOW.toISOString().split('T')[0];
@@ -2497,8 +2421,6 @@ renderGluc();
 renderSkin();
 renderPeso();
 renderOggi();
-renderBudget();
-renderDomani();
 renderCiclo();
 renderBackupDate();
 
